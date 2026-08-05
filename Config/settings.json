@@ -10,6 +10,18 @@
     "otherCashTargetPercent": 30,
     "monthlyCashflowCny": 4000
   },
+  "strategyV41": {
+    "enabled": true,
+    "signalSymbol": "QQQ",
+    "signalProvider": "eastmoney",
+    "volatilityThresholdPercent": 35,
+    "highVolatilityReductionPercent": 15,
+    "nasdaqFloorPercent": 15,
+    "rebalanceThresholdPercent": 3,
+    "excludedEmergencyCashCny": 36000,
+    "bondCode": "511360",
+    "bondName": "海富通中证短融ETF"
+  },
   "portfolio": {
     "assets": [
       {
@@ -166,6 +178,19 @@
         "amountCny": 0,
         "lastPrice": 1.8934,
         "lastPriceAt": "2026-07-09T09:51:25.996Z",
+        "enabled": true
+      },
+      {
+        "id": "511360",
+        "name": "海富通中证短融ETF",
+        "category": "bond",
+        "kind": "exchange",
+        "code": "511360",
+        "secid": "1.511360",
+        "shares": 0,
+        "amountCny": 0,
+        "lastPrice": 0,
+        "lastPriceAt": "",
         "enabled": true
       },
       {
@@ -1026,19 +1051,19 @@
       "name": "纳指ETF"
     },
     "benchmark": {
-      "provider": "finnhub",
+      "provider": "stooq",
       "secid": "1.513100",
-      "symbol": "NDX",
-      "name": "纳指100（NDX）"
+      "symbol": "QQQ",
+      "name": "QQQ"
     },
     "finnhub": {
-      "apiKey": "d7953thr01qp0fl778n0d7953thr01qp0fl778ng"
+      "apiKey": ""
     },
     "timezone": "Asia/Shanghai",
     "logDir": "D:/log-nsdk",
     "pushEnabled": true,
     "serverChan": {
-      "sendKey": "SCT311262TCOvXh9AgIsoNeaxuvTJYFkxM"
+      "sendKey": ""
     },
     "startupHeartbeatEnabled": true,
     "otcDcaCnyPerWorkday": 0,

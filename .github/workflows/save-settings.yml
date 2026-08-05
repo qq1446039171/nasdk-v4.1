@@ -1,5 +1,5 @@
 name: Save Config Settings
-run-name: Save Config/settings.json to qq1446039171/edit-nsdk
+run-name: Save Config/settings.json to qq1446039171/nasdk-v4.1
 
 on:
   workflow_dispatch:
@@ -47,6 +47,10 @@ jobs:
           b64 = os.environ['INPUT_SETTINGS_BASE64'].strip()
           raw = base64.b64decode(b64).decode('utf-8')
           parsed = json.loads(raw)
+          # Public repository: never persist runtime credentials from the browser payload.
+          nsdk = parsed.setdefault('nsdk', {})
+          nsdk.setdefault('finnhub', {})['apiKey'] = ''
+          nsdk.setdefault('serverChan', {})['sendKey'] = ''
           target = Path(os.environ['CONFIG_PATH'])
           target.parent.mkdir(parents=True, exist_ok=True)
           target.write_text(json.dumps(parsed, ensure_ascii=False, indent=2) + "\n", encoding='utf-8')

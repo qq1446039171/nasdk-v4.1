@@ -702,8 +702,8 @@
           titleZh: "资金与敞口",
           titleEn: "Funds & Exposure",
           fields: [
-            { key: "funds.depositAmount", nameZh: "总资产(自动汇总)", nameEn: "Total Assets (Auto)", description: "总资产 = 纳指持仓 + 备用金 + 其他现金。按 v3.0 执行手册，看比例不看固定金额。", type: "number", default: 0, editable: false, validation: { required: true, min: 0, max: 1000000000 } },
-            { key: "funds.nasdaqExposureLimitPercent", nameZh: "纳指持仓敞口上限(%)", nameEn: "NASDAQ Position Exposure Limit (%)", description: "v3.0：纳指敞口只计算当前持仓；备用金是未来买入弹药，不计入敞口。", type: "number", default: 70, validation: { required: true, min: 0, max: 100 } }
+            { key: "funds.depositAmount", nameZh: "总资产(自动汇总)", nameEn: "Total Assets (Auto)", description: "全部启用资产的实时市值与现金合计；v4.1 会另行扣除独立应急金。", type: "number", default: 0, editable: false, validation: { required: true, min: 0, max: 1000000000 } },
+            { key: "funds.nasdaqExposureLimitPercent", nameZh: "纳指长期上限(%)", nameEn: "NASDAQ Long-term Limit (%)", description: "v4.1 强势状态的纳指目标上限，当前标准为 70%。", type: "number", default: 70, validation: { required: true, min: 0, max: 100 } }
           ]
         },
         {
@@ -717,6 +717,23 @@
             { key: "allocation.reserveCashTargetPercent", nameZh: "备用金目标占比(%)", nameEn: "Reserve Cash Target (%)", description: "v3.0：备用金目标 30%，仅用于回撤分档买入。", type: "number", default: 30, validation: { required: true, min: 0, max: 100 } },
             { key: "allocation.otherCashTargetPercent", nameZh: "其他现金目标占比(%)", nameEn: "Other Cash Target (%)", description: "v3.0：其他现金目标 30%，用于生活/应急/自由支配。", type: "number", default: 30, validation: { required: true, min: 0, max: 100 } },
             { key: "allocation.monthlyCashflowCny", nameZh: "月度现金流(元)", nameEn: "Monthly Cashflow (CNY)", description: "执行手册：每月发工资后操作一次，默认 ¥4,000。", type: "number", default: 4000, validation: { required: true, min: 0, max: 1000000000 } }
+          ]
+        },
+        {
+          id: "strategyV41",
+          titleZh: "v4.1 月末策略",
+          titleEn: "V4.1 Month-end Strategy",
+          fields: [
+            { key: "strategyV41.enabled", nameZh: "启用 v4.1", nameEn: "Enable v4.1", description: "启用强势/过渡/防守月末信号与目标仓位调节。", type: "boolean", default: true, validation: { required: true } },
+            { key: "strategyV41.signalSymbol", nameZh: "信号标的", nameEn: "Signal Symbol", description: "固定使用 QQQ 月度复权价格生成信号。", type: "string", default: "QQQ", validation: { required: true, maxLength: 16 } },
+            { key: "strategyV41.signalProvider", nameZh: "月线数据源", nameEn: "Monthly Data Provider", description: "使用已验证可访问的东方财富 QQQ 前复权月线。", type: "string", default: "eastmoney", validation: { required: true, options: ["eastmoney"] } },
+            { key: "strategyV41.volatilityThresholdPercent", nameZh: "高波动阈值(%)", nameEn: "High Volatility Threshold (%)", description: "6 个月收益率年化波动率超过该值时，纳指目标降低 15 个百分点。", type: "number", default: 35, validation: { required: true, min: 0, max: 100 } },
+            { key: "strategyV41.highVolatilityReductionPercent", nameZh: "高波动降仓百分点", nameEn: "High Volatility Reduction", description: "高波动保护触发时，从纳指转入债券的百分点。", type: "number", default: 15, validation: { required: true, min: 0, max: 70 } },
+            { key: "strategyV41.nasdaqFloorPercent", nameZh: "纳指最低仓位(%)", nameEn: "NASDAQ Floor (%)", description: "任何状态下纳指目标不得低于该值。", type: "number", default: 15, validation: { required: true, min: 0, max: 70 } },
+            { key: "strategyV41.rebalanceThresholdPercent", nameZh: "再平衡偏离阈值(百分点)", nameEn: "Rebalance Drift Threshold", description: "状态不变时，仅当任一目标资产偏离超过该值才整体再平衡。", type: "number", default: 3, validation: { required: true, min: 0, max: 20 } },
+            { key: "strategyV41.excludedEmergencyCashCny", nameZh: "独立应急金(元)", nameEn: "Excluded Emergency Cash", description: "不参与 v4.1 调仓的生活应急金；从策略外现金中优先扣除。", type: "number", default: 36000, validation: { required: true, min: 0, max: 1000000000 } },
+            { key: "strategyV41.bondCode", nameZh: "债券 ETF 代码", nameEn: "Bond ETF Code", description: "当前使用海富通中证短融 ETF 511360。", type: "string", default: "511360", validation: { required: true, maxLength: 16 } },
+            { key: "strategyV41.bondName", nameZh: "债券 ETF 名称", nameEn: "Bond ETF Name", description: "用于调仓建议和手机推送。", type: "string", default: "海富通中证短融ETF", validation: { required: true, maxLength: 64 } }
           ]
         },
         {
@@ -735,6 +752,7 @@
         },
         {
           id: "drawdown",
+          hidden: true,
           titleZh: "回撤与快照机制",
           titleEn: "Drawdown & Snapshot",
           fields: [
@@ -793,13 +811,15 @@
       { value: "cash", label: "普通现金" }
     ];
 
+    assetCategories.splice(3, 0, { value: "bond", label: "债券 ETF" });
+
     const app = document.getElementById("app");
     const settingsFileInput = document.getElementById("settingsFileInput");
     const stateFileInput = document.getElementById("stateFileInput");
 
     const projectGithub = Object.freeze({
       owner: "qq1446039171",
-      repo: "edit-nsdk",
+      repo: "nasdk-v4.1",
       branch: "master"
     });
 
@@ -2121,6 +2141,62 @@
       `;
     }
 
+    function renderV41Overview() {
+      if (!state.settings) return "";
+      const runtime = state.nsdkState?.v41 || {};
+      const signal = runtime.lastSignal || null;
+      const targets = runtime.lastTargets || null;
+      const plan = runtime.lastPlan || null;
+      const summary = assetSummary();
+      const nasdaq = Number(summary.byCategory.nasdaq) || 0;
+      const gold = Number(summary.byCategory.gold) || 0;
+      const bond = Number(summary.byCategory.bond) || 0;
+      const rawOther = Math.max(0, summary.total - nasdaq - gold - bond);
+      const emergency = Math.min(rawOther, Number(state.settings?.strategyV41?.excludedEmergencyCashCny) || 0);
+      const investable = Math.max(0, summary.total - emergency);
+      const actionNames = {
+        nasdaq: "纳斯达克（优先 513100）",
+        gold: "黄金基金",
+        bond: `${state.settings?.strategyV41?.bondName || "海富通中证短融ETF"}（${state.settings?.strategyV41?.bondCode || "511360"}）`,
+        other: "策略外股票/现金"
+      };
+      const actions = plan?.actions
+        ? ["other", "nasdaq", "gold", "bond"].filter((key) => Math.abs(Number(plan.actions[key]) || 0) >= 1).map((key) => {
+            const amount = Number(plan.actions[key]);
+            return `<div class="stat"><div class="stat-label">${amount > 0 ? "买入/转入" : "卖出/转出"}</div><div class="stat-value">¥${escapeHtml(fmtMoney(Math.abs(amount)))}</div><div class="stat-note">${escapeHtml(actionNames[key])}</div></div>`;
+          }).join("")
+        : `<div class="stat"><div class="stat-label">调仓金额</div><div class="stat-value">等待首次月末信号</div><div class="stat-note">工作流生成信号后，这里会显示每类资产的具体买卖金额。</div></div>`;
+      const stateLabel = signal?.stateLabel || "待计算";
+      const protection = signal?.highVolatility ? " · 高波动保护已开启" : "";
+      const reason = plan?.reason === "state_changed"
+        ? "状态变化：整体调仓"
+        : (plan?.reason === "drift_over_threshold" ? "偏离超过 3 个百分点：整体再平衡" : (plan ? "状态未变：仅分配本月现金" : "等待信号"));
+      return `
+        <section class="section gold">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title gold">纳斯达克长期投资策略 v4.1</h2>
+              <div class="subtitle">每月末确认 QQQ 月线信号，下一个中国可交易日执行；页面不直接下单。</div>
+            </div>
+            <button class="btn privacy-toggle" data-action="toggle-balances">${state.balancesHidden ? "显示余额" : "隐藏余额"}</button>
+          </div>
+          <div class="stats-grid">
+            <div class="stat"><div class="stat-label">当前市场状态</div><div class="stat-value">${escapeHtml(stateLabel)}</div><div class="stat-note">信号月份 ${escapeHtml(signal?.signalMonth || "--")}${escapeHtml(protection)}</div></div>
+            <div class="stat"><div class="stat-label">目标仓位</div><div class="stat-value">${targets ? `${targets.nasdaq}% / ${targets.gold}% / ${targets.bond}%` : "--"}</div><div class="stat-note">纳指 / 黄金 / 债券</div></div>
+            <div class="stat"><div class="stat-label">月末处理方式</div><div class="stat-value">${escapeHtml(reason)}</div><div class="stat-note">同状态时仅在偏离超过 ${escapeHtml(state.settings?.strategyV41?.rebalanceThresholdPercent ?? 3)} 个百分点才整体调仓</div></div>
+            <div class="stat"><div class="stat-label">本月新增现金</div><div class="stat-value">¥${escapeHtml(fmtMoney(monthlyCashflowAmount()))}</div><div class="stat-note">优先补目标缺口最大的资产；都达标时按目标比例分配</div></div>
+            <div class="stat"><div class="stat-label">策略内资产</div><div class="stat-value">¥${escapeHtml(fmtMoney(investable))}</div><div class="stat-note">另有独立应急金 ¥${escapeHtml(fmtMoney(emergency))} 不参与调仓</div></div>
+            <div class="stat"><div class="stat-label">当前三类资产</div><div class="stat-value">¥${escapeHtml(fmtMoney(nasdaq))} / ¥${escapeHtml(fmtMoney(gold))} / ¥${escapeHtml(fmtMoney(bond))}</div><div class="stat-note">纳指 / 黄金 / 债券</div></div>
+            ${signal ? `<div class="stat"><div class="stat-label">趋势与动量</div><div class="stat-value">${signal.trendPositive ? "趋势向上" : "趋势转弱"} · ${signal.momentumPositive ? "动量为正" : "动量为负"}</div><div class="stat-note">收盘 ${escapeHtml(signal.close)} / SMA10 ${escapeHtml(signal.sma10)} / 12月动量 ${escapeHtml(signal.momentum12Percent)}%</div></div>` : ""}
+            ${signal ? `<div class="stat"><div class="stat-label">6月年化波动率</div><div class="stat-value">${escapeHtml(signal.annualizedVolatilityPercent)}%</div><div class="stat-note">保护阈值 ${escapeHtml(signal.volatilityThresholdPercent)}%</div></div>` : ""}
+          </div>
+          <div class="section-head" style="margin-top:20px"><h3 class="section-title">本月具体金额变动方向</h3></div>
+          <div class="stats-grid">${actions || `<div class="stat"><div class="stat-value">无需交易</div></div>`}</div>
+          ${renderProfitChart()}
+        </section>
+      `;
+    }
+
     function renderOverview() {
       if (!state.settings) return "";
       const total = depositAmount();
@@ -2334,7 +2410,7 @@
             </div>
             <div class="dialog-grid">
               <div class="form-item"><label for="githubOwner">Repo Owner</label><input id="githubOwner" data-pref="githubRepoOwner" value="${escapeHtml(state.githubRepoOwner)}" placeholder="qq1446039171" readonly /></div>
-              <div class="form-item"><label for="githubRepo">Repo Name</label><input id="githubRepo" data-pref="githubRepoName" value="${escapeHtml(state.githubRepoName)}" placeholder="edit-nsdk" readonly /></div>
+              <div class="form-item"><label for="githubRepo">Repo Name</label><input id="githubRepo" data-pref="githubRepoName" value="${escapeHtml(state.githubRepoName)}" placeholder="nasdk-v4.1" readonly /></div>
               <div class="form-item"><label for="githubBranch">Target Branch</label><input id="githubBranch" data-pref="githubBranch" value="${escapeHtml(state.githubBranch)}" placeholder="master" readonly /></div>
               <div class="form-item"><label for="githubToken">GitHub Personal Access Token</label><input id="githubToken" data-github-token type="password" value="${escapeHtml(state.githubToken)}" placeholder="需要 Actions 写入权限" autocomplete="off" /></div>
               <div class="form-item" style="grid-column:1/-1"><label for="githubCommit">Commit Message</label><input id="githubCommit" data-pref="githubCommitMessage" value="${escapeHtml(state.githubCommitMessage)}" placeholder="chore(config): update settings from web" /></div>
@@ -2591,16 +2667,16 @@
         <div class="container">
           <header class="header">
             <div>
-              <div class="eyebrow">NSDK Config Console</div>
-              <h1>NSDK 参数配置</h1>
-              <div class="subtitle">单文件 HTML 版，保留配置加载、校验、资产概览、回撤档位、state.json 查看和 GitHub workflow 保存能力。</div>
+              <div class="eyebrow">NASDAQ V4.1 MONTH-END ASSISTANT</div>
+              <h1>纳斯达克 v4.1 投资助手</h1>
+              <div class="subtitle">管理持仓、查看强势/过渡/防守状态，并按月末信号获得具体调仓金额。</div>
             </div>
             <div class="status">${renderStatus()}</div>
           </header>
           ${renderNotice(state.fileMessage, state.fileMessageType)}
           ${renderActions()}
           ${renderAssetSection()}
-          ${state.settings && drawdownSnapshotActive() ? `
+          ${false && state.settings && drawdownSnapshotActive() ? `
             <section class="section">
               <div class="section-head">
                 <h2 class="section-title">回撤档位执行状态</h2>
@@ -2610,7 +2686,7 @@
             </section>
           ` : ""}
           ${renderStateSection()}
-          ${renderOverview()}
+          ${renderV41Overview()}
           ${renderGroups()}
         </div>
         ${renderGithubModal()}
@@ -2900,10 +2976,13 @@
       state.githubSaving = true;
       render();
       try {
+        const repositorySettings = cloneValue(state.settings);
+        deepSet(repositorySettings, "nsdk.finnhub.apiKey", "");
+        deepSet(repositorySettings, "nsdk.serverChan.sendKey", "");
         const payload = {
           ref: state.githubBranch.trim(),
           inputs: {
-            settings_base64: encodeUtf8Base64(JSON.stringify(state.settings)),
+            settings_base64: encodeUtf8Base64(JSON.stringify(repositorySettings)),
             commit_message: state.githubCommitMessage.trim() || "chore(config): update settings from web"
           }
         };

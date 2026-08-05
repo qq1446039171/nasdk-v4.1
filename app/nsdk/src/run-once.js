@@ -1,6 +1,7 @@
 const { loadConfig, resolveSettingsPath } = require('./config');
 const { loadState, saveState, shouldAttemptSlot, recordSlotAttempt, markSlotDone } = require('./state');
 const { marketCheck, weeklyActiveReminder, tryRealtimeDrawdownAlert } = require('./actions');
+const { runV41MonthEnd } = require('./v41-action');
 const { recordDailySnapshot } = require('./profit-snapshot');
 const { getParts, isWeekday, isSlotDue } = require('./time');
 
@@ -39,9 +40,9 @@ const main = async () => {
   const cfg = loadConfig();
   const state = loadState();
 
-  const mode = process.argv[2] || 'market';
-  if (mode === 'once') {
-    await marketCheck(cfg, state);
+  const mode = process.argv[2] || 'month-end';
+  if (mode === 'once' || mode === 'month-end' || mode === 'v41') {
+    await runV41MonthEnd(cfg, state, { force: mode === 'once' });
   } else if (mode === 'weekly') {
     await weeklyActiveReminder(cfg, state);
   } else if (mode === 'realtime') {
@@ -51,11 +52,13 @@ const main = async () => {
       console.error('[realtime] drawdown alert failed:', err);
     }
     await maybeRunDailyMarketCheck(cfg, state);
-  } else {
+  } else if (mode === 'market') {
     const pushed = await maybeRunDailyMarketCheck(cfg, state);
     if (!pushed) {
       console.log('[run-once] no due dailyChecks slot to push (not yet due, or already sent today)');
     }
+  } else {
+    throw new Error(`Unknown mode: ${mode}. Use month-end | once | market | realtime | weekly`);
   }
   saveState(state);
 };

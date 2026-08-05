@@ -16,8 +16,8 @@ function extract(name) {
 }
 
 assert.match(html, /owner:\s*"qq1446039171"/, 'GitHub owner should be qq1446039171');
-assert.match(html, /repo:\s*"edit-nsdk"/, 'GitHub repo should be edit-nsdk');
-assert.match(workflows, /qq1446039171\/edit-nsdk/, 'workflows should identify the edit-nsdk repo');
+assert.match(html, /repo:\s*"nasdk-v4\.1"/, 'GitHub repo should be nasdk-v4.1');
+assert.match(workflows, /qq1446039171\/nasdk-v4\.1/, 'workflows should identify the nasdk-v4.1 repo');
 assert.match(workflows, /CONFIG_PATH:\s*Config\/settings\.json/, 'workflows should use Config/settings.json as the config path');
 assert.doesNotMatch(workflows, /enablement:\s*true/, 'workflows should not try to create or enable the Pages site');
 assert.doesNotMatch(html, /New-NASDAQ/, 'web UI should not reference the old New-NASDAQ repo');

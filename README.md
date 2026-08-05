@@ -1,92 +1,57 @@
-# NSDK 参数配置（纯前端）
+# 纳斯达克长期投资策略 v4.1 助手
 
-## 目标
-- 提供一个 PC 端网页，用于编辑/校验 `settings.json`
-- 不依赖后端服务（浏览器直接读写需用户授权）
-- 支持部署到 GitHub Pages（静态托管）
+本项目把 v4.1 月频策略落到网页配置、月末信号计算、手机推送和 GitHub Actions 自动运行中。程序只给出建议，不直接下单。
 
-## 启动
-```bash
+## 策略规则
+
+- 信号数据：QQQ 月度前复权收盘价。
+- 趋势：月末价格高于 SMA10 为正。
+- 动量：12 个月收益率大于 0 为正。
+- 强势：趋势与动量都为正，目标为纳指 70% / 黄金 15% / 债券 15%。
+- 过渡：趋势与动量一正一负，目标为 55% / 15% / 30%。
+- 防守：趋势与动量都为负，目标为 15% / 15% / 70%。
+- 高波动保护：6 个月收益率年化波动率超过 35% 时，纳指目标减少 15 个百分点并转入债券，纳指最低 15%。
+- 再平衡：状态或高波动保护变化时调仓；状态不变时，仅在任一目标资产偏离超过 3 个百分点时调仓。
+- 每月现金流：默认 ¥4,000，优先补目标缺口最大的资产；全部接近目标时按目标比例分配。
+- 债券工具：海富通中证短融 ETF（511360）。
+
+## 本地运行
+
+```powershell
 npm install
-npm run dev
+npm test
+npm run app:run-once -- month-end
 ```
 
-## 构建
-```bash
-npm run build
+强制重新生成并推送当前月份建议：
+
+```powershell
+npm run app:run-once -- once
 ```
 
-GitHub Pages 专用构建（相对路径，适配仓库子路径部署）：
-```bash
-npm run build:pages
-```
+本地运行默认读取被 Git 忽略的 `Config/local-secrets.json`，因此可以像旧版一样直接推送，不必每次设置环境变量。模板见 `Config/local-secrets.example.json`。环境变量 `NSDK_SERVERCHAN_SENDKEY` 的优先级更高，可临时覆盖本地文件。
 
-## GitHub Pages 部署
-仓库已提供工作流：`.github/workflows/deploy-pages.yml`
+行情 API Key 和 SendKey 不应写入会提交的 `Config/settings.json`。
 
-1. 在 GitHub 仓库设置中启用 **Pages**，Source 选择 **GitHub Actions**。
-2. 推送到 `master` 分支后，会自动执行工作流并发布静态页面 artifact（`web/index.html` + `Config/settings.json`）。
-3. 页面为纯前端，不依赖后端 API。
+## GitHub Actions
 
-## 云端自动运行（Pages + GitHub Actions Cron）
+- `deploy-pages.yml`：部署静态网页到 GitHub Pages。
+- `nsdk-cron.yml`：每个工作日美股收盘后检查完整月线；同一个信号月份只推送一次。
+- `save-settings.yml`：接收网页配置并保存到 `Config/settings.json`。
 
-为了让 `app/nsdk` 在云端自动执行（而不是依赖本机常驻进程），仓库新增两条工作流：
+仓库 Settings → Secrets and variables → Actions 中至少配置：
 
-- `.github/workflows/nsdk-cron.yml`：
-  - 每 5 分钟运行 `realtime`（仅档位触发时推送，保证回撤档位尽快提醒）
-  - 工作日 10:30 / 14:30（北京时间）运行 `market`（例行状态推送）
-- `.github/workflows/save-settings.yml`：接收网页触发，把当前配置写回 `Config/settings.json`
+- `NSDK_SERVERCHAN_SENDKEY`
+- `FINNHUB_API_KEY`（仅旧版兼容功能需要，v4.1 月末信号不依赖）
 
-### 必做配置
-1. 在仓库 **Settings → Actions → General** 打开 Workflow 权限（允许读写仓库内容）。
-2. 在仓库 **Settings → Secrets and variables → Actions** 新增：
-   - `NSDK_SERVERCHAN_SENDKEY`（可选，建议放这里而不是明文写入 settings）
-3. 在网页中点击“保存到 GitHub”，填写 owner/repo/branch + 具备 `repo` 与 `workflow` 权限的 PAT。
+GitHub Pages 地址应为 `https://qq1446039171.github.io/nasdk-v4.1/`。
 
-这样就能实现：网页改配置 → 写回仓库 `Config/settings.json` → 下次 cron 推送读取新配置。
+## 主要文件
 
-## 使用方式（推荐）
-- 页面会自动尝试读取 `Config/settings.json`：
-  - 优先读取你在“保存到 GitHub”里配置的 `owner/repo/branch` 对应仓库文件
-  - 其次尝试同源静态路径 `./Config/settings.json`
-- 若自动读取失败，可点击「打开文件」手动选择 `Config/settings.json`
-- 修改参数后点击「保存」可写回本地授权文件；点击「保存到 GitHub」可写回仓库
-- 回撤档位执行状态可在页面「回撤档位执行状态（Config/settings.json）」卡片中直接切换，对应字段 `drawdown.executedLevels`
-- v3.0 执行面板按 `40% 持仓 / 30% 备用金 / 30% 其他现金` 展示；纳指敞口只统计当前持仓，不把备用金计入敞口，并给出月度 ¥4,000 分配建议。
-- 若浏览器不支持文件系统 API，可使用「导出/导入」
+- `Config/settings.json`：持仓和 v4.1 参数。
+- `app/nsdk/src/v41-strategy.js`：纯策略计算。
+- `app/nsdk/src/v41-action.js`：月末行情、金额建议和推送。
+- `app/nsdk/state.json`：最近一次月末信号及调仓建议。
+- `web/index.html`：网页执行面板。
 
-## 功能说明
-- **持仓维护保持一致**：继续支持在网页里更新纳指持仓、备用金、其他现金等字段，总资产自动汇总。
-- **推送功能保持兼容**：`nsdk.pushEnabled` 与 `nsdk.serverChan.sendKey` 仍在配置结构中，`app/nsdk` 读取 `Config/settings.json` 后可继续发送推送。
-
-## 与 NSDK 项目融合（app 目录）
-
-- [app/nsdk](file:///d:/TZ-NSDK/app/nsdk) 是提醒引擎（常驻/单次运行）
-- 本项目负责维护/修改资金与纪律参数，写入 `Config/settings.json`
-- NSDK 运行时会直接读取 `Config/settings.json` 获取运行配置与资金数据（不再使用 `app/nsdk/config.json`）
-
-单次执行 NSDK（示例）：
-
-```bash
-npm run app:run-once
-```
-
-## 兼容说明
-- 直接写回磁盘文件依赖浏览器的 File System Access API
-- 推荐使用 Edge / Chrome（Windows 下可用）
-- 如果浏览器不支持，将使用「导出/导入」方式：导出下载 JSON，再手动替换目标文件
-
-分清两种“修改”：
-
-- 只改了 `Config/settings.json`（参数/时间点/开关）：不需要重启进程。scheduler 每 30 秒会重新 `loadConfig()`，会自动吃到最新配置。
-- 改了 `app/nsdk/src/*.js`（程序逻辑代码）：必须重启常驻进程，Node 才会加载最新代码。
-
-`npm run app:refresh` 会先停掉常驻进程再拉起，并额外执行一次 `run-once`（可能触发一次推送/日志）。
-
-更纯粹重启（不额外 run-once）：
-- `npm run app:restart`
-
-
-npm run app:run-once -- once  单次手动执行推送
- Get-Content D:\log-nsdk\execution.log -Tail 80  查看执行日志
-<!-- eastmoney -->
+历史 v3 计算代码仍保留用于旧数据兼容，但默认定时任务和首页执行面板都已切换为 v4.1。

@@ -51,6 +51,9 @@ const summarizePortfolioAssets = (assets) => {
     investedNasdaqCny: 0,
     reserveCashNasdaqCny: 0,
     otherCashCny: 0,
+    goldCny: 0,
+    bondCny: 0,
+    legacyOtherCny: 0,
     totalAssetsCny: 0,
     assets: [],
   };
@@ -76,12 +79,20 @@ const summarizePortfolioAssets = (assets) => {
     summary.totalAssetsCny += value;
     if (normalized.category === 'nasdaq') summary.investedNasdaqCny += value;
     else if (normalized.category === 'nasdaq_reserve_cash') summary.reserveCashNasdaqCny += value;
-    else summary.otherCashCny += value;
+    else {
+      summary.otherCashCny += value;
+      if (normalized.category === 'gold') summary.goldCny += value;
+      else if (normalized.category === 'bond') summary.bondCny += value;
+      else summary.legacyOtherCny += value;
+    }
   }
 
   summary.investedNasdaqCny = Math.round(summary.investedNasdaqCny);
   summary.reserveCashNasdaqCny = Math.round(summary.reserveCashNasdaqCny);
   summary.otherCashCny = Math.round(summary.otherCashCny);
+  summary.goldCny = Math.round(summary.goldCny);
+  summary.bondCny = Math.round(summary.bondCny);
+  summary.legacyOtherCny = Math.round(summary.legacyOtherCny);
   summary.totalAssetsCny = Math.round(summary.totalAssetsCny);
   return summary;
 };
@@ -105,7 +116,12 @@ const resolveSettingsPath = () => {
   return candidate;
 };
 
-const buildConfigFromSettings = (settings) => {
+const resolveLocalSecretsPath = (settingsPath = resolveSettingsPath()) => {
+  if (process.env.LOCAL_SECRETS_PATH) return path.resolve(process.env.LOCAL_SECRETS_PATH);
+  return path.join(path.dirname(settingsPath), 'local-secrets.json');
+};
+
+const buildConfigFromSettings = (settings, localSecrets = {}) => {
   const nsdk = settings && settings.nsdk && typeof settings.nsdk === 'object' ? settings.nsdk : null;
   if (!nsdk) throw new Error('settings.json missing nsdk');
 
@@ -148,6 +164,15 @@ const buildConfigFromSettings = (settings) => {
   const drawdownExecutedLevels = normalizeExecutedLevels(safeGet(settings, ['drawdown', 'executedLevels']), drawdownLevels);
 
   const finnhubApiKey = String(process.env.FINNHUB_API_KEY || (nsdk.finnhub && nsdk.finnhub.apiKey) || '').trim();
+  const strategy = settings && settings.strategyV41 && typeof settings.strategyV41 === 'object'
+    ? settings.strategyV41
+    : {};
+  const serverChanSendKey = String(
+    process.env.NSDK_SERVERCHAN_SENDKEY
+    || localSecrets.serverChanSendKey
+    || nsdk.serverChan?.sendKey
+    || ''
+  ).trim();
 
   const cfg = {
     fund: nsdk.fund,
@@ -157,7 +182,7 @@ const buildConfigFromSettings = (settings) => {
     logDir: nsdk.logDir,
     pushEnabled: nsdk.pushEnabled !== false,
     startupHeartbeatEnabled: nsdk.startupHeartbeatEnabled !== false,
-    serverChan: nsdk.serverChan,
+    serverChan: { ...(nsdk.serverChan || {}), sendKey: serverChanSendKey },
     dailyChecks: nsdk.dailyChecks || [],
     weeklyActiveBuy: nsdk.weeklyActiveBuy || null,
     otcDcaCnyPerWorkday: nsdk.otcDcaCnyPerWorkday,
@@ -169,6 +194,18 @@ const buildConfigFromSettings = (settings) => {
     otherCashRatio: otherCashTargetPercent / 100,
     drawdownLevels,
     drawdownExecutedLevels,
+    strategyV41: {
+      enabled: strategy.enabled !== false,
+      signalSymbol: String(strategy.signalSymbol || 'QQQ').trim().toUpperCase(),
+      signalProvider: String(strategy.signalProvider || 'eastmoney').trim().toLowerCase(),
+      volatilityThresholdPercent: clampNumber(strategy.volatilityThresholdPercent, 35),
+      highVolatilityReductionPercent: clampNumber(strategy.highVolatilityReductionPercent, 15),
+      nasdaqFloorPercent: clampNumber(strategy.nasdaqFloorPercent, 15),
+      rebalanceThresholdPercent: clampNumber(strategy.rebalanceThresholdPercent, 3),
+      excludedEmergencyCashCny: Math.max(0, clampNumber(strategy.excludedEmergencyCashCny, 36000)),
+      bondCode: String(strategy.bondCode || '511360').trim(),
+      bondName: String(strategy.bondName || '海富通中证短融ETF').trim(),
+    },
     portfolio: {
       investedNasdaqCny: Math.round(investedNasdaqCny),
       reserveCashNasdaqCny: Math.round(reserveCashNasdaqCny),
@@ -186,7 +223,8 @@ const buildConfigFromSettings = (settings) => {
 const loadConfig = () => {
   const settingsPath = resolveSettingsPath();
   const settings = readJsonIfExists(settingsPath);
-  const cfg = buildConfigFromSettings(settings);
+  const localSecrets = readJsonIfExists(resolveLocalSecretsPath(settingsPath)) || {};
+  const cfg = buildConfigFromSettings(settings, localSecrets);
 
   if (!cfg.fund || !cfg.fund.secid) throw new Error('settings.json missing nsdk.fund.secid');
   if (!cfg.timezone) throw new Error('settings.json missing nsdk.timezone');
@@ -211,5 +249,6 @@ module.exports = {
   buildConfigFromSettings,
   loadConfig,
   resolveSettingsPath,
+  resolveLocalSecretsPath,
   summarizePortfolioAssets,
 };

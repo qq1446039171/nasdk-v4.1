@@ -36,12 +36,13 @@ const baseSettings = {
   },
 };
 
-const cfg = buildConfigFromSettings(baseSettings);
+const cfg = buildConfigFromSettings(baseSettings, { serverChanSendKey: 'local-test-key' });
 
 assert.strictEqual(cfg.portfolio.investedNasdaqCny, 2800);
 assert.strictEqual(cfg.portfolio.reserveCashNasdaqCny, 60000);
 assert.strictEqual(cfg.portfolio.otherCashCny, 75500);
 assert.strictEqual(cfg.baseTotalAssetsCny, 138300);
 assert.strictEqual(cfg.portfolio.assets.length, 5);
+assert.strictEqual(cfg.serverChan.sendKey, 'local-test-key');
 
 console.log('config-assets.test.js passed');

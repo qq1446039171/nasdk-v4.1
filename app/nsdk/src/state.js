@@ -22,6 +22,15 @@ const defaultState = () => {
     drawdownRound: null,
     // 最近一次行情快照（用于 status 展示）
     lastMarket: null,
+    // v4.1 月末信号、目标仓位与最近一次调仓建议。
+    v41: {
+      lastCheckedAt: null,
+      lastNotifiedSignalMonth: null,
+      lastSignal: null,
+      lastTargets: null,
+      lastPortfolio: null,
+      lastPlan: null,
+    },
     // 冻结开关：满足纪律条件时触发
     freeze: {
       active: false,

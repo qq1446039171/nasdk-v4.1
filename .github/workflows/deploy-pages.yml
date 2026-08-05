@@ -1,5 +1,5 @@
 name: Deploy Web to GitHub Pages
-run-name: Deploy qq1446039171/edit-nsdk web
+run-name: Deploy qq1446039171/nasdk-v4.1 web
 
 on:
   push:
