@@ -6,8 +6,24 @@ const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const settings = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'Config', 'settings.json'), 'utf8'));
 
 assert.match(html, /function renderV41Overview\(/, 'web should render a v4.1 overview');
+assert.match(html, /async function refreshV41LiveSignal\(/, 'web should refresh the effective v4.1 state on page load');
+assert.match(html, /function computeV41LiveSignal\(/, 'web should calculate the v4.1 signal from completed QQQ months');
+assert.match(html, /const signal = live\.signal \|\| runtime\.lastSignal \|\| null/, 'live signal should take priority over cloud state fallback');
+assert.match(html, /await refreshV41LiveSignal\(\)/, 'settings load should trigger a live signal refresh');
+assert.match(html, /row\.month < currentMonth/, 'the current incomplete month must not be used by the signal');
+assert.match(html, /当前有效状态/, 'web should label the state as currently effective rather than a daily trading signal');
+assert.match(
+  html,
+  /\$\{renderV41Overview\(\)\}[\s\S]*strategy-maintenance-divider[\s\S]*\$\{renderAssetSection\(\)\}[\s\S]*\$\{renderStateSection\(\)\}/,
+  'asset holdings and runtime state should appear after the v4.1 strategy block with a divider'
+);
 assert.match(html, /强势\/过渡\/防守/, 'web should explain the three market states');
 assert.match(html, /本月具体金额变动方向/, 'web should show exact monthly money directions');
+assert.match(html, /各状态对应资产仓位/, 'web should show the allocation table for all market states');
+assert.match(html, /key: "strong"[\s\S]*nasdaq: 70, gold: 15, bond: 15/, 'strong state should use 70/15/15');
+assert.match(html, /key: "transition"[\s\S]*nasdaq: 55, gold: 15, bond: 30/, 'transition state should use 55/15/30');
+assert.match(html, /key: "defensive"[\s\S]*nasdaq: 15, gold: 15, bond: 70/, 'defensive state should use 15/15/70');
+assert.match(html, /v41-current-badge/, 'current market state should be highlighted');
 assert.match(html, /assetCategories\.splice\(3, 0, \{ value: "bond"/, 'web should support bond assets');
 assert.match(html, /deepSet\(repositorySettings, "nsdk\.serverChan\.sendKey", ""\)/, 'GitHub save must redact ServerChan credentials');
 assert.strictEqual(settings.strategyV41.signalSymbol, 'QQQ');

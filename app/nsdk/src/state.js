@@ -31,6 +31,16 @@ const defaultState = () => {
       lastPortfolio: null,
       lastPlan: null,
     },
+    // v4.1 每日观察消息的最近一次数据；只作展示，不产生调仓建议。
+    v41Daily: {
+      lastCheckedAt: null,
+      lastNotifiedAt: null,
+      lastSignal: null,
+      lastTargets: null,
+      lastPortfolio: null,
+      lastMarket: null,
+      lastMessage: null,
+    },
     // 冻结开关：满足纪律条件时触发
     freeze: {
       active: false,

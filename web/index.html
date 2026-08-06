@@ -142,6 +142,11 @@
       border-color: rgba(255, 215, 0, 0.3);
       box-shadow: 0 0 20px rgba(255, 215, 0, 0.08);
     }
+    .strategy-maintenance-divider {
+      height: 1px;
+      margin: 38px 8px 32px;
+      background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.42), transparent);
+    }
     .section-head {
       display: flex;
       align-items: flex-start;
@@ -441,6 +446,32 @@
       vertical-align: top;
     }
     .data-table tr:hover td { background: rgba(76, 175, 80, 0.05); }
+    .v41-allocation-wrap {
+      margin-top: 20px;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+    }
+    .v41-allocation-table { min-width: 680px; }
+    .v41-allocation-table th:not(:first-child),
+    .v41-allocation-table td:not(:first-child) { text-align: center; }
+    .v41-allocation-table th:nth-child(2),
+    .v41-allocation-table td:nth-child(2) { text-align: left; }
+    .v41-allocation-table tr.is-current td {
+      background: rgba(66, 165, 245, 0.12);
+      color: #dcecff;
+      font-weight: 700;
+    }
+    .v41-current-badge {
+      display: inline-flex;
+      margin-left: 8px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(66, 165, 245, 0.2);
+      color: #9dcbff;
+      font-size: 11px;
+      vertical-align: middle;
+    }
     .asset-table {
       table-layout: fixed;
     }
@@ -793,7 +824,7 @@
             { key: "nsdk.startupHeartbeatEnabled", nameZh: "启动心跳", nameEn: "Startup Heartbeat", description: "启动后每日只推送一次心跳。", type: "boolean", default: true, validation: { required: true } },
             { key: "nsdk.otcDcaCnyPerWorkday", nameZh: "每日定投(工作日/元)", nameEn: "OTC DCA per Workday", description: "旧版兼容字段；v3.0 以月度现金流和月度场外定投为主。", type: "number", default: 0, hidden: true, validation: { required: true, min: 0, max: 1000000000 } },
             { key: "nsdk.weeklyActiveBuy", nameZh: "每周主动建仓（JSON）", nameEn: "Weekly Active Buy (JSON)", description: "旧版兼容字段；v3.0 默认关闭，月度操作按执行面板建议处理。", type: "object", default: null, validation: { required: false } },
-            { key: "nsdk.dailyChecks", nameZh: "每日例行检查时间点（JSON）", nameEn: "Daily Checks (JSON)", description: "数组：[{hour:'10',minute:'30'},{hour:'14',minute:'30'}]。", type: "objectArray", default: [{ hour: "10", minute: "30" }, { hour: "14", minute: "30" }], validation: { required: true } }
+            { key: "nsdk.dailyChecks", nameZh: "v4.1每日观察推送时间点（JSON）", nameEn: "Daily Observer Times (JSON)", description: "北京时间工作日推送，仅观察当前状态、行情与仓位差异，不给出操作建议。示例：[{hour:'11',minute:'00'},{hour:'14',minute:'00'}]。", type: "objectArray", default: [{ hour: "11", minute: "00" }, { hour: "14", minute: "00" }], validation: { required: true } }
           ]
         }
       ]
@@ -867,6 +898,14 @@
       assetPriceLoading: false,
       assetPriceMessage: "",
       assetPriceMessageType: "info",
+      v41Live: {
+        loading: false,
+        error: "",
+        signal: null,
+        targets: null,
+        provider: "",
+        updatedAt: ""
+      },
       assetRowsCollapsed: false,
       balancesHidden: false,
       profitRange: "week"
@@ -1457,6 +1496,110 @@
       });
     }
 
+    function v41Round2(value) {
+      return Math.round(Number(value) * 100) / 100;
+    }
+
+    function v41StandardDeviation(values) {
+      if (!Array.isArray(values) || values.length < 2) return 0;
+      const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
+      const variance = values.reduce((sum, value) => sum + ((value - mean) ** 2), 0) / (values.length - 1);
+      return Math.sqrt(variance);
+    }
+
+    function parseV41MonthlyRows(json) {
+      const currentMonth = new Date().toISOString().slice(0, 7);
+      return (Array.isArray(json?.data?.klines) ? json.data.klines : [])
+        .map((line) => {
+          const columns = String(line || "").split(",");
+          return { month: String(columns[0] || "").slice(0, 7), close: Number(columns[2]) };
+        })
+        .filter((row) => row.month && row.month < currentMonth && Number.isFinite(row.close) && row.close > 0)
+        .sort((a, b) => a.month.localeCompare(b.month));
+    }
+
+    function computeV41LiveSignal(monthlyRows, options = {}) {
+      const rows = (Array.isArray(monthlyRows) ? monthlyRows : [])
+        .map((row) => ({ month: String(row?.month || "").slice(0, 7), close: Number(row?.close) }))
+        .filter((row) => row.month && Number.isFinite(row.close) && row.close > 0)
+        .sort((a, b) => a.month.localeCompare(b.month));
+      if (rows.length < 13) throw new Error(`至少需要 13 个完整月数据，当前只有 ${rows.length} 个`);
+
+      const latest = rows[rows.length - 1];
+      const sma10 = rows.slice(-10).reduce((sum, row) => sum + row.close, 0) / 10;
+      const momentum12 = (latest.close / rows[rows.length - 13].close) - 1;
+      const last7 = rows.slice(-7);
+      const returns6 = last7.slice(1).map((row, index) => (row.close / last7[index].close) - 1);
+      const annualizedVolatility = v41StandardDeviation(returns6) * Math.sqrt(12);
+      const volatilityThresholdPercent = Number(options.volatilityThresholdPercent ?? 35);
+      const trendPositive = latest.close > sma10;
+      const momentumPositive = momentum12 > 0;
+      const marketState = trendPositive && momentumPositive
+        ? "strong"
+        : (!trendPositive && !momentumPositive ? "defensive" : "transition");
+      const labels = { strong: "强势", transition: "过渡", defensive: "防守" };
+
+      return {
+        signalMonth: latest.month,
+        state: marketState,
+        stateLabel: labels[marketState],
+        close: v41Round2(latest.close),
+        sma10: v41Round2(sma10),
+        momentum12Percent: v41Round2(momentum12 * 100),
+        annualizedVolatilityPercent: v41Round2(annualizedVolatility * 100),
+        trendPositive,
+        momentumPositive,
+        highVolatility: annualizedVolatility > (volatilityThresholdPercent / 100),
+        volatilityThresholdPercent: v41Round2(volatilityThresholdPercent)
+      };
+    }
+
+    function buildV41LiveTargets(signal, options = {}) {
+      const bases = {
+        strong: { nasdaq: 70, gold: 15, bond: 15 },
+        transition: { nasdaq: 55, gold: 15, bond: 30 },
+        defensive: { nasdaq: 15, gold: 15, bond: 70 }
+      };
+      const base = bases[signal?.state];
+      if (!base) throw new Error("无法识别 v4.1 市场状态");
+      const reduction = signal.highVolatility ? Number(options.highVolatilityReductionPercent ?? 15) : 0;
+      const nasdaq = Math.max(Number(options.nasdaqFloorPercent ?? 15), base.nasdaq - reduction);
+      return { nasdaq, gold: base.gold, bond: 100 - nasdaq - base.gold };
+    }
+
+    async function refreshV41LiveSignal() {
+      state.v41Live.loading = true;
+      state.v41Live.error = "";
+      render();
+      const fields1 = "f1,f2,f3,f4,f5,f6";
+      const fields2 = "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61";
+      const url = `https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=105.QQQ&klt=103&fqt=1&lmt=60&end=20500101&fields1=${fields1}&fields2=${fields2}`;
+      try {
+        let json;
+        let provider = "东方财富直连";
+        try {
+          const response = await fetch(`${url}&ts=${Date.now()}`, { cache: "no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          json = await response.json();
+        } catch {
+          provider = "东方财富 JSONP";
+          json = await fetchJsonp(`${url}&cb=__callback__&ts=${Date.now()}`);
+        }
+        const rows = parseV41MonthlyRows(json);
+        const options = state.settings?.strategyV41 || {};
+        const signal = computeV41LiveSignal(rows, options);
+        state.v41Live.signal = signal;
+        state.v41Live.targets = buildV41LiveTargets(signal, options);
+        state.v41Live.provider = provider;
+        state.v41Live.updatedAt = nowIso();
+      } catch (error) {
+        state.v41Live.error = error?.message || String(error);
+      } finally {
+        state.v41Live.loading = false;
+        render();
+      }
+    }
+
     function parseFundQuoteNumber(...values) {
       for (const value of values) {
         const price = Number(value);
@@ -1835,6 +1978,7 @@
           await addVersionSnapshot(`autoLoad:${candidate.source}`);
           await addLog({ action: "autoLoad", ok: true, reason: candidate.url, bytes: text.length });
           render();
+          await refreshV41LiveSignal();
           if (hasPortfolioAssets()) await refreshAssetPrices();
           return true;
         } catch {
@@ -1843,6 +1987,7 @@
       }
       await addLog({ action: "autoLoad", ok: false, reason: "no_available_source", bytes: 0 });
       render();
+      await refreshV41LiveSignal();
       return false;
     }
 
@@ -2144,9 +2289,10 @@
     function renderV41Overview() {
       if (!state.settings) return "";
       const runtime = state.nsdkState?.v41 || {};
-      const signal = runtime.lastSignal || null;
-      const targets = runtime.lastTargets || null;
-      const plan = runtime.lastPlan || null;
+      const live = state.v41Live || {};
+      const signal = live.signal || runtime.lastSignal || null;
+      const targets = live.targets || runtime.lastTargets || null;
+      const plan = runtime.lastSignal?.signalMonth === signal?.signalMonth ? (runtime.lastPlan || null) : null;
       const summary = assetSummary();
       const nasdaq = Number(summary.byCategory.nasdaq) || 0;
       const gold = Number(summary.byCategory.gold) || 0;
@@ -2165,23 +2311,41 @@
             const amount = Number(plan.actions[key]);
             return `<div class="stat"><div class="stat-label">${amount > 0 ? "买入/转入" : "卖出/转出"}</div><div class="stat-value">¥${escapeHtml(fmtMoney(Math.abs(amount)))}</div><div class="stat-note">${escapeHtml(actionNames[key])}</div></div>`;
           }).join("")
-        : `<div class="stat"><div class="stat-label">调仓金额</div><div class="stat-value">等待首次月末信号</div><div class="stat-note">工作流生成信号后，这里会显示每类资产的具体买卖金额。</div></div>`;
-      const stateLabel = signal?.stateLabel || "待计算";
+        : `<div class="stat"><div class="stat-label">调仓金额</div><div class="stat-value">${signal ? "待月末调仓计算" : "等待市场数据"}</div><div class="stat-note">${signal ? "当前有效状态已计算；具体买卖金额以月末完整持仓生成的执行单为准。" : "取得最新完整月数据后，这里会显示每类资产的具体买卖金额。"}</div></div>`;
+      const stateLabel = signal?.stateLabel || (live.loading ? "计算中" : (live.error ? "暂不可用" : "待计算"));
       const protection = signal?.highVolatility ? " · 高波动保护已开启" : "";
       const reason = plan?.reason === "state_changed"
         ? "状态变化：整体调仓"
-        : (plan?.reason === "drift_over_threshold" ? "偏离超过 3 个百分点：整体再平衡" : (plan ? "状态未变：仅分配本月现金" : "等待信号"));
+        : (plan?.reason === "drift_over_threshold" ? "偏离超过 3 个百分点：整体再平衡" : (plan ? "状态未变：仅分配本月现金" : (signal ? "状态已确认，月末再计算调仓" : (live.loading ? "正在获取最新月线" : "等待市场数据"))));
+      const signalSource = live.signal
+        ? `网页实时计算 · ${live.provider || "东方财富"}`
+        : (runtime.lastSignal ? "云端月末状态（备用）" : (live.error ? `自动计算失败：${live.error}` : "正在读取最新完整月数据"));
+      const allocationStates = [
+        { key: "strong", label: "强势", rule: "趋势与动量都为正", nasdaq: 70, gold: 15, bond: 15 },
+        { key: "transition", label: "过渡", rule: "趋势、动量只有一个为正", nasdaq: 55, gold: 15, bond: 30 },
+        { key: "defensive", label: "防守", rule: "趋势与动量都为负", nasdaq: 15, gold: 15, bond: 70 }
+      ];
+      const allocationRows = allocationStates.map((row) => {
+        const current = signal?.state === row.key;
+        return `<tr class="${current ? "is-current" : ""}">
+          <td>${escapeHtml(row.label)}${current ? '<span class="v41-current-badge">当前</span>' : ""}</td>
+          <td>${escapeHtml(row.rule)}</td>
+          <td>${row.nasdaq}%</td>
+          <td>${row.gold}%</td>
+          <td>${row.bond}%</td>
+        </tr>`;
+      }).join("");
       return `
         <section class="section gold">
           <div class="section-head">
             <div>
               <h2 class="section-title gold">纳斯达克长期投资策略 v4.1</h2>
-              <div class="subtitle">每月末确认 QQQ 月线信号，下一个中国可交易日执行；页面不直接下单。</div>
+              <div class="subtitle">每次打开自动计算今天沿用的 QQQ 月线状态；状态只在完整月结束后变化，下一个中国可交易日执行，页面不直接下单。</div>
             </div>
             <button class="btn privacy-toggle" data-action="toggle-balances">${state.balancesHidden ? "显示余额" : "隐藏余额"}</button>
           </div>
           <div class="stats-grid">
-            <div class="stat"><div class="stat-label">当前市场状态</div><div class="stat-value">${escapeHtml(stateLabel)}</div><div class="stat-note">信号月份 ${escapeHtml(signal?.signalMonth || "--")}${escapeHtml(protection)}</div></div>
+            <div class="stat"><div class="stat-label">当前有效状态</div><div class="stat-value">${escapeHtml(stateLabel)}</div><div class="stat-note">${signal ? `信号月份 ${escapeHtml(signal.signalMonth)}${escapeHtml(protection)} · ${escapeHtml(signalSource)}` : escapeHtml(signalSource)}</div></div>
             <div class="stat"><div class="stat-label">目标仓位</div><div class="stat-value">${targets ? `${targets.nasdaq}% / ${targets.gold}% / ${targets.bond}%` : "--"}</div><div class="stat-note">纳指 / 黄金 / 债券</div></div>
             <div class="stat"><div class="stat-label">月末处理方式</div><div class="stat-value">${escapeHtml(reason)}</div><div class="stat-note">同状态时仅在偏离超过 ${escapeHtml(state.settings?.strategyV41?.rebalanceThresholdPercent ?? 3)} 个百分点才整体调仓</div></div>
             <div class="stat"><div class="stat-label">本月新增现金</div><div class="stat-value">¥${escapeHtml(fmtMoney(monthlyCashflowAmount()))}</div><div class="stat-note">优先补目标缺口最大的资产；都达标时按目标比例分配</div></div>
@@ -2189,6 +2353,18 @@
             <div class="stat"><div class="stat-label">当前三类资产</div><div class="stat-value">¥${escapeHtml(fmtMoney(nasdaq))} / ¥${escapeHtml(fmtMoney(gold))} / ¥${escapeHtml(fmtMoney(bond))}</div><div class="stat-note">纳指 / 黄金 / 债券</div></div>
             ${signal ? `<div class="stat"><div class="stat-label">趋势与动量</div><div class="stat-value">${signal.trendPositive ? "趋势向上" : "趋势转弱"} · ${signal.momentumPositive ? "动量为正" : "动量为负"}</div><div class="stat-note">收盘 ${escapeHtml(signal.close)} / SMA10 ${escapeHtml(signal.sma10)} / 12月动量 ${escapeHtml(signal.momentum12Percent)}%</div></div>` : ""}
             ${signal ? `<div class="stat"><div class="stat-label">6月年化波动率</div><div class="stat-value">${escapeHtml(signal.annualizedVolatilityPercent)}%</div><div class="stat-note">保护阈值 ${escapeHtml(signal.volatilityThresholdPercent)}%</div></div>` : ""}
+          </div>
+          <div class="section-head" style="margin-top:20px">
+            <div>
+              <h3 class="section-title">各状态对应资产仓位</h3>
+              <div class="field-desc">下表为基础仓位；高波动保护触发时，纳指再降低 15 个百分点并等额转入 511360，纳指最低 15%。</div>
+            </div>
+          </div>
+          <div class="v41-allocation-wrap">
+            <table class="data-table v41-allocation-table" aria-label="v4.1 各市场状态对应资产仓位">
+              <thead><tr><th>状态</th><th>判定</th><th>纳指</th><th>黄金</th><th>511360</th></tr></thead>
+              <tbody>${allocationRows}</tbody>
+            </table>
           </div>
           <div class="section-head" style="margin-top:20px"><h3 class="section-title">本月具体金额变动方向</h3></div>
           <div class="stats-grid">${actions || `<div class="stat"><div class="stat-value">无需交易</div></div>`}</div>
@@ -2675,7 +2851,6 @@
           </header>
           ${renderNotice(state.fileMessage, state.fileMessageType)}
           ${renderActions()}
-          ${renderAssetSection()}
           ${false && state.settings && drawdownSnapshotActive() ? `
             <section class="section">
               <div class="section-head">
@@ -2685,8 +2860,10 @@
               ${renderDrawdownTable(settingsDrawdownRows())}
             </section>
           ` : ""}
-          ${renderStateSection()}
           ${renderV41Overview()}
+          <div class="strategy-maintenance-divider" aria-hidden="true"></div>
+          ${renderAssetSection()}
+          ${renderStateSection()}
           ${renderGroups()}
         </div>
         ${renderGithubModal()}
@@ -2720,6 +2897,7 @@
         await addLog({ action: "open", ok: false, reason: state.fileMessage, bytes: 0 });
       }
       render();
+      if (state.fileStatus === "loaded") await refreshV41LiveSignal();
       if (state.fileStatus === "loaded" && hasPortfolioAssets()) await refreshAssetPrices();
     }
 

@@ -18,6 +18,9 @@ function extract(name) {
 assert.match(html, /owner:\s*"qq1446039171"/, 'GitHub owner should be qq1446039171');
 assert.match(html, /repo:\s*"nasdk-v4\.1"/, 'GitHub repo should be nasdk-v4.1');
 assert.match(workflows, /qq1446039171\/nasdk-v4\.1/, 'workflows should identify the nasdk-v4.1 repo');
+assert.match(workflows, /NASDAQ v4\.1 Daily Observer/, 'workflows should include the v4.1 daily observer');
+assert.match(workflows, /run once -- daily/, 'daily observer should invoke the dailyChecks-aware mode');
+assert.match(workflows, /0,15,30,45 3,6 \* \* 1-5/, 'daily observer should cover 11:00 and 14:00 Asia\/Shanghai with retries');
 assert.match(workflows, /CONFIG_PATH:\s*Config\/settings\.json/, 'workflows should use Config/settings.json as the config path');
 assert.doesNotMatch(workflows, /enablement:\s*true/, 'workflows should not try to create or enable the Pages site');
 assert.doesNotMatch(html, /New-NASDAQ/, 'web UI should not reference the old New-NASDAQ repo');

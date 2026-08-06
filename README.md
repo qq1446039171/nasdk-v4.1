@@ -2,6 +2,8 @@
 
 本项目把 v4.1 月频策略落到网页配置、月末信号计算、手机推送和 GitHub Actions 自动运行中。程序只给出建议，不直接下单。
 
+每日观察消息按 `nsdk.dailyChecks` 的北京时间工作日时段发送，展示当前有效月度状态、NDX 最新点位与一年高点、当前回撤，以及纳指/黄金/债券的当前仓位和目标仓位差异。每日消息只作观察，不展示 513100 行情，也不提供买卖建议；正式操作仍以月末通知为准。
+
 ## 策略规则
 
 - 信号数据：QQQ 月度前复权收盘价。
@@ -23,6 +25,12 @@ npm test
 npm run app:run-once -- month-end
 ```
 
+检查当前时间是否存在到期的 `dailyChecks` 时段并发送每日观察：
+
+```powershell
+npm run app:run-once -- daily
+```
+
 强制重新生成并推送当前月份建议：
 
 ```powershell
@@ -37,6 +45,7 @@ npm run app:run-once -- once
 
 - `deploy-pages.yml`：部署静态网页到 GitHub Pages。
 - `nsdk-cron.yml`：每个工作日美股收盘后检查完整月线；同一个信号月份只推送一次。
+- `nsdk-daily.yml`：按当前 `dailyChecks` 对应的北京时间11:00、14:00运行每日观察，并在发送失败时短时重试。
 - `save-settings.yml`：接收网页配置并保存到 `Config/settings.json`。
 
 仓库 Settings → Secrets and variables → Actions 中至少配置：
@@ -51,6 +60,8 @@ GitHub Pages 地址应为 `https://qq1446039171.github.io/nasdk-v4.1/`。
 - `Config/settings.json`：持仓和 v4.1 参数。
 - `app/nsdk/src/v41-strategy.js`：纯策略计算。
 - `app/nsdk/src/v41-action.js`：月末行情、金额建议和推送。
+- `app/nsdk/src/v41-daily.js`：每日行情、当前状态与仓位目标差异推送。
+- `app/nsdk/src/v41-daily-schedule.js`：按 `dailyChecks` 判断到期、去重和失败重试。
 - `app/nsdk/state.json`：最近一次月末信号及调仓建议。
 - `web/index.html`：网页执行面板。
 

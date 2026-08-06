@@ -17,10 +17,12 @@ const parseNumber = (n) => {
 };
 
 // 东财有时返回价格为“真实值 * 1000”（例如 1904 -> 1.904），这里做兼容
-const normalizePrice = (v) => {
+const normalizePrice = (v, decimal = null) => {
   if (v === null || v === undefined) return null;
   const n = Number(v);
   if (!Number.isFinite(n)) return null;
+  const digits = Number(decimal);
+  if (Number.isInteger(digits) && digits >= 0 && digits <= 8) return n / (10 ** digits);
   if (Math.abs(n) > 1000) return n / 1000;
   return n;
 };
@@ -53,7 +55,8 @@ const parseLatestKline = (secid, json, fallbackName = null) => {
   const klines = data && data.klines;
   if (!Array.isArray(klines) || klines.length === 0) throw new Error(`No kline data: ${secid}`);
   const cols = String(klines[klines.length - 1]).split(',');
-  const price = normalizePrice(parseNumber(cols[2]));
+  // 日 K 接口返回的 OHLC 已经是真实价格，不能再按行情快照的整数精度缩放。
+  const price = parseNumber(cols[2]);
   if (!Number.isFinite(price) || price <= 0) throw new Error(`Invalid kline close: ${secid}`);
   return {
     name: (data && data.name) || fallbackName,
@@ -72,13 +75,13 @@ const getLatestKlineClose = async (secid, fallbackName = null) => {
 
 // 最新价接口：f43=最新价，f58=名称，f170=涨跌幅
 const getLatestPrice = async (secid) => {
-  const fields = ['f43', 'f58', 'f170', 'f60'].join(',');
+  const fields = ['f43', 'f58', 'f170', 'f60', 'f59'].join(',');
   const url = `https://push2delay.eastmoney.com/api/qt/stock/get?ut=fa5fd1943c7b386f172d6893dbfba10b&secid=${encodeURIComponent(secid)}&fields=${fields}`;
   try {
     const json = await getJson(url);
     const d = json && json.data ? json.data : null;
     const priceRaw = d && d.f43;
-    const price = normalizePrice(parseNumber(priceRaw));
+    const price = normalizePrice(parseNumber(priceRaw), d && d.f59);
     const name = (d && d.f58) || null;
     const pct = normalizePct(parseNumber(d && d.f170));
     if (!Number.isFinite(price) || price <= 0) return getLatestKlineClose(secid, name);
@@ -93,34 +96,43 @@ const getLatestPrice = async (secid) => {
   }
 };
 
-// K线接口：klt=101（日K），lmt=260（最近约 1 年交易日），取每条的 high 列做最大值
-const getOneYearHigh = async (secid) => {
-  const fields1 = 'f1,f2,f3,f4,f5,f6';
-  const fields2 = 'f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61';
-  const url = `https://push2his.eastmoney.com/api/qt/stock/kline/get?ut=fa5fd1943c7b386f172d6893dbfba10b&secid=${encodeURIComponent(secid)}&fields1=${fields1}&fields2=${fields2}&klt=101&fqt=1&beg=0&end=20500101&lmt=260`;
-  const json = await getJson(url);
+const parseOneYearHigh = (json) => {
   const klines = json && json.data && json.data.klines;
   if (!Array.isArray(klines) || klines.length === 0) {
     throw new Error('No kline data');
   }
+  // 个别海外指数会忽略 lmt 返回多年数据，因此在本地严格截取最近 260 个交易日。
+  const tail = klines.slice(-260);
   let maxHigh = -Infinity;
   let maxDay = null;
-  for (const row of klines) {
+  for (const row of tail) {
     const cols = String(row).split(',');
     const day = cols[0];
-    const high = parseNumber(cols[4]);
+    // K 线字段顺序：日期、开盘、收盘、最高、最低……
+    const high = parseNumber(cols[3]);
     if (high !== null && high > maxHigh) {
       maxHigh = high;
       maxDay = day;
     }
   }
   if (!Number.isFinite(maxHigh)) throw new Error('Invalid high');
-  return { maxHigh, maxDay, points: klines.length };
+  return { maxHigh, maxDay, points: tail.length };
+};
+
+// K线接口：klt=101（日K），本地截取最近 260 个交易日并取 high 列最大值。
+const getOneYearHigh = async (secid) => {
+  const fields1 = 'f1,f2,f3,f4,f5,f6';
+  const fields2 = 'f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61';
+  const url = `https://push2his.eastmoney.com/api/qt/stock/kline/get?ut=fa5fd1943c7b386f172d6893dbfba10b&secid=${encodeURIComponent(secid)}&fields1=${fields1}&fields2=${fields2}&klt=101&fqt=1&beg=0&end=20500101&lmt=260`;
+  return parseOneYearHigh(await getJson(url));
 };
 
 module.exports = {
   getLatestPrice,
   getLatestKlineClose,
   getOneYearHigh,
+  _normalizePrice: normalizePrice,
+  _parseLatestKline: parseLatestKline,
+  _parseOneYearHigh: parseOneYearHigh,
 };
 
