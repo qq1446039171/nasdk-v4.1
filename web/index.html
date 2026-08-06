@@ -386,6 +386,100 @@
       line-height: 1.1;
     }
     .donut-label { color: var(--muted); font-size: 12px; margin-top: 4px; }
+    .category-pie-wrap {
+      display: grid;
+      grid-template-columns: minmax(170px, 230px) minmax(0, 1fr);
+      gap: 22px;
+      align-items: center;
+      margin: 16px 0 20px;
+      padding: 18px;
+      border: 1px solid rgba(129, 199, 132, 0.13);
+      border-radius: 10px;
+      background: rgba(10, 14, 23, 0.52);
+    }
+    .category-pie {
+      width: min(220px, 62vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      justify-self: center;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 16px 44px rgba(0, 0, 0, 0.28);
+    }
+    .category-pie-empty {
+      display: grid;
+      place-items: center;
+      width: min(220px, 62vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      justify-self: center;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.08);
+      text-align: center;
+      padding: 20px;
+    }
+    .category-pie-legend {
+      display: grid;
+      gap: 9px;
+      min-width: 0;
+    }
+    .category-pie-item {
+      display: grid;
+      grid-template-columns: 12px minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .category-pie-swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+    .category-pie-item strong { color: var(--text); font-weight: 700; }
+    .market-timeline {
+      margin-top: 20px;
+      padding-top: 4px;
+    }
+    .market-timeline-frame {
+      min-height: 280px;
+      max-height: 720px;
+      overflow: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: #181818;
+    }
+    .market-timeline-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      min-width: 720px;
+    }
+    .market-timeline-loading,
+    .market-timeline-error {
+      min-height: 280px;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: var(--muted);
+      text-align: center;
+    }
+    .market-timeline-error { color: #ffd0d0; }
+    .market-timeline-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .market-timeline-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .market-timeline-legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+    .market-timeline-legend .strong { background: #78baf2; }
+    .market-timeline-legend .transition { background: #f39a52; }
+    .market-timeline-legend .defensive { background: #e982b5; }
+    @media (max-width: 720px) {
+      .category-pie-wrap { grid-template-columns: 1fr; }
+      .market-timeline-frame { max-height: 560px; }
+    }
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -764,7 +858,8 @@
             { key: "strategyV41.rebalanceThresholdPercent", nameZh: "再平衡偏离阈值(百分点)", nameEn: "Rebalance Drift Threshold", description: "状态不变时，仅当任一目标资产偏离超过该值才整体再平衡。", type: "number", default: 3, validation: { required: true, min: 0, max: 20 } },
             { key: "strategyV41.excludedEmergencyCashCny", nameZh: "独立应急金(元)", nameEn: "Excluded Emergency Cash", description: "不参与 v4.1 调仓的生活应急金；从策略外现金中优先扣除。", type: "number", default: 36000, validation: { required: true, min: 0, max: 1000000000 } },
             { key: "strategyV41.bondCode", nameZh: "债券 ETF 代码", nameEn: "Bond ETF Code", description: "当前使用海富通中证短融 ETF 511360。", type: "string", default: "511360", validation: { required: true, maxLength: 16 } },
-            { key: "strategyV41.bondName", nameZh: "债券 ETF 名称", nameEn: "Bond ETF Name", description: "用于调仓建议和手机推送。", type: "string", default: "海富通中证短融ETF", validation: { required: true, maxLength: 64 } }
+            { key: "strategyV41.bondName", nameZh: "债券 ETF 名称", nameEn: "Bond ETF Name", description: "用于调仓建议和手机推送。", type: "string", default: "海富通中证短融ETF", validation: { required: true, maxLength: 64 } },
+            { key: "strategyV41.marketStateTimelineStartMonth", nameZh: "市场状态时间表起始月份", nameEn: "Market State Timeline Start Month", description: "网页只展示该月份及之后的静态市场状态时间表，不再逐月请求历史数据。格式：YYYY-MM。", type: "string", default: "2000-08", validation: { required: true, maxLength: 7 } }
           ]
         },
         {
@@ -2115,6 +2210,49 @@
       `;
     }
 
+    function renderAssetCategoryPie(summary) {
+      const colors = {
+        nasdaq: "#64b5f6",
+        nasdaq_reserve_cash: "#9fa8da",
+        gold: "#f4c95d",
+        bond: "#80cbc4",
+        stock: "#ef9a9a",
+        cash: "#90a4ae"
+      };
+      const rows = assetCategories
+        .map((item) => ({
+          ...item,
+          valueCny: Number(summary.byCategory[item.value] || 0),
+          color: colors[item.value] || "#b0bec5"
+        }))
+        .filter((item) => item.valueCny > 0);
+      if (!rows.length || summary.total <= 0) {
+        return `
+          <div class="category-pie-wrap" aria-label="当前投资资产分类占比">
+            <div class="category-pie-empty">暂无可统计的资产分类</div>
+            <div class="category-pie-legend"><strong>资产分类占比</strong><span class="stat-note">录入资产并刷新价格后自动生成。</span></div>
+          </div>
+        `;
+      }
+      let cursor = 0;
+      const slices = rows.map((row) => {
+        const percent = (row.valueCny / summary.total) * 100;
+        const start = cursor;
+        cursor += percent;
+        return `${row.color} ${start.toFixed(4)}% ${cursor.toFixed(4)}%`;
+      }).join(", ");
+      const legend = rows.map((row) => {
+        const percent = (row.valueCny / summary.total) * 100;
+        return `<div class="category-pie-item"><i class="category-pie-swatch" style="background:${row.color}"></i><span>${escapeHtml(row.label)}</span><strong>${escapeHtml(fmtPercent(percent))}%</strong></div>`;
+      }).join("");
+      return `
+        <div class="category-pie-wrap" aria-label="当前投资资产分类占比">
+          <div class="category-pie" style="background:conic-gradient(${slices})" role="img" aria-label="当前投资资产分类占比饼图"></div>
+          <div class="category-pie-legend"><strong>当前投资资产分类占比</strong>${legend}</div>
+        </div>
+      `;
+    }
+
     function renderAssetSection() {
       if (!state.settings) return "";
       const summary = assetSummary();
@@ -2174,6 +2312,7 @@
             <span class="tag gold">总资产：¥${escapeHtml(fmtMoney(summary.total))}</span>
             ${categoryRows}
           </div>
+          ${renderAssetCategoryPie(summary)}
           ${rows ? (state.assetRowsCollapsed ? `
             <div class="empty">已收起 ${escapeHtml(portfolioAssets().length)} 条资产明细。点击“展开”可继续编辑。</div>
           ` : `
@@ -2286,6 +2425,127 @@
       `;
     }
 
+    const MARKET_STATE_TIMELINE_ASSET = "./assets/v41-market-state-timeline.svg";
+    let marketTimelineSourcePromise = null;
+    let marketTimelineHydrationId = 0;
+
+    function marketTimelineStartMonth() {
+      const configured = String(state.settings?.strategyV41?.marketStateTimelineStartMonth || "2000-08").trim();
+      return /^\d{4}-(0[1-9]|1[0-2])$/.test(configured) ? configured : "2000-08";
+    }
+
+    function renderMarketStateTimeline() {
+      const startMonth = marketTimelineStartMonth();
+      return `
+        <div class="market-timeline">
+          <div class="section-head">
+            <div>
+              <h3 class="section-title">v4.1 市场状态时间表</h3>
+              <div class="field-desc">仅展示配置起始月份 ${escapeHtml(startMonth)} 及之后的历史状态；数据来自静态 SVG，不逐月请求行情。</div>
+            </div>
+            <span class="tag info">起始月份：${escapeHtml(startMonth)}</span>
+          </div>
+          <div id="marketStateTimeline" class="market-timeline-frame" data-start-month="${escapeHtml(startMonth)}">
+            <img class="market-timeline-svg" src="${MARKET_STATE_TIMELINE_ASSET}" alt="v4.1 市场状态时间表" />
+          </div>
+          <div class="market-timeline-legend" aria-label="市场状态图例">
+            <span><i class="strong"></i>强势：纳指 / 黄金 / 债券 70/15/15</span>
+            <span><i class="transition"></i>过渡：55/15/30</span>
+            <span><i class="defensive"></i>防守：15/15/70</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function timelineElementRow(element) {
+      const tag = String(element.tagName || "").toLowerCase();
+      const x = Number(element.getAttribute("x"));
+      const y = Number(element.getAttribute("y"));
+      const className = String(element.getAttribute("class") || "");
+      if (!Number.isFinite(y)) return null;
+      let base = null;
+      if (tag === "rect" && Number.isFinite(x) && x >= 85 && x <= 1141) base = 48;
+      else if (className === "cell") base = 72;
+      else if (className === "label" && Math.abs(x - 66) < 1) base = 73;
+      if (base === null) return null;
+      const row = Math.round((y - base) / 42);
+      return row >= 0 && row <= 25 && Math.abs(y - (base + row * 42)) < 1 ? row : null;
+    }
+
+    function timelineElementMonth(element) {
+      const tag = String(element.tagName || "").toLowerCase();
+      const x = Number(element.getAttribute("x"));
+      if (!Number.isFinite(x)) return null;
+      const base = tag === "rect" ? 85 : 129;
+      const month = Math.round((x - base) / 96) + 1;
+      return month >= 1 && month <= 12 && Math.abs(x - (base + (month - 1) * 96)) < 1 ? month : null;
+    }
+
+    function cropMarketTimelineSvg(svgText, startMonth) {
+      const match = /^(\d{4})-(\d{2})$/.exec(startMonth);
+      if (!match) throw new Error("起始月份格式必须为 YYYY-MM");
+      const startYear = Number(match[1]);
+      const startMonthNumber = Number(match[2]);
+      if (startYear < 2000 || startYear > 2025) throw new Error("静态时间表仅覆盖 2000-01 至 2025-12");
+
+      const doc = new DOMParser().parseFromString(svgText, "image/svg+xml");
+      const root = doc.documentElement;
+      if (!root || root.tagName.toLowerCase() !== "svg") throw new Error("市场状态 SVG 格式无效");
+      const rowOffset = (startYear - 2000) * 42;
+      const elements = Array.from(root.querySelectorAll("rect, text"));
+      for (const element of elements) {
+        const tag = String(element.tagName || "").toLowerCase();
+        const y = Number(element.getAttribute("y"));
+        const row = timelineElementRow(element);
+
+        if (tag === "rect" && Number.isFinite(y) && y >= 1130) {
+          element.remove();
+          continue;
+        }
+        if (tag === "text" && Number.isFinite(y) && y >= 1141) {
+          element.remove();
+          continue;
+        }
+        if (row === null) continue;
+
+        const year = 2000 + row;
+        const month = timelineElementMonth(element);
+        if (year < startYear || (year === startYear && month !== null && month < startMonthNumber)) {
+          element.remove();
+          continue;
+        }
+        if (year >= startYear) element.setAttribute("transform", `translate(0 ${-rowOffset})`);
+      }
+
+      const height = Math.max(180, 1158 - rowOffset);
+      root.setAttribute("height", String(height));
+      root.setAttribute("viewBox", `0 0 1250 ${height}`);
+      const background = root.querySelector("rect");
+      if (background && !background.getAttribute("x")) background.setAttribute("height", String(height));
+      return new XMLSerializer().serializeToString(root);
+    }
+
+    async function hydrateMarketStateTimeline() {
+      const container = document.getElementById("marketStateTimeline");
+      if (!container) return;
+      const hydrationId = ++marketTimelineHydrationId;
+      const startMonth = container.dataset.startMonth || marketTimelineStartMonth();
+      if (!marketTimelineSourcePromise) {
+        marketTimelineSourcePromise = fetch(`${MARKET_STATE_TIMELINE_ASSET}?v=1`).then((response) => {
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.text();
+        });
+      }
+      try {
+        const svgText = await marketTimelineSourcePromise;
+        if (hydrationId !== marketTimelineHydrationId || !document.body.contains(container)) return;
+        container.innerHTML = cropMarketTimelineSvg(svgText, startMonth);
+      } catch (error) {
+        if (hydrationId !== marketTimelineHydrationId || !document.body.contains(container)) return;
+        container.innerHTML = `<div class="market-timeline-error">时间表加载失败，已保留静态图入口。<br>${escapeHtml(error?.message || String(error))}</div>`;
+      }
+    }
+
     function renderV41Overview() {
       if (!state.settings) return "";
       const runtime = state.nsdkState?.v41 || {};
@@ -2366,6 +2626,7 @@
               <tbody>${allocationRows}</tbody>
             </table>
           </div>
+          ${renderMarketStateTimeline()}
           <div class="section-head" style="margin-top:20px"><h3 class="section-title">本月具体金额变动方向</h3></div>
           <div class="stats-grid">${actions || `<div class="stat"><div class="stat-value">无需交易</div></div>`}</div>
           ${renderProfitChart()}
@@ -2873,6 +3134,7 @@
         ${renderOtherDetailModal()}
         ${renderVersionsDrawer()}
       `;
+      hydrateMarketStateTimeline();
     }
 
     async function handleSettingsFile(file, handle = null) {

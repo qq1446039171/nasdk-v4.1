@@ -15,6 +15,8 @@ assert.match(html, /data-action="open-yesterday-detail"/, 'yesterday profit shou
 assert.match(html, /renderYesterdayDetailModal/, 'asset profit details should render in a modal');
 assert.match(html, /data-action="set-profit-range"/, 'profit chart should include a range switch');
 assert.match(html, /renderProfitChart/, 'overview should render a profit chart');
+assert.match(html, /renderAssetCategoryPie\(summary\)/, 'asset section should render category proportions as a pie chart');
+assert.match(html, /当前投资资产分类占比饼图/, 'category pie chart should have an accessible label');
 assert.match(html, /categoryAmount\("gold"\)/, 'overview should surface gold allocation');
 assert.match(html, /categoryAmount\("stock"\)/, 'overview should surface other stock and ETF allocation');
 assert.match(html, /--gold-deg/, 'donut should include gold allocation as a visible segment');

@@ -1,0 +1,672 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1250" height="1165" viewBox="0 0 1250 1165" role="img" aria-labelledby="title desc">
+<title id="title">v4.1市场状态时间表（2000—2025）</title>
+<desc id="desc">按年份和月份展示强势、过渡、防守状态。蓝色强势，橙色过渡，粉色防守。</desc>
+<rect width="1250" height="1165" rx="18" fill="#181818"/>
+<style>text{font-family:"Microsoft YaHei","PingFang SC",sans-serif}.label{fill:#aaa;font-size:16px}.cell{fill:#161616;font-size:18px;font-weight:600}</style>
+<text class="label" x="129" y="34" text-anchor="middle">1月</text>
+<text class="label" x="225" y="34" text-anchor="middle">2月</text>
+<text class="label" x="321" y="34" text-anchor="middle">3月</text>
+<text class="label" x="417" y="34" text-anchor="middle">4月</text>
+<text class="label" x="513" y="34" text-anchor="middle">5月</text>
+<text class="label" x="609" y="34" text-anchor="middle">6月</text>
+<text class="label" x="705" y="34" text-anchor="middle">7月</text>
+<text class="label" x="801" y="34" text-anchor="middle">8月</text>
+<text class="label" x="897" y="34" text-anchor="middle">9月</text>
+<text class="label" x="993" y="34" text-anchor="middle">10月</text>
+<text class="label" x="1089" y="34" text-anchor="middle">11月</text>
+<text class="label" x="1185" y="34" text-anchor="middle">12月</text>
+<text class="label" x="66" y="73" text-anchor="end">2000</text>
+<rect x="85" y="48" width="88" height="36" rx="5" fill="#252525" stroke="#333"/>
+<text class="cell" x="129" y="72" text-anchor="middle">—</text>
+<rect x="181" y="48" width="88" height="36" rx="5" fill="#252525" stroke="#333"/>
+<text class="cell" x="225" y="72" text-anchor="middle">—</text>
+<rect x="277" y="48" width="88" height="36" rx="5" fill="#252525" stroke="#333"/>
+<text class="cell" x="321" y="72" text-anchor="middle">—</text>
+<rect x="373" y="48" width="88" height="36" rx="5" fill="#252525" stroke="#333"/>
+<text class="cell" x="417" y="72" text-anchor="middle">—</text>
+<rect x="469" y="48" width="88" height="36" rx="5" fill="#252525" stroke="#333"/>
+<text class="cell" x="513" y="72" text-anchor="middle">—</text>
+<rect x="565" y="48" width="88" height="36" rx="5" fill="#252525" stroke="#333"/>
+<text class="cell" x="609" y="72" text-anchor="middle">—</text>
+<rect x="661" y="48" width="88" height="36" rx="5" fill="#252525" stroke="#333"/>
+<text class="cell" x="705" y="72" text-anchor="middle">—</text>
+<rect x="757" y="48" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="72" text-anchor="middle">强</text>
+<rect x="853" y="48" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="897" y="72" text-anchor="middle">过</text>
+<rect x="949" y="48" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="993" y="72" text-anchor="middle">过</text>
+<rect x="1045" y="48" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="1089" y="72" text-anchor="middle">守</text>
+<rect x="1141" y="48" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="1185" y="72" text-anchor="middle">守</text>
+<text class="label" x="66" y="115" text-anchor="end">2001</text>
+<rect x="85" y="90" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="129" y="114" text-anchor="middle">守</text>
+<rect x="181" y="90" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="225" y="114" text-anchor="middle">守</text>
+<rect x="277" y="90" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="321" y="114" text-anchor="middle">守</text>
+<rect x="373" y="90" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="417" y="114" text-anchor="middle">守</text>
+<rect x="469" y="90" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="513" y="114" text-anchor="middle">守</text>
+<rect x="565" y="90" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="609" y="114" text-anchor="middle">守</text>
+<rect x="661" y="90" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="705" y="114" text-anchor="middle">守</text>
+<rect x="757" y="90" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="801" y="114" text-anchor="middle">守</text>
+<rect x="853" y="90" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="897" y="114" text-anchor="middle">守</text>
+<rect x="949" y="90" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="993" y="114" text-anchor="middle">守</text>
+<rect x="1045" y="90" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="1089" y="114" text-anchor="middle">守</text>
+<rect x="1141" y="90" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="1185" y="114" text-anchor="middle">守</text>
+<text class="label" x="66" y="157" text-anchor="end">2002</text>
+<rect x="85" y="132" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="129" y="156" text-anchor="middle">守</text>
+<rect x="181" y="132" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="225" y="156" text-anchor="middle">守</text>
+<rect x="277" y="132" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="321" y="156" text-anchor="middle">守</text>
+<rect x="373" y="132" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="417" y="156" text-anchor="middle">守</text>
+<rect x="469" y="132" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="513" y="156" text-anchor="middle">守</text>
+<rect x="565" y="132" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="609" y="156" text-anchor="middle">守</text>
+<rect x="661" y="132" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="705" y="156" text-anchor="middle">守</text>
+<rect x="757" y="132" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="801" y="156" text-anchor="middle">守</text>
+<rect x="853" y="132" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="897" y="156" text-anchor="middle">守</text>
+<rect x="949" y="132" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="993" y="156" text-anchor="middle">守</text>
+<rect x="1045" y="132" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="1089" y="156" text-anchor="middle">守</text>
+<rect x="1141" y="132" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="1185" y="156" text-anchor="middle">守</text>
+<text class="label" x="66" y="199" text-anchor="end">2003</text>
+<rect x="85" y="174" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="129" y="198" text-anchor="middle">守</text>
+<rect x="181" y="174" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="225" y="198" text-anchor="middle">过</text>
+<rect x="277" y="174" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="321" y="198" text-anchor="middle">过</text>
+<rect x="373" y="174" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="417" y="198" text-anchor="middle">过</text>
+<rect x="469" y="174" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="513" y="198" text-anchor="middle">过</text>
+<rect x="565" y="174" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="198" text-anchor="middle">强</text>
+<rect x="661" y="174" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="198" text-anchor="middle">强</text>
+<rect x="757" y="174" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="198" text-anchor="middle">强</text>
+<rect x="853" y="174" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="198" text-anchor="middle">强</text>
+<rect x="949" y="174" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="198" text-anchor="middle">强</text>
+<rect x="1045" y="174" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="198" text-anchor="middle">强</text>
+<rect x="1141" y="174" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="198" text-anchor="middle">强</text>
+<text class="label" x="66" y="241" text-anchor="end">2004</text>
+<rect x="85" y="216" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="240" text-anchor="middle">强</text>
+<rect x="181" y="216" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="240" text-anchor="middle">强</text>
+<rect x="277" y="216" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="240" text-anchor="middle">强</text>
+<rect x="373" y="216" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="417" y="240" text-anchor="middle">过</text>
+<rect x="469" y="216" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="240" text-anchor="middle">强</text>
+<rect x="565" y="216" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="240" text-anchor="middle">强</text>
+<rect x="661" y="216" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="705" y="240" text-anchor="middle">过</text>
+<rect x="757" y="216" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="801" y="240" text-anchor="middle">过</text>
+<rect x="853" y="216" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="897" y="240" text-anchor="middle">过</text>
+<rect x="949" y="216" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="240" text-anchor="middle">强</text>
+<rect x="1045" y="216" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="240" text-anchor="middle">强</text>
+<rect x="1141" y="216" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="240" text-anchor="middle">强</text>
+<text class="label" x="66" y="283" text-anchor="end">2005</text>
+<rect x="85" y="258" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="282" text-anchor="middle">强</text>
+<rect x="181" y="258" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="282" text-anchor="middle">强</text>
+<rect x="277" y="258" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="321" y="282" text-anchor="middle">过</text>
+<rect x="373" y="258" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="417" y="282" text-anchor="middle">过</text>
+<rect x="469" y="258" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="282" text-anchor="middle">强</text>
+<rect x="565" y="258" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="609" y="282" text-anchor="middle">守</text>
+<rect x="661" y="258" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="282" text-anchor="middle">强</text>
+<rect x="757" y="258" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="282" text-anchor="middle">强</text>
+<rect x="853" y="258" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="282" text-anchor="middle">强</text>
+<rect x="949" y="258" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="282" text-anchor="middle">强</text>
+<rect x="1045" y="258" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="282" text-anchor="middle">强</text>
+<rect x="1141" y="258" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="282" text-anchor="middle">强</text>
+<text class="label" x="66" y="325" text-anchor="end">2006</text>
+<rect x="85" y="300" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="324" text-anchor="middle">强</text>
+<rect x="181" y="300" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="324" text-anchor="middle">强</text>
+<rect x="277" y="300" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="324" text-anchor="middle">强</text>
+<rect x="373" y="300" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="324" text-anchor="middle">强</text>
+<rect x="469" y="300" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="513" y="324" text-anchor="middle">过</text>
+<rect x="565" y="300" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="609" y="324" text-anchor="middle">过</text>
+<rect x="661" y="300" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="705" y="324" text-anchor="middle">守</text>
+<rect x="757" y="300" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="801" y="324" text-anchor="middle">过</text>
+<rect x="853" y="300" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="324" text-anchor="middle">强</text>
+<rect x="949" y="300" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="324" text-anchor="middle">强</text>
+<rect x="1045" y="300" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="324" text-anchor="middle">强</text>
+<rect x="1141" y="300" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="324" text-anchor="middle">强</text>
+<text class="label" x="66" y="367" text-anchor="end">2007</text>
+<rect x="85" y="342" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="366" text-anchor="middle">强</text>
+<rect x="181" y="342" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="366" text-anchor="middle">强</text>
+<rect x="277" y="342" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="366" text-anchor="middle">强</text>
+<rect x="373" y="342" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="366" text-anchor="middle">强</text>
+<rect x="469" y="342" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="366" text-anchor="middle">强</text>
+<rect x="565" y="342" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="366" text-anchor="middle">强</text>
+<rect x="661" y="342" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="366" text-anchor="middle">强</text>
+<rect x="757" y="342" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="366" text-anchor="middle">强</text>
+<rect x="853" y="342" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="366" text-anchor="middle">强</text>
+<rect x="949" y="342" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="366" text-anchor="middle">强</text>
+<rect x="1045" y="342" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="366" text-anchor="middle">强</text>
+<rect x="1141" y="342" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="366" text-anchor="middle">强</text>
+<text class="label" x="66" y="409" text-anchor="end">2008</text>
+<rect x="85" y="384" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="129" y="408" text-anchor="middle">过</text>
+<rect x="181" y="384" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="225" y="408" text-anchor="middle">守</text>
+<rect x="277" y="384" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="321" y="408" text-anchor="middle">过</text>
+<rect x="373" y="384" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="417" y="408" text-anchor="middle">过</text>
+<rect x="469" y="384" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="408" text-anchor="middle">强</text>
+<rect x="565" y="384" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="609" y="408" text-anchor="middle">守</text>
+<rect x="661" y="384" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="705" y="408" text-anchor="middle">守</text>
+<rect x="757" y="384" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="801" y="408" text-anchor="middle">守</text>
+<rect x="853" y="384" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="897" y="408" text-anchor="middle">守</text>
+<rect x="949" y="384" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="993" y="408" text-anchor="middle">守</text>
+<rect x="1045" y="384" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="1089" y="408" text-anchor="middle">守</text>
+<rect x="1141" y="384" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="1185" y="408" text-anchor="middle">守</text>
+<text class="label" x="66" y="451" text-anchor="end">2009</text>
+<rect x="85" y="426" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="129" y="450" text-anchor="middle">守</text>
+<rect x="181" y="426" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="225" y="450" text-anchor="middle">守</text>
+<rect x="277" y="426" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="321" y="450" text-anchor="middle">守</text>
+<rect x="373" y="426" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="417" y="450" text-anchor="middle">过</text>
+<rect x="469" y="426" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="513" y="450" text-anchor="middle">过</text>
+<rect x="565" y="426" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="609" y="450" text-anchor="middle">过</text>
+<rect x="661" y="426" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="705" y="450" text-anchor="middle">过</text>
+<rect x="757" y="426" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="801" y="450" text-anchor="middle">过</text>
+<rect x="853" y="426" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="450" text-anchor="middle">强</text>
+<rect x="949" y="426" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="450" text-anchor="middle">强</text>
+<rect x="1045" y="426" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="450" text-anchor="middle">强</text>
+<rect x="1141" y="426" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="450" text-anchor="middle">强</text>
+<text class="label" x="66" y="493" text-anchor="end">2010</text>
+<rect x="85" y="468" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="492" text-anchor="middle">强</text>
+<rect x="181" y="468" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="492" text-anchor="middle">强</text>
+<rect x="277" y="468" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="492" text-anchor="middle">强</text>
+<rect x="373" y="468" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="492" text-anchor="middle">强</text>
+<rect x="469" y="468" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="492" text-anchor="middle">强</text>
+<rect x="565" y="468" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="609" y="492" text-anchor="middle">过</text>
+<rect x="661" y="468" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="492" text-anchor="middle">强</text>
+<rect x="757" y="468" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="801" y="492" text-anchor="middle">过</text>
+<rect x="853" y="468" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="492" text-anchor="middle">强</text>
+<rect x="949" y="468" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="492" text-anchor="middle">强</text>
+<rect x="1045" y="468" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="492" text-anchor="middle">强</text>
+<rect x="1141" y="468" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="492" text-anchor="middle">强</text>
+<text class="label" x="66" y="535" text-anchor="end">2011</text>
+<rect x="85" y="510" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="534" text-anchor="middle">强</text>
+<rect x="181" y="510" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="534" text-anchor="middle">强</text>
+<rect x="277" y="510" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="534" text-anchor="middle">强</text>
+<rect x="373" y="510" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="534" text-anchor="middle">强</text>
+<rect x="469" y="510" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="534" text-anchor="middle">强</text>
+<rect x="565" y="510" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="534" text-anchor="middle">强</text>
+<rect x="661" y="510" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="534" text-anchor="middle">强</text>
+<rect x="757" y="510" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="801" y="534" text-anchor="middle">过</text>
+<rect x="853" y="510" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="897" y="534" text-anchor="middle">过</text>
+<rect x="949" y="510" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="534" text-anchor="middle">强</text>
+<rect x="1045" y="510" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="1089" y="534" text-anchor="middle">过</text>
+<rect x="1141" y="510" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="1185" y="534" text-anchor="middle">过</text>
+<text class="label" x="66" y="577" text-anchor="end">2012</text>
+<rect x="85" y="552" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="576" text-anchor="middle">强</text>
+<rect x="181" y="552" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="576" text-anchor="middle">强</text>
+<rect x="277" y="552" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="576" text-anchor="middle">强</text>
+<rect x="373" y="552" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="576" text-anchor="middle">强</text>
+<rect x="469" y="552" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="576" text-anchor="middle">强</text>
+<rect x="565" y="552" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="576" text-anchor="middle">强</text>
+<rect x="661" y="552" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="576" text-anchor="middle">强</text>
+<rect x="757" y="552" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="576" text-anchor="middle">强</text>
+<rect x="853" y="552" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="576" text-anchor="middle">强</text>
+<rect x="949" y="552" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="993" y="576" text-anchor="middle">过</text>
+<rect x="1045" y="552" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="576" text-anchor="middle">强</text>
+<rect x="1141" y="552" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="1185" y="576" text-anchor="middle">过</text>
+<text class="label" x="66" y="619" text-anchor="end">2013</text>
+<rect x="85" y="594" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="618" text-anchor="middle">强</text>
+<rect x="181" y="594" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="618" text-anchor="middle">强</text>
+<rect x="277" y="594" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="618" text-anchor="middle">强</text>
+<rect x="373" y="594" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="618" text-anchor="middle">强</text>
+<rect x="469" y="594" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="618" text-anchor="middle">强</text>
+<rect x="565" y="594" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="618" text-anchor="middle">强</text>
+<rect x="661" y="594" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="618" text-anchor="middle">强</text>
+<rect x="757" y="594" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="618" text-anchor="middle">强</text>
+<rect x="853" y="594" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="618" text-anchor="middle">强</text>
+<rect x="949" y="594" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="618" text-anchor="middle">强</text>
+<rect x="1045" y="594" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="618" text-anchor="middle">强</text>
+<rect x="1141" y="594" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="618" text-anchor="middle">强</text>
+<text class="label" x="66" y="661" text-anchor="end">2014</text>
+<rect x="85" y="636" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="660" text-anchor="middle">强</text>
+<rect x="181" y="636" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="660" text-anchor="middle">强</text>
+<rect x="277" y="636" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="660" text-anchor="middle">强</text>
+<rect x="373" y="636" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="660" text-anchor="middle">强</text>
+<rect x="469" y="636" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="660" text-anchor="middle">强</text>
+<rect x="565" y="636" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="660" text-anchor="middle">强</text>
+<rect x="661" y="636" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="660" text-anchor="middle">强</text>
+<rect x="757" y="636" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="660" text-anchor="middle">强</text>
+<rect x="853" y="636" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="660" text-anchor="middle">强</text>
+<rect x="949" y="636" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="660" text-anchor="middle">强</text>
+<rect x="1045" y="636" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="660" text-anchor="middle">强</text>
+<rect x="1141" y="636" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="660" text-anchor="middle">强</text>
+<text class="label" x="66" y="703" text-anchor="end">2015</text>
+<rect x="85" y="678" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="702" text-anchor="middle">强</text>
+<rect x="181" y="678" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="702" text-anchor="middle">强</text>
+<rect x="277" y="678" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="702" text-anchor="middle">强</text>
+<rect x="373" y="678" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="702" text-anchor="middle">强</text>
+<rect x="469" y="678" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="702" text-anchor="middle">强</text>
+<rect x="565" y="678" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="702" text-anchor="middle">强</text>
+<rect x="661" y="678" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="702" text-anchor="middle">强</text>
+<rect x="757" y="678" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="801" y="702" text-anchor="middle">过</text>
+<rect x="853" y="678" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="897" y="702" text-anchor="middle">过</text>
+<rect x="949" y="678" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="702" text-anchor="middle">强</text>
+<rect x="1045" y="678" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="702" text-anchor="middle">强</text>
+<rect x="1141" y="678" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="702" text-anchor="middle">强</text>
+<text class="label" x="66" y="745" text-anchor="end">2016</text>
+<rect x="85" y="720" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="129" y="744" text-anchor="middle">过</text>
+<rect x="181" y="720" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="225" y="744" text-anchor="middle">守</text>
+<rect x="277" y="720" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="744" text-anchor="middle">强</text>
+<rect x="373" y="720" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="417" y="744" text-anchor="middle">守</text>
+<rect x="469" y="720" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="744" text-anchor="middle">强</text>
+<rect x="565" y="720" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="744" text-anchor="middle">强</text>
+<rect x="661" y="720" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="744" text-anchor="middle">强</text>
+<rect x="757" y="720" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="744" text-anchor="middle">强</text>
+<rect x="853" y="720" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="744" text-anchor="middle">强</text>
+<rect x="949" y="720" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="744" text-anchor="middle">强</text>
+<rect x="1045" y="720" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="744" text-anchor="middle">强</text>
+<rect x="1141" y="720" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="744" text-anchor="middle">强</text>
+<text class="label" x="66" y="787" text-anchor="end">2017</text>
+<rect x="85" y="762" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="786" text-anchor="middle">强</text>
+<rect x="181" y="762" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="786" text-anchor="middle">强</text>
+<rect x="277" y="762" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="786" text-anchor="middle">强</text>
+<rect x="373" y="762" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="786" text-anchor="middle">强</text>
+<rect x="469" y="762" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="786" text-anchor="middle">强</text>
+<rect x="565" y="762" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="786" text-anchor="middle">强</text>
+<rect x="661" y="762" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="786" text-anchor="middle">强</text>
+<rect x="757" y="762" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="786" text-anchor="middle">强</text>
+<rect x="853" y="762" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="786" text-anchor="middle">强</text>
+<rect x="949" y="762" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="786" text-anchor="middle">强</text>
+<rect x="1045" y="762" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="786" text-anchor="middle">强</text>
+<rect x="1141" y="762" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="786" text-anchor="middle">强</text>
+<text class="label" x="66" y="829" text-anchor="end">2018</text>
+<rect x="85" y="804" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="828" text-anchor="middle">强</text>
+<rect x="181" y="804" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="828" text-anchor="middle">强</text>
+<rect x="277" y="804" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="828" text-anchor="middle">强</text>
+<rect x="373" y="804" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="828" text-anchor="middle">强</text>
+<rect x="469" y="804" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="828" text-anchor="middle">强</text>
+<rect x="565" y="804" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="828" text-anchor="middle">强</text>
+<rect x="661" y="804" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="828" text-anchor="middle">强</text>
+<rect x="757" y="804" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="828" text-anchor="middle">强</text>
+<rect x="853" y="804" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="828" text-anchor="middle">强</text>
+<rect x="949" y="804" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="993" y="828" text-anchor="middle">过</text>
+<rect x="1045" y="804" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="1089" y="828" text-anchor="middle">过</text>
+<rect x="1141" y="804" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="1185" y="828" text-anchor="middle">守</text>
+<text class="label" x="66" y="871" text-anchor="end">2019</text>
+<rect x="85" y="846" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="129" y="870" text-anchor="middle">过</text>
+<rect x="181" y="846" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="870" text-anchor="middle">强</text>
+<rect x="277" y="846" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="870" text-anchor="middle">强</text>
+<rect x="373" y="846" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="870" text-anchor="middle">强</text>
+<rect x="469" y="846" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="513" y="870" text-anchor="middle">过</text>
+<rect x="565" y="846" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="870" text-anchor="middle">强</text>
+<rect x="661" y="846" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="870" text-anchor="middle">强</text>
+<rect x="757" y="846" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="870" text-anchor="middle">强</text>
+<rect x="853" y="846" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="870" text-anchor="middle">强</text>
+<rect x="949" y="846" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="870" text-anchor="middle">强</text>
+<rect x="1045" y="846" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="870" text-anchor="middle">强</text>
+<rect x="1141" y="846" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="870" text-anchor="middle">强</text>
+<text class="label" x="66" y="913" text-anchor="end">2020</text>
+<rect x="85" y="888" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="912" text-anchor="middle">强</text>
+<rect x="181" y="888" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="912" text-anchor="middle">强</text>
+<rect x="277" y="888" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="321" y="912" text-anchor="middle">过</text>
+<rect x="373" y="888" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="912" text-anchor="middle">强</text>
+<rect x="469" y="888" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="912" text-anchor="middle">强</text>
+<rect x="565" y="888" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="912" text-anchor="middle">强</text>
+<rect x="661" y="888" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="912" text-anchor="middle">强</text>
+<rect x="757" y="888" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="912" text-anchor="middle">强</text>
+<rect x="853" y="888" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="912" text-anchor="middle">强</text>
+<rect x="949" y="888" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="912" text-anchor="middle">强</text>
+<rect x="1045" y="888" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="912" text-anchor="middle">强</text>
+<rect x="1141" y="888" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="912" text-anchor="middle">强</text>
+<text class="label" x="66" y="955" text-anchor="end">2021</text>
+<rect x="85" y="930" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="954" text-anchor="middle">强</text>
+<rect x="181" y="930" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="954" text-anchor="middle">强</text>
+<rect x="277" y="930" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="954" text-anchor="middle">强</text>
+<rect x="373" y="930" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="954" text-anchor="middle">强</text>
+<rect x="469" y="930" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="954" text-anchor="middle">强</text>
+<rect x="565" y="930" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="954" text-anchor="middle">强</text>
+<rect x="661" y="930" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="954" text-anchor="middle">强</text>
+<rect x="757" y="930" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="954" text-anchor="middle">强</text>
+<rect x="853" y="930" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="954" text-anchor="middle">强</text>
+<rect x="949" y="930" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="954" text-anchor="middle">强</text>
+<rect x="1045" y="930" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="954" text-anchor="middle">强</text>
+<rect x="1141" y="930" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="954" text-anchor="middle">强</text>
+<text class="label" x="66" y="997" text-anchor="end">2022</text>
+<rect x="85" y="972" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="129" y="996" text-anchor="middle">过</text>
+<rect x="181" y="972" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="225" y="996" text-anchor="middle">过</text>
+<rect x="277" y="972" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="321" y="996" text-anchor="middle">过</text>
+<rect x="373" y="972" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="417" y="996" text-anchor="middle">守</text>
+<rect x="469" y="972" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="513" y="996" text-anchor="middle">守</text>
+<rect x="565" y="972" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="609" y="996" text-anchor="middle">守</text>
+<rect x="661" y="972" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="705" y="996" text-anchor="middle">守</text>
+<rect x="757" y="972" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="801" y="996" text-anchor="middle">守</text>
+<rect x="853" y="972" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="897" y="996" text-anchor="middle">守</text>
+<rect x="949" y="972" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="993" y="996" text-anchor="middle">守</text>
+<rect x="1045" y="972" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="1089" y="996" text-anchor="middle">守</text>
+<rect x="1141" y="972" width="88" height="36" rx="5" fill="#e982b5"/>
+<text class="cell" x="1185" y="996" text-anchor="middle">守</text>
+<text class="label" x="66" y="1039" text-anchor="end">2023</text>
+<rect x="85" y="1014" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="129" y="1038" text-anchor="middle">过</text>
+<rect x="181" y="1014" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="225" y="1038" text-anchor="middle">过</text>
+<rect x="277" y="1014" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="321" y="1038" text-anchor="middle">过</text>
+<rect x="373" y="1014" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="1038" text-anchor="middle">强</text>
+<rect x="469" y="1014" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="1038" text-anchor="middle">强</text>
+<rect x="565" y="1014" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="1038" text-anchor="middle">强</text>
+<rect x="661" y="1014" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="1038" text-anchor="middle">强</text>
+<rect x="757" y="1014" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="1038" text-anchor="middle">强</text>
+<rect x="853" y="1014" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="1038" text-anchor="middle">强</text>
+<rect x="949" y="1014" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="1038" text-anchor="middle">强</text>
+<rect x="1045" y="1014" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="1038" text-anchor="middle">强</text>
+<rect x="1141" y="1014" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="1038" text-anchor="middle">强</text>
+<text class="label" x="66" y="1081" text-anchor="end">2024</text>
+<rect x="85" y="1056" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="1080" text-anchor="middle">强</text>
+<rect x="181" y="1056" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="1080" text-anchor="middle">强</text>
+<rect x="277" y="1056" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="321" y="1080" text-anchor="middle">强</text>
+<rect x="373" y="1056" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="417" y="1080" text-anchor="middle">强</text>
+<rect x="469" y="1056" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="1080" text-anchor="middle">强</text>
+<rect x="565" y="1056" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="1080" text-anchor="middle">强</text>
+<rect x="661" y="1056" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="1080" text-anchor="middle">强</text>
+<rect x="757" y="1056" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="1080" text-anchor="middle">强</text>
+<rect x="853" y="1056" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="1080" text-anchor="middle">强</text>
+<rect x="949" y="1056" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="1080" text-anchor="middle">强</text>
+<rect x="1045" y="1056" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="1080" text-anchor="middle">强</text>
+<rect x="1141" y="1056" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="1080" text-anchor="middle">强</text>
+<text class="label" x="66" y="1123" text-anchor="end">2025</text>
+<rect x="85" y="1098" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="129" y="1122" text-anchor="middle">强</text>
+<rect x="181" y="1098" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="225" y="1122" text-anchor="middle">强</text>
+<rect x="277" y="1098" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="321" y="1122" text-anchor="middle">过</text>
+<rect x="373" y="1098" width="88" height="36" rx="5" fill="#f39a52"/>
+<text class="cell" x="417" y="1122" text-anchor="middle">过</text>
+<rect x="469" y="1098" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="513" y="1122" text-anchor="middle">强</text>
+<rect x="565" y="1098" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="609" y="1122" text-anchor="middle">强</text>
+<rect x="661" y="1098" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="705" y="1122" text-anchor="middle">强</text>
+<rect x="757" y="1098" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="801" y="1122" text-anchor="middle">强</text>
+<rect x="853" y="1098" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="897" y="1122" text-anchor="middle">强</text>
+<rect x="949" y="1098" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="993" y="1122" text-anchor="middle">强</text>
+<rect x="1045" y="1098" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1089" y="1122" text-anchor="middle">强</text>
+<rect x="1141" y="1098" width="88" height="36" rx="5" fill="#78baf2"/>
+<text class="cell" x="1185" y="1122" text-anchor="middle">强</text>
+<rect x="86" y="1130" width="12" height="12" rx="3" fill="#78baf2"/><text class="label" x="106" y="1141">强势 70/15/15</text>
+<rect x="270" y="1130" width="12" height="12" rx="3" fill="#f39a52"/><text class="label" x="290" y="1141">过渡 55/15/30</text>
+<rect x="460" y="1130" width="12" height="12" rx="3" fill="#e982b5"/><text class="label" x="480" y="1141">防守 15/15/70</text>
+<text class="label" x="1215" y="1141" text-anchor="end">顺序：纳指 / 黄金 / 债券</text>
+</svg>
