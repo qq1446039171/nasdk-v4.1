@@ -24,6 +24,8 @@ assert.match(html, /renderMarketStateTimeline\(\)/, 'web should render the marke
 assert.match(html, /renderCurrentMarketTimelineSvg\(/, 'market state timeline should render from the configured start month without fetching local SVG');
 assert.match(html, /const height = 142;/, 'market state timeline should use a compact presentation height');
 assert.match(html, /background: #0a1c2d;/, 'market state timeline should use a restrained solid surface');
+assert.match(html, /\.market-timeline-svg \{[\s\S]*width: auto;/, 'market state timeline should keep fixed card sizes instead of stretching across the panel');
+assert.match(html, /width="\$\{width\}" height="\$\{height\}"/, 'market state timeline should expose its intrinsic SVG size');
 assert.match(html, /function currentYearMonth\(/, 'market state timeline should default to the current program month');
 assert.doesNotMatch(html, /fetch\(`\$\{MARKET_STATE_TIMELINE_ASSET\}/, 'market state timeline should not fetch a local SVG from file://');
 assert.match(html, /assets\/v41-market-state-timeline\.svg/, 'web should retain the bundled market state SVG as the historical source asset');

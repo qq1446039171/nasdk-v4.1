@@ -470,9 +470,9 @@
     }
     .market-timeline-svg {
       display: block;
-      width: 100%;
+      width: auto;
       height: auto;
-      min-width: 560px;
+      max-width: none;
     }
     .market-timeline-loading,
     .market-timeline-error {
@@ -511,9 +511,9 @@
       display: inline-block;
       box-shadow: none;
     }
-    .market-timeline-legend .strong { color: #67b8c1; background: #67b8c1; }
-    .market-timeline-legend .transition { color: #c89b62; background: #c89b62; }
-    .market-timeline-legend .defensive { color: #a17f9f; background: #a17f9f; }
+    .market-timeline-legend .strong { color: #73b7e9; background: #73b7e9; }
+    .market-timeline-legend .transition { color: #f39a4d; background: #f39a4d; }
+    .market-timeline-legend .defensive { color: #e47fb1; background: #e47fb1; }
     @media (max-width: 720px) {
       .category-pie-wrap { grid-template-columns: 1fr; }
       .market-timeline-frame { max-height: 560px; }
@@ -2504,10 +2504,10 @@
 
     function marketTimelineStateMeta(stateKey) {
       const states = {
-        strong: { short: "强", label: "强势", colorA: "#4f9acb", colorB: "#6bc4b2" },
-        transition: { short: "过", label: "过渡", colorA: "#b27b4c", colorB: "#d2a75f" },
-        defensive: { short: "守", label: "防守", colorA: "#8e6685", colorB: "#a282a8" },
-        pending: { short: "待", label: "待确认", colorA: "#26384b", colorB: "#30465c" }
+        strong: { short: "强", label: "强势", colorA: "#73b7e9", colorB: "#73b7e9" },
+        transition: { short: "过", label: "过渡", colorA: "#f39a4d", colorB: "#f39a4d" },
+        defensive: { short: "守", label: "防守", colorA: "#e47fb1", colorB: "#e47fb1" },
+        pending: { short: "待", label: "待确认", colorA: "#2c3a4a", colorB: "#314254" }
       };
       return states[stateKey] || states.pending;
     }
@@ -2547,7 +2547,7 @@
       }).join("");
       const statusText = signalState !== "pending" ? `本月有效状态：${active.label}` : "等待月线信号加载";
       return `
-        <svg class="market-timeline-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(`${startMonth} 起的 v4.1 市场状态时间表`)}" data-source-asset="${escapeHtml(MARKET_STATE_TIMELINE_ASSET)}">
+        <svg class="market-timeline-svg" xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(`${startMonth} 起的 v4.1 市场状态时间表`)}" data-source-asset="${escapeHtml(MARKET_STATE_TIMELINE_ASSET)}">
           <defs>${gradients}</defs>
           <rect width="100%" height="100%" rx="8" fill="#0a1c2d" />
           <line x1="${left}" y1="111" x2="${width - 26}" y2="111" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
