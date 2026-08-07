@@ -461,7 +461,7 @@
       padding-top: 4px;
     }
     .market-timeline-frame {
-      min-height: 196px;
+      min-height: 160px;
       max-height: 360px;
       overflow: auto;
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -476,7 +476,7 @@
     }
     .market-timeline-loading,
     .market-timeline-error {
-      min-height: 196px;
+      min-height: 160px;
       display: grid;
       place-items: center;
       padding: 24px;
@@ -2521,11 +2521,11 @@
       const signal = state.v41Live?.signal || state.nsdkState?.v41?.lastSignal || null;
       const signalState = ["strong", "transition", "defensive"].includes(signal?.state) ? signal.state : "pending";
       const active = marketTimelineStateMeta(signalState);
-      const left = 56;
-      const cellWidth = 128;
-      const gap = 14;
-      const width = Math.max(680, left + months.length * cellWidth + (months.length - 1) * gap + 40);
-      const height = 176;
+      const left = 36;
+      const cellWidth = 104;
+      const gap = 10;
+      const width = Math.max(560, left + months.length * cellWidth + (months.length - 1) * gap + 28);
+      const height = 142;
       const monthNames = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
       const gradients = ["strong", "transition", "defensive", "pending"].map((key) => {
         const meta = marketTimelineStateMeta(key);
@@ -2538,10 +2538,10 @@
         const x = left + index * (cellWidth + gap);
         return `
           <g role="img" aria-label="${escapeHtml(`${year}-${String(month).padStart(2, "0")} ${isCurrent && signalState !== "pending" ? meta.label : "待确认"}`)}">
-            <text x="${x + cellWidth / 2}" y="28" text-anchor="middle" fill="#a9bbce" font-size="13" font-weight="600">${escapeHtml(monthNames[month - 1])}</text>
-            <rect x="${x}" y="42" width="${cellWidth}" height="60" rx="8" fill="url(#timeline-${isCurrent ? signalState : "pending"})" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
-            <text x="${x + cellWidth / 2}" y="80" text-anchor="middle" fill="${isCurrent && signalState !== "pending" ? "#0a1c2d" : "#c9d5e2"}" font-size="22" font-weight="750">${escapeHtml(label)}</text>
-            <text x="${x + cellWidth / 2}" y="124" text-anchor="middle" fill="#7890a9" font-size="11">${escapeHtml(`${year}-${String(month).padStart(2, "0")}`)}</text>
+            <text x="${x + cellWidth / 2}" y="22" text-anchor="middle" fill="#a9bbce" font-size="12" font-weight="600">${escapeHtml(monthNames[month - 1])}</text>
+            <rect x="${x}" y="32" width="${cellWidth}" height="44" rx="6" fill="url(#timeline-${isCurrent ? signalState : "pending"})" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+            <text x="${x + cellWidth / 2}" y="60" text-anchor="middle" fill="${isCurrent && signalState !== "pending" ? "#0a1c2d" : "#c9d5e2"}" font-size="18" font-weight="750">${escapeHtml(label)}</text>
+            <text x="${x + cellWidth / 2}" y="95" text-anchor="middle" fill="#7890a9" font-size="10">${escapeHtml(`${year}-${String(month).padStart(2, "0")}`)}</text>
           </g>
         `;
       }).join("");
@@ -2550,9 +2550,9 @@
         <svg class="market-timeline-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(`${startMonth} 起的 v4.1 市场状态时间表`)}" data-source-asset="${escapeHtml(MARKET_STATE_TIMELINE_ASSET)}">
           <defs>${gradients}</defs>
           <rect width="100%" height="100%" rx="8" fill="#0a1c2d" />
-          <line x1="${left}" y1="141" x2="${width - 26}" y2="141" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
-          <text x="${left}" y="158" fill="#e0eaf3" font-size="13" font-weight="700">${escapeHtml(statusText)}</text>
-          <text x="${width - 26}" y="158" text-anchor="end" fill="#7890a9" font-size="11">月末确认后更新</text>
+          <line x1="${left}" y1="111" x2="${width - 26}" y2="111" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+          <text x="${left}" y="130" fill="#e0eaf3" font-size="12" font-weight="700">${escapeHtml(statusText)}</text>
+          <text x="${width - 26}" y="130" text-anchor="end" fill="#7890a9" font-size="10">月末确认后更新</text>
           ${cells}
         </svg>
       `;
