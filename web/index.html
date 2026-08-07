@@ -461,22 +461,22 @@
       padding-top: 4px;
     }
     .market-timeline-frame {
-      min-height: 240px;
-      max-height: 420px;
+      min-height: 196px;
+      max-height: 360px;
       overflow: auto;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      background: linear-gradient(135deg, #0b2137, #07182a);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      background: #0a1c2d;
     }
     .market-timeline-svg {
       display: block;
       width: 100%;
       height: auto;
-      min-width: 620px;
+      min-width: 560px;
     }
     .market-timeline-loading,
     .market-timeline-error {
-      min-height: 280px;
+      min-height: 196px;
       display: grid;
       place-items: center;
       padding: 24px;
@@ -487,9 +487,9 @@
     .market-timeline-legend {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 12px;
+      justify-content: flex-start;
+      gap: 16px 24px;
+      margin-top: 10px;
       color: var(--muted);
       font-size: 12px;
     }
@@ -497,23 +497,23 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      min-height: 32px;
-      padding: 6px 11px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 999px;
-      background: rgba(7, 24, 42, 0.72);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+      min-height: 28px;
+      padding: 4px 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
     }
     .market-timeline-legend i {
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       display: inline-block;
-      box-shadow: 0 0 12px currentColor;
+      box-shadow: none;
     }
-    .market-timeline-legend .strong { color: #74b9ff; background: #74b9ff; }
-    .market-timeline-legend .transition { color: #f6a15b; background: #f6a15b; }
-    .market-timeline-legend .defensive { color: #ea86bc; background: #ea86bc; }
+    .market-timeline-legend .strong { color: #67b8c1; background: #67b8c1; }
+    .market-timeline-legend .transition { color: #c89b62; background: #c89b62; }
+    .market-timeline-legend .defensive { color: #a17f9f; background: #a17f9f; }
     @media (max-width: 720px) {
       .category-pie-wrap { grid-template-columns: 1fr; }
       .market-timeline-frame { max-height: 560px; }
@@ -2504,10 +2504,10 @@
 
     function marketTimelineStateMeta(stateKey) {
       const states = {
-        strong: { short: "强", label: "强势", colorA: "#68b7ff", colorB: "#79e3bd" },
-        transition: { short: "过", label: "过渡", colorA: "#f49a54", colorB: "#ffd073" },
-        defensive: { short: "守", label: "防守", colorA: "#e783b6", colorB: "#c9a2ff" },
-        pending: { short: "待", label: "待确认", colorA: "#3e5067", colorB: "#52647c" }
+        strong: { short: "强", label: "强势", colorA: "#4f9acb", colorB: "#6bc4b2" },
+        transition: { short: "过", label: "过渡", colorA: "#b27b4c", colorB: "#d2a75f" },
+        defensive: { short: "守", label: "防守", colorA: "#8e6685", colorB: "#a282a8" },
+        pending: { short: "待", label: "待确认", colorA: "#26384b", colorB: "#30465c" }
       };
       return states[stateKey] || states.pending;
     }
@@ -2521,11 +2521,11 @@
       const signal = state.v41Live?.signal || state.nsdkState?.v41?.lastSignal || null;
       const signalState = ["strong", "transition", "defensive"].includes(signal?.state) ? signal.state : "pending";
       const active = marketTimelineStateMeta(signalState);
-      const left = 78;
-      const cellWidth = 132;
-      const gap = 10;
-      const width = Math.max(720, left + months.length * cellWidth + (months.length - 1) * gap + 48);
-      const height = 220;
+      const left = 56;
+      const cellWidth = 128;
+      const gap = 14;
+      const width = Math.max(680, left + months.length * cellWidth + (months.length - 1) * gap + 40);
+      const height = 176;
       const monthNames = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
       const gradients = ["strong", "transition", "defensive", "pending"].map((key) => {
         const meta = marketTimelineStateMeta(key);
@@ -2538,10 +2538,10 @@
         const x = left + index * (cellWidth + gap);
         return `
           <g role="img" aria-label="${escapeHtml(`${year}-${String(month).padStart(2, "0")} ${isCurrent && signalState !== "pending" ? meta.label : "待确认"}`)}">
-            <text x="${x + cellWidth / 2}" y="38" text-anchor="middle" fill="#b8c8dc" font-size="16">${escapeHtml(monthNames[month - 1])}</text>
-            <rect x="${x}" y="54" width="${cellWidth}" height="86" rx="13" fill="url(#timeline-${isCurrent ? signalState : "pending"})" stroke="rgba(255,255,255,0.18)" stroke-width="1" />
-            <text x="${x + cellWidth / 2}" y="108" text-anchor="middle" fill="#07182a" font-size="28" font-weight="800">${escapeHtml(label)}</text>
-            <text x="${x + cellWidth / 2}" y="165" text-anchor="middle" fill="#89a0bb" font-size="13">${escapeHtml(`${year}-${String(month).padStart(2, "0")}`)}</text>
+            <text x="${x + cellWidth / 2}" y="28" text-anchor="middle" fill="#a9bbce" font-size="13" font-weight="600">${escapeHtml(monthNames[month - 1])}</text>
+            <rect x="${x}" y="42" width="${cellWidth}" height="60" rx="8" fill="url(#timeline-${isCurrent ? signalState : "pending"})" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+            <text x="${x + cellWidth / 2}" y="80" text-anchor="middle" fill="${isCurrent && signalState !== "pending" ? "#0a1c2d" : "#c9d5e2"}" font-size="22" font-weight="750">${escapeHtml(label)}</text>
+            <text x="${x + cellWidth / 2}" y="124" text-anchor="middle" fill="#7890a9" font-size="11">${escapeHtml(`${year}-${String(month).padStart(2, "0")}`)}</text>
           </g>
         `;
       }).join("");
@@ -2549,9 +2549,10 @@
       return `
         <svg class="market-timeline-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(`${startMonth} 起的 v4.1 市场状态时间表`)}" data-source-asset="${escapeHtml(MARKET_STATE_TIMELINE_ASSET)}">
           <defs>${gradients}</defs>
-          <rect width="100%" height="100%" rx="12" fill="#07182a" />
-          <text x="${left}" y="194" fill="#d6e2f0" font-size="15" font-weight="700">${escapeHtml(statusText)}</text>
-          <text x="${width - 26}" y="194" text-anchor="end" fill="#6f8ba9" font-size="12">月末确认后更新</text>
+          <rect width="100%" height="100%" rx="8" fill="#0a1c2d" />
+          <line x1="${left}" y1="141" x2="${width - 26}" y2="141" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+          <text x="${left}" y="158" fill="#e0eaf3" font-size="13" font-weight="700">${escapeHtml(statusText)}</text>
+          <text x="${width - 26}" y="158" text-anchor="end" fill="#7890a9" font-size="11">月末确认后更新</text>
           ${cells}
         </svg>
       `;

@@ -22,6 +22,8 @@ assert.match(html, /本月具体金额变动方向/, 'web should show exact mont
 assert.match(html, /各状态对应资产仓位/, 'web should show the allocation table for all market states');
 assert.match(html, /renderMarketStateTimeline\(\)/, 'web should render the market state timeline');
 assert.match(html, /renderCurrentMarketTimelineSvg\(/, 'market state timeline should render from the configured start month without fetching local SVG');
+assert.match(html, /const height = 176;/, 'market state timeline should use a compact presentation height');
+assert.match(html, /background: #0a1c2d;/, 'market state timeline should use a restrained solid surface');
 assert.match(html, /function currentYearMonth\(/, 'market state timeline should default to the current program month');
 assert.doesNotMatch(html, /fetch\(`\$\{MARKET_STATE_TIMELINE_ASSET\}/, 'market state timeline should not fetch a local SVG from file://');
 assert.match(html, /assets\/v41-market-state-timeline\.svg/, 'web should retain the bundled market state SVG as the historical source asset');
