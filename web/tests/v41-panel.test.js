@@ -20,12 +20,16 @@ assert.match(
 assert.match(html, /强势\/过渡\/防守/, 'web should explain the three market states');
 assert.match(html, /本月具体金额变动方向/, 'web should show exact monthly money directions');
 assert.match(html, /各状态对应资产仓位/, 'web should show the allocation table for all market states');
-assert.match(html, /renderMarketStateTimeline\(\)/, 'web should render the static market state timeline');
-assert.match(html, /cropMarketTimelineSvg\(/, 'market state timeline should be cropped from the configured start month');
-assert.match(html, /assets\/v41-market-state-timeline\.svg/, 'web should reference the bundled market state SVG');
+assert.match(html, /renderMarketStateTimeline\(\)/, 'web should render the market state timeline');
+assert.match(html, /renderCurrentMarketTimelineSvg\(/, 'market state timeline should render from the configured start month without fetching local SVG');
+assert.match(html, /function currentYearMonth\(/, 'market state timeline should default to the current program month');
+assert.doesNotMatch(html, /fetch\(`\$\{MARKET_STATE_TIMELINE_ASSET\}/, 'market state timeline should not fetch a local SVG from file://');
+assert.match(html, /assets\/v41-market-state-timeline\.svg/, 'web should retain the bundled market state SVG as the historical source asset');
 assert.match(html, /marketStateTimelineStartMonth/, 'web should expose the timeline start month setting');
 assert.match(html, /renderAssetCategoryPie\(summary\)/, 'web should render a category allocation pie chart');
 assert.match(html, /conic-gradient\(/, 'category allocation should use a pie chart gradient');
+assert.match(html, /\.category-pie::after/, 'category allocation should render a doughnut center');
+assert.match(html, /transparent \$\{colorEnd\.toFixed/, 'category allocation should separate doughnut segments');
 assert.match(html, /key: "strong"[\s\S]*nasdaq: 70, gold: 15, bond: 15/, 'strong state should use 70/15/15');
 assert.match(html, /key: "transition"[\s\S]*nasdaq: 55, gold: 15, bond: 30/, 'transition state should use 55/15/30');
 assert.match(html, /key: "defensive"[\s\S]*nasdaq: 15, gold: 15, bond: 70/, 'defensive state should use 15/15/70');
@@ -34,7 +38,7 @@ assert.match(html, /assetCategories\.splice\(3, 0, \{ value: "bond"/, 'web shoul
 assert.match(html, /deepSet\(repositorySettings, "nsdk\.serverChan\.sendKey", ""\)/, 'GitHub save must redact ServerChan credentials');
 assert.strictEqual(settings.strategyV41.signalSymbol, 'QQQ');
 assert.strictEqual(settings.strategyV41.bondCode, '511360');
-assert.strictEqual(settings.strategyV41.marketStateTimelineStartMonth, '2000-08');
+assert.strictEqual(settings.strategyV41.marketStateTimelineStartMonth, '2026-08');
 assert.strictEqual(settings.strategyV41.rebalanceThresholdPercent, 3);
 assert.ok(settings.portfolio.assets.some((asset) => asset.code === '511360' && asset.category === 'bond'));
 assert.strictEqual(settings.nsdk.serverChan.sendKey, '');

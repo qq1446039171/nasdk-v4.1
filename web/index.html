@@ -398,11 +398,21 @@
       background: rgba(10, 14, 23, 0.52);
     }
     .category-pie {
+      position: relative;
       width: min(220px, 62vw);
       aspect-ratio: 1;
       border-radius: 50%;
       justify-self: center;
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 16px 44px rgba(0, 0, 0, 0.28);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14), 0 0 34px rgba(94, 180, 255, 0.12), 0 16px 44px rgba(0, 0, 0, 0.28);
+    }
+    .category-pie::after {
+      content: "";
+      position: absolute;
+      inset: 25%;
+      border-radius: 50%;
+      background: #0a0e17;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.22);
     }
     .category-pie-empty {
       display: grid;
@@ -418,14 +428,24 @@
     }
     .category-pie-legend {
       display: grid;
-      gap: 9px;
+      gap: 10px;
       min-width: 0;
+    }
+    .category-pie-legend > strong {
+      color: var(--text);
+      font-size: 15px;
+      letter-spacing: 0.02em;
     }
     .category-pie-item {
       display: grid;
       grid-template-columns: 12px minmax(0, 1fr) auto;
       gap: 8px;
       align-items: center;
+      min-height: 36px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.035);
       color: var(--muted);
       font-size: 13px;
     }
@@ -433,6 +453,7 @@
       width: 10px;
       height: 10px;
       border-radius: 3px;
+      box-shadow: 0 0 12px currentColor;
     }
     .category-pie-item strong { color: var(--text); font-weight: 700; }
     .market-timeline {
@@ -440,18 +461,18 @@
       padding-top: 4px;
     }
     .market-timeline-frame {
-      min-height: 280px;
-      max-height: 720px;
+      min-height: 240px;
+      max-height: 420px;
       overflow: auto;
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
-      background: #181818;
+      background: linear-gradient(135deg, #0b2137, #07182a);
     }
     .market-timeline-svg {
       display: block;
       width: 100%;
       height: auto;
-      min-width: 720px;
+      min-width: 620px;
     }
     .market-timeline-loading,
     .market-timeline-error {
@@ -466,16 +487,33 @@
     .market-timeline-legend {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px 16px;
-      margin-top: 10px;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 12px;
       color: var(--muted);
       font-size: 12px;
     }
-    .market-timeline-legend span { display: inline-flex; align-items: center; gap: 6px; }
-    .market-timeline-legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
-    .market-timeline-legend .strong { background: #78baf2; }
-    .market-timeline-legend .transition { background: #f39a52; }
-    .market-timeline-legend .defensive { background: #e982b5; }
+    .market-timeline-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 32px;
+      padding: 6px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      background: rgba(7, 24, 42, 0.72);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+    }
+    .market-timeline-legend i {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 12px currentColor;
+    }
+    .market-timeline-legend .strong { color: #74b9ff; background: #74b9ff; }
+    .market-timeline-legend .transition { color: #f6a15b; background: #f6a15b; }
+    .market-timeline-legend .defensive { color: #ea86bc; background: #ea86bc; }
     @media (max-width: 720px) {
       .category-pie-wrap { grid-template-columns: 1fr; }
       .market-timeline-frame { max-height: 560px; }
@@ -859,7 +897,7 @@
             { key: "strategyV41.excludedEmergencyCashCny", nameZh: "独立应急金(元)", nameEn: "Excluded Emergency Cash", description: "不参与 v4.1 调仓的生活应急金；从策略外现金中优先扣除。", type: "number", default: 36000, validation: { required: true, min: 0, max: 1000000000 } },
             { key: "strategyV41.bondCode", nameZh: "债券 ETF 代码", nameEn: "Bond ETF Code", description: "当前使用海富通中证短融 ETF 511360。", type: "string", default: "511360", validation: { required: true, maxLength: 16 } },
             { key: "strategyV41.bondName", nameZh: "债券 ETF 名称", nameEn: "Bond ETF Name", description: "用于调仓建议和手机推送。", type: "string", default: "海富通中证短融ETF", validation: { required: true, maxLength: 64 } },
-            { key: "strategyV41.marketStateTimelineStartMonth", nameZh: "市场状态时间表起始月份", nameEn: "Market State Timeline Start Month", description: "网页只展示该月份及之后的静态市场状态时间表，不再逐月请求历史数据。格式：YYYY-MM。", type: "string", default: "2000-08", validation: { required: true, maxLength: 7 } }
+            { key: "strategyV41.marketStateTimelineStartMonth", nameZh: "市场状态时间表起始月份", nameEn: "Market State Timeline Start Month", description: "网页从程序启动月份开始展示状态时间表；后续月份在月末信号确认后更新。格式：YYYY-MM。", type: "string", default: "2026-08", validation: { required: true, maxLength: 7 } }
           ]
         },
         {
@@ -2234,16 +2272,20 @@
           </div>
         `;
       }
+      const gap = rows.length > 1 ? Math.min(1.2, 80 / rows.length) : 0;
+      const usable = 100 - gap * rows.length;
       let cursor = 0;
       const slices = rows.map((row) => {
         const percent = (row.valueCny / summary.total) * 100;
         const start = cursor;
-        cursor += percent;
-        return `${row.color} ${start.toFixed(4)}% ${cursor.toFixed(4)}%`;
+        const segment = (percent / 100) * usable;
+        const colorEnd = start + segment;
+        cursor = colorEnd + gap;
+        return `${row.color} ${start.toFixed(4)}% ${colorEnd.toFixed(4)}%, transparent ${colorEnd.toFixed(4)}% ${cursor.toFixed(4)}%`;
       }).join(", ");
       const legend = rows.map((row) => {
         const percent = (row.valueCny / summary.total) * 100;
-        return `<div class="category-pie-item"><i class="category-pie-swatch" style="background:${row.color}"></i><span>${escapeHtml(row.label)}</span><strong>${escapeHtml(fmtPercent(percent))}%</strong></div>`;
+        return `<div class="category-pie-item"><i class="category-pie-swatch" style="color:${row.color};background:${row.color}"></i><span>${escapeHtml(row.label)}</span><strong>${escapeHtml(fmtPercent(percent))}%</strong></div>`;
       }).join("");
       return `
         <div class="category-pie-wrap" aria-label="当前投资资产分类占比">
@@ -2426,12 +2468,15 @@
     }
 
     const MARKET_STATE_TIMELINE_ASSET = "./assets/v41-market-state-timeline.svg";
-    let marketTimelineSourcePromise = null;
-    let marketTimelineHydrationId = 0;
+
+    function currentYearMonth() {
+      const now = new Date();
+      return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+    }
 
     function marketTimelineStartMonth() {
-      const configured = String(state.settings?.strategyV41?.marketStateTimelineStartMonth || "2000-08").trim();
-      return /^\d{4}-(0[1-9]|1[0-2])$/.test(configured) ? configured : "2000-08";
+      const configured = String(state.settings?.strategyV41?.marketStateTimelineStartMonth || currentYearMonth()).trim();
+      return /^\d{4}-(0[1-9]|1[0-2])$/.test(configured) ? configured : currentYearMonth();
     }
 
     function renderMarketStateTimeline() {
@@ -2441,12 +2486,12 @@
           <div class="section-head">
             <div>
               <h3 class="section-title">v4.1 市场状态时间表</h3>
-              <div class="field-desc">仅展示配置起始月份 ${escapeHtml(startMonth)} 及之后的历史状态；数据来自静态 SVG，不逐月请求行情。</div>
+              <div class="field-desc">从程序启动月份 ${escapeHtml(startMonth)} 开始展示；本月使用已加载的 NDX/QQQ 信号，后续月份在月末确认后更新。</div>
             </div>
             <span class="tag info">起始月份：${escapeHtml(startMonth)}</span>
           </div>
           <div id="marketStateTimeline" class="market-timeline-frame" data-start-month="${escapeHtml(startMonth)}">
-            <img class="market-timeline-svg" src="${MARKET_STATE_TIMELINE_ASSET}" alt="v4.1 市场状态时间表" />
+            <div class="market-timeline-loading">正在生成 ${escapeHtml(startMonth)} 起的状态时间表…</div>
           </div>
           <div class="market-timeline-legend" aria-label="市场状态图例">
             <span><i class="strong"></i>强势：纳指 / 黄金 / 债券 70/15/15</span>
@@ -2457,92 +2502,69 @@
       `;
     }
 
-    function timelineElementRow(element) {
-      const tag = String(element.tagName || "").toLowerCase();
-      const x = Number(element.getAttribute("x"));
-      const y = Number(element.getAttribute("y"));
-      const className = String(element.getAttribute("class") || "");
-      if (!Number.isFinite(y)) return null;
-      let base = null;
-      if (tag === "rect" && Number.isFinite(x) && x >= 85 && x <= 1141) base = 48;
-      else if (className === "cell") base = 72;
-      else if (className === "label" && Math.abs(x - 66) < 1) base = 73;
-      if (base === null) return null;
-      const row = Math.round((y - base) / 42);
-      return row >= 0 && row <= 25 && Math.abs(y - (base + row * 42)) < 1 ? row : null;
+    function marketTimelineStateMeta(stateKey) {
+      const states = {
+        strong: { short: "强", label: "强势", colorA: "#68b7ff", colorB: "#79e3bd" },
+        transition: { short: "过", label: "过渡", colorA: "#f49a54", colorB: "#ffd073" },
+        defensive: { short: "守", label: "防守", colorA: "#e783b6", colorB: "#c9a2ff" },
+        pending: { short: "待", label: "待确认", colorA: "#3e5067", colorB: "#52647c" }
+      };
+      return states[stateKey] || states.pending;
     }
 
-    function timelineElementMonth(element) {
-      const tag = String(element.tagName || "").toLowerCase();
-      const x = Number(element.getAttribute("x"));
-      if (!Number.isFinite(x)) return null;
-      const base = tag === "rect" ? 85 : 129;
-      const month = Math.round((x - base) / 96) + 1;
-      return month >= 1 && month <= 12 && Math.abs(x - (base + (month - 1) * 96)) < 1 ? month : null;
-    }
-
-    function cropMarketTimelineSvg(svgText, startMonth) {
-      const match = /^(\d{4})-(\d{2})$/.exec(startMonth);
+    function renderCurrentMarketTimelineSvg(startMonth) {
+      const match = /^(\d{4})-(0[1-9]|1[0-2])$/.exec(startMonth);
       if (!match) throw new Error("起始月份格式必须为 YYYY-MM");
-      const startYear = Number(match[1]);
-      const startMonthNumber = Number(match[2]);
-      if (startYear < 2000 || startYear > 2025) throw new Error("静态时间表仅覆盖 2000-01 至 2025-12");
-
-      const doc = new DOMParser().parseFromString(svgText, "image/svg+xml");
-      const root = doc.documentElement;
-      if (!root || root.tagName.toLowerCase() !== "svg") throw new Error("市场状态 SVG 格式无效");
-      const rowOffset = (startYear - 2000) * 42;
-      const elements = Array.from(root.querySelectorAll("rect, text"));
-      for (const element of elements) {
-        const tag = String(element.tagName || "").toLowerCase();
-        const y = Number(element.getAttribute("y"));
-        const row = timelineElementRow(element);
-
-        if (tag === "rect" && Number.isFinite(y) && y >= 1130) {
-          element.remove();
-          continue;
-        }
-        if (tag === "text" && Number.isFinite(y) && y >= 1141) {
-          element.remove();
-          continue;
-        }
-        if (row === null) continue;
-
-        const year = 2000 + row;
-        const month = timelineElementMonth(element);
-        if (year < startYear || (year === startYear && month !== null && month < startMonthNumber)) {
-          element.remove();
-          continue;
-        }
-        if (year >= startYear) element.setAttribute("transform", `translate(0 ${-rowOffset})`);
-      }
-
-      const height = Math.max(180, 1158 - rowOffset);
-      root.setAttribute("height", String(height));
-      root.setAttribute("viewBox", `0 0 1250 ${height}`);
-      const background = root.querySelector("rect");
-      if (background && !background.getAttribute("x")) background.setAttribute("height", String(height));
-      return new XMLSerializer().serializeToString(root);
+      const year = Number(match[1]);
+      const firstMonth = Number(match[2]);
+      const months = Array.from({ length: 13 - firstMonth }, (_, index) => firstMonth + index);
+      const signal = state.v41Live?.signal || state.nsdkState?.v41?.lastSignal || null;
+      const signalState = ["strong", "transition", "defensive"].includes(signal?.state) ? signal.state : "pending";
+      const active = marketTimelineStateMeta(signalState);
+      const left = 78;
+      const cellWidth = 132;
+      const gap = 10;
+      const width = Math.max(720, left + months.length * cellWidth + (months.length - 1) * gap + 48);
+      const height = 220;
+      const monthNames = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+      const gradients = ["strong", "transition", "defensive", "pending"].map((key) => {
+        const meta = marketTimelineStateMeta(key);
+        return `<linearGradient id="timeline-${key}" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${meta.colorA}"/><stop offset="100%" stop-color="${meta.colorB}"/></linearGradient>`;
+      }).join("");
+      const cells = months.map((month, index) => {
+        const isCurrent = index === 0;
+        const meta = isCurrent ? active : marketTimelineStateMeta("pending");
+        const label = isCurrent && signalState !== "pending" ? meta.short : "待";
+        const x = left + index * (cellWidth + gap);
+        return `
+          <g role="img" aria-label="${escapeHtml(`${year}-${String(month).padStart(2, "0")} ${isCurrent && signalState !== "pending" ? meta.label : "待确认"}`)}">
+            <text x="${x + cellWidth / 2}" y="38" text-anchor="middle" fill="#b8c8dc" font-size="16">${escapeHtml(monthNames[month - 1])}</text>
+            <rect x="${x}" y="54" width="${cellWidth}" height="86" rx="13" fill="url(#timeline-${isCurrent ? signalState : "pending"})" stroke="rgba(255,255,255,0.18)" stroke-width="1" />
+            <text x="${x + cellWidth / 2}" y="108" text-anchor="middle" fill="#07182a" font-size="28" font-weight="800">${escapeHtml(label)}</text>
+            <text x="${x + cellWidth / 2}" y="165" text-anchor="middle" fill="#89a0bb" font-size="13">${escapeHtml(`${year}-${String(month).padStart(2, "0")}`)}</text>
+          </g>
+        `;
+      }).join("");
+      const statusText = signalState !== "pending" ? `本月有效状态：${active.label}` : "等待月线信号加载";
+      return `
+        <svg class="market-timeline-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(`${startMonth} 起的 v4.1 市场状态时间表`)}" data-source-asset="${escapeHtml(MARKET_STATE_TIMELINE_ASSET)}">
+          <defs>${gradients}</defs>
+          <rect width="100%" height="100%" rx="12" fill="#07182a" />
+          <text x="${left}" y="194" fill="#d6e2f0" font-size="15" font-weight="700">${escapeHtml(statusText)}</text>
+          <text x="${width - 26}" y="194" text-anchor="end" fill="#6f8ba9" font-size="12">月末确认后更新</text>
+          ${cells}
+        </svg>
+      `;
     }
 
-    async function hydrateMarketStateTimeline() {
+    function hydrateMarketStateTimeline() {
       const container = document.getElementById("marketStateTimeline");
       if (!container) return;
-      const hydrationId = ++marketTimelineHydrationId;
       const startMonth = container.dataset.startMonth || marketTimelineStartMonth();
-      if (!marketTimelineSourcePromise) {
-        marketTimelineSourcePromise = fetch(`${MARKET_STATE_TIMELINE_ASSET}?v=1`).then((response) => {
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          return response.text();
-        });
-      }
       try {
-        const svgText = await marketTimelineSourcePromise;
-        if (hydrationId !== marketTimelineHydrationId || !document.body.contains(container)) return;
-        container.innerHTML = cropMarketTimelineSvg(svgText, startMonth);
+        container.innerHTML = renderCurrentMarketTimelineSvg(startMonth);
       } catch (error) {
-        if (hydrationId !== marketTimelineHydrationId || !document.body.contains(container)) return;
-        container.innerHTML = `<div class="market-timeline-error">时间表加载失败，已保留静态图入口。<br>${escapeHtml(error?.message || String(error))}</div>`;
+        container.innerHTML = `<div class="market-timeline-error">时间表生成失败。<br>${escapeHtml(error?.message || String(error))}</div>`;
       }
     }
 

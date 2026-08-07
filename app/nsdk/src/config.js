@@ -173,6 +173,7 @@ const buildConfigFromSettings = (settings, localSecrets = {}) => {
     || nsdk.serverChan?.sendKey
     || ''
   ).trim();
+  const currentMonth = new Date();
 
   const cfg = {
     fund: nsdk.fund,
@@ -205,7 +206,7 @@ const buildConfigFromSettings = (settings, localSecrets = {}) => {
       excludedEmergencyCashCny: Math.max(0, clampNumber(strategy.excludedEmergencyCashCny, 36000)),
       bondCode: String(strategy.bondCode || '511360').trim(),
       bondName: String(strategy.bondName || '海富通中证短融ETF').trim(),
-      marketStateTimelineStartMonth: String(strategy.marketStateTimelineStartMonth || '2000-08').trim(),
+      marketStateTimelineStartMonth: String(strategy.marketStateTimelineStartMonth || `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}`).trim(),
     },
     portfolio: {
       investedNasdaqCny: Math.round(investedNasdaqCny),
