@@ -14,9 +14,10 @@ assert.match(html, /row\.month < currentMonth/, 'the current incomplete month mu
 assert.match(html, /当前有效状态/, 'web should label the state as currently effective rather than a daily trading signal');
 assert.match(
   html,
-  /\$\{renderV41Overview\(\)\}[\s\S]*strategy-maintenance-divider[\s\S]*\$\{renderAssetSection\(\)\}[\s\S]*\$\{renderStateSection\(\)\}/,
-  'asset holdings and runtime state should appear after the v4.1 strategy block with a divider'
+  /\$\{renderV41Overview\(\)\}[\s\S]*strategy-maintenance-divider[\s\S]*\$\{renderAssetSection\(\)\}[\s\S]*\$\{renderGroups\(\)\}/,
+  'asset holdings should appear after the v4.1 strategy block with a divider'
 );
+assert.doesNotMatch(html, /\$\{renderStateSection\(\)\}/, 'legacy state.json status block should not be rendered');
 assert.match(html, /强势\/过渡\/防守/, 'web should explain the three market states');
 assert.match(html, /本月具体金额变动方向/, 'web should show exact monthly money directions');
 assert.match(html, /各状态对应资产仓位/, 'web should show the allocation table for all market states');
