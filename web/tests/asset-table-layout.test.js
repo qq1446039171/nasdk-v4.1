@@ -4,7 +4,7 @@ const path = require('path');
 
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
-assert.match(html, /assetRowsCollapsed:\s*false/, 'asset rows should start expanded');
+assert.match(html, /assetRowsCollapsed:\s*true/, 'asset rows should start collapsed');
 assert.match(html, /data-action="toggle-assets"/, 'asset section should include a collapse toggle');
 assert.match(html, /state\.assetRowsCollapsed \?/, 'asset section should render collapsed and expanded states');
 assert.match(html, /balancesHidden:\s*false/, 'balances should start visible');
