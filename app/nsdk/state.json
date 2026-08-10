@@ -222,12 +222,65 @@
     "at": "2026-08-10T07:41:05.806Z"
   },
   "v41": {
-    "lastCheckedAt": null,
-    "lastNotifiedSignalMonth": null,
-    "lastSignal": null,
-    "lastTargets": null,
-    "lastPortfolio": null,
-    "lastPlan": null
+    "lastCheckedAt": "2026-08-10T07:43:48.959Z",
+    "lastNotifiedSignalMonth": "2026-07",
+    "lastSignal": {
+      "signalMonth": "2026-07",
+      "state": "strong",
+      "stateLabel": "强势",
+      "close": 687.99,
+      "sma10": 648.83,
+      "momentum12Percent": 22.35,
+      "annualizedVolatilityPercent": 31.16,
+      "trendPositive": true,
+      "momentumPositive": true,
+      "highVolatility": false,
+      "volatilityThresholdPercent": 35
+    },
+    "lastTargets": {
+      "nasdaq": 70,
+      "gold": 15,
+      "bond": 15
+    },
+    "lastPortfolio": {
+      "amounts": {
+        "nasdaq": 78259.35,
+        "gold": 65140.01,
+        "bond": 0,
+        "other": 27123.3
+      },
+      "investableTotalCny": 170522.66,
+      "excludedEmergencyCashCny": 36000,
+      "totalAssetsCny": 206522.66
+    },
+    "lastPlan": {
+      "rebalanceRequired": true,
+      "reason": "state_changed",
+      "projectedTotalCny": 174522.66,
+      "currentPercents": {
+        "nasdaq": 45.89,
+        "gold": 38.2,
+        "bond": 0,
+        "other": 15.91
+      },
+      "driftPercent": {
+        "nasdaq": -24.11,
+        "gold": 23.2,
+        "bond": -15,
+        "other": 15.91
+      },
+      "actions": {
+        "nasdaq": 43906.51,
+        "gold": -38961.61,
+        "bond": 26178.4,
+        "other": -27123.3
+      }
+    },
+    "lastProvider": "eastmoney-adjusted",
+    "lastMessage": {
+      "title": "v4.1月末：强势",
+      "body": "信号月份：2026-07（数据源：eastmoney-adjusted，QQQ 月度复权价）\n\n趋势：收盘 687.99 > SMA10 648.83；12月动量 +22.35%\n\n6月年化波动率：31.16%（阈值 35.00%）\n\n目标仓位：纳指 70% / 黄金 15% / 债券 15%\n\n策略内资产：¥170,523；独立应急金：¥36,000；本月新增：¥4,000\n\n处理原因：市场状态或高波动保护发生变化，需要整体调仓\n\n卖出/转出 策略外股票/现金：¥27,123\n\n买入/转入 纳斯达克（优先 513100）：¥43,907\n\n卖出/转出 黄金基金：¥38,962\n\n买入/转入 海富通中证短融ETF（511360）：¥26,178\n\n执行时间：信号确认后的下一个中国可交易日；金额按当日成交价允许有少量误差。"
+    }
   },
   "v41Daily": {
     "lastCheckedAt": "2026-08-10T07:41:05.806Z",
