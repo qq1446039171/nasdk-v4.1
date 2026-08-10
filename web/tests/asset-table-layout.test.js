@@ -31,28 +31,16 @@ assert.match(html, /其他资产与现金/, 'overview should label the combined 
 assert.doesNotMatch(html, /<div class="stat-label">黄金<\/div>/, 'gold should not be shown as a standalone overview card');
 assert.doesNotMatch(html, /<div class="stat-label">其他股票\/ETF<\/div>/, 'other stock and ETF should not be shown as a standalone overview card');
 
-const tableMatch = html.match(/<table class="data-table asset-table"[\s\S]*?<\/table>/);
-assert.ok(tableMatch, 'asset table should use a dedicated asset-table class');
+assert.match(html, /asset-category-group/, 'asset section should group holdings by category');
+assert.match(html, /asset-category-summary/, 'each category should show its amount and allocation summary');
+assert.match(html, /asset-card/, 'asset section should render compact asset cards');
+assert.match(html, /asset-edit-details/, 'asset editing fields should use progressive disclosure');
+assert.match(html, /data-asset-field="name"/, 'asset cards should retain the name editor');
+assert.match(html, /data-asset-field="category"/, 'asset cards should retain the category editor');
+assert.match(html, /data-asset-field="code"/, 'asset cards should retain the code editor');
+assert.match(html, /data-asset-field="shares"/, 'asset cards should retain the shares editor');
+assert.match(html, /data-asset-field="amountCny"/, 'asset cards should retain the fixed amount editor');
 
-const table = tableMatch[0];
-assert.ok(table.includes('<colgroup>'), 'asset table should define column widths with colgroup');
-assert.doesNotMatch(table, /data-asset-field="enabled"/, 'asset table should not render enabled switches');
-assert.doesNotMatch(table, /<th>启用<\/th>/, 'asset table should not render an enabled column');
-assert.doesNotMatch(table, /asset-col-enabled/, 'asset table should not reserve width for enabled controls');
-
-const expectedWidths = {
-  category: 130,
-  code: 92,
-  shares: 92,
-  amount: 110,
-};
-
-for (const [column, width] of Object.entries(expectedWidths)) {
-  assert.match(
-    table,
-    new RegExp(`<col class="asset-col-${column}" style="width:${width}px"`),
-    `${column} column should be ${width}px wide`,
-  );
-}
+assert.doesNotMatch(html, /<table class="data-table asset-table"/, 'legacy wide asset table should be removed');
 
 console.log('asset-table-layout.test.js passed');

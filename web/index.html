@@ -604,13 +604,16 @@
       font-size: 11px;
       vertical-align: middle;
     }
-    .asset-table {
-      table-layout: fixed;
-    }
-    .asset-table input,
-    .asset-table select {
-      padding-left: 8px;
-      padding-right: 8px;
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
     .asset-actions {
       display: flex;
@@ -622,6 +625,204 @@
       width: auto;
       min-height: 42px;
       padding: 8px 10px;
+    }
+    .asset-category-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .asset-category-group {
+      --asset-accent: var(--blue);
+      overflow: hidden;
+      border: 1px solid rgba(129, 199, 132, 0.16);
+      border-radius: 12px;
+      background: rgba(10, 14, 23, 0.4);
+    }
+    .asset-category-group[data-category="nasdaq"] { --asset-accent: #62b5ee; }
+    .asset-category-group[data-category="nasdaq_reserve_cash"] { --asset-accent: #b7a3ff; }
+    .asset-category-group[data-category="gold"] { --asset-accent: #f0c45c; }
+    .asset-category-group[data-category="bond"] { --asset-accent: #72d0ad; }
+    .asset-category-group[data-category="stock"] { --asset-accent: #b48cf0; }
+    .asset-category-group[data-category="cash"] { --asset-accent: #9aa9b8; }
+    .asset-category-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      background: linear-gradient(90deg, color-mix(in srgb, var(--asset-accent) 12%, transparent), transparent 62%);
+    }
+    .asset-category-identity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .asset-category-dot {
+      width: 9px;
+      height: 9px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--asset-accent);
+      box-shadow: 0 0 12px color-mix(in srgb, var(--asset-accent) 55%, transparent);
+    }
+    .asset-category-name {
+      color: var(--text);
+      font-weight: 800;
+      line-height: 1.25;
+    }
+    .asset-category-count {
+      margin-top: 2px;
+      color: var(--faint);
+      font-size: 12px;
+    }
+    .asset-category-summary {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .asset-category-summary strong {
+      color: var(--text);
+      font-size: 16px;
+    }
+    .asset-category-summary span {
+      color: var(--asset-accent);
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .asset-card-list { display: grid; }
+    .asset-card {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .asset-card:last-child { border-bottom: 0; }
+    .asset-card:hover { background: rgba(255, 255, 255, 0.025); }
+    .asset-card-main {
+      display: grid;
+      grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(92px, 0.6fr)) auto;
+      gap: 14px;
+      align-items: center;
+    }
+    .asset-card-identity { min-width: 0; }
+    .asset-card-name {
+      max-width: 300px;
+    }
+    .asset-card-name input {
+      min-height: 38px;
+      padding: 7px 10px;
+      border-color: rgba(129, 199, 132, 0.18);
+      background: rgba(10, 14, 23, 0.72);
+      font-weight: 750;
+    }
+    .asset-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 7px;
+      min-width: 0;
+    }
+    .asset-card-code {
+      color: var(--faint);
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+    }
+    .asset-card-category { min-width: 0; }
+    .asset-card-category select {
+      width: auto;
+      max-width: 170px;
+      min-height: 32px;
+      padding: 5px 9px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .asset-card-metric {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .asset-card-metric span {
+      color: var(--faint);
+      font-size: 11px;
+    }
+    .asset-card-metric strong {
+      overflow: hidden;
+      color: var(--text);
+      font-size: 14px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .asset-card-metric.emphasis strong { color: #fff; font-size: 16px; }
+    .asset-card-actions {
+      justify-content: flex-end;
+    }
+    .asset-card-actions .btn {
+      min-height: 38px;
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+    .asset-edit-details {
+      margin-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .asset-edit-details summary {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding-top: 10px;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      list-style: none;
+    }
+    .asset-edit-details summary::-webkit-details-marker { display: none; }
+    .asset-edit-details summary::before {
+      content: "+";
+      display: inline-grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      margin-right: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 50%;
+      color: var(--asset-accent);
+      font-size: 14px;
+      line-height: 1;
+    }
+    .asset-edit-details[open] summary::before { content: "−"; }
+    .asset-edit-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      padding-top: 10px;
+    }
+    .asset-edit-field {
+      display: grid;
+      gap: 5px;
+      color: var(--faint);
+      font-size: 11px;
+    }
+    .asset-edit-field input { min-height: 38px; }
+    @media (max-width: 1080px) {
+      .asset-card-main {
+        grid-template-columns: minmax(220px, 1fr) repeat(2, minmax(92px, 0.65fr)) auto;
+      }
+      .asset-card-metric.price { display: none; }
+    }
+    @media (max-width: 720px) {
+      .asset-category-head { align-items: flex-start; }
+      .asset-category-summary { display: grid; gap: 0; justify-items: end; }
+      .asset-card-main { grid-template-columns: minmax(0, 1fr) auto; gap: 12px; }
+      .asset-card-identity { grid-column: 1 / -1; }
+      .asset-card-metric { min-width: 0; }
+      .asset-card-metric.price { display: grid; }
+      .asset-card-actions { align-self: end; }
+      .asset-edit-grid { grid-template-columns: 1fr; }
     }
 
     .switch {
@@ -2299,41 +2500,106 @@
     function renderAssetSection() {
       if (!state.settings) return "";
       const summary = assetSummary();
-      const rows = portfolioAssets().map((raw, index) => {
+      const assetRecords = portfolioAssets().map((raw, index) => {
         const asset = normalizeAsset(raw, index);
         const value = assetValue(asset);
-        const pct = summary.total > 0 ? (value / summary.total) * 100 : 0;
-        const isCash = isCashAsset(asset);
-        const priceError = isCash ? "" : String(raw?.lastPriceError || "");
-        const priceErrorMark = priceError ? ` <span class="price-error" title="上次刷新失败：${escapeHtml(priceError)}">⚠</span>` : "";
-        return `
-          <tr>
-            <td><input data-asset-index="${index}" data-asset-field="name" value="${escapeHtml(asset.name)}" /></td>
-            <td>
-              <select data-asset-index="${index}" data-asset-field="category">
-                ${assetCategories.map((item) => `<option value="${escapeHtml(item.value)}" ${asset.category === item.value ? "selected" : ""}>${escapeHtml(item.label)}</option>`).join("")}
-              </select>
-            </td>
-            <td><input data-asset-index="${index}" data-asset-field="code" value="${escapeHtml(asset.code)}" ${isCash ? "disabled" : ""} /></td>
-            <td><input data-asset-index="${index}" data-asset-field="shares" type="number" step="0.01" min="0" value="${escapeHtml(asset.shares)}" ${isCash ? "disabled" : ""} /></td>
-            <td><input data-asset-index="${index}" data-asset-field="amountCny" type="number" step="100" min="0" value="${escapeHtml(asset.amountCny)}" ${isCash ? "" : "disabled"} /></td>
-            <td>¥${escapeHtml(fmtMoney(asset.lastPrice))}${priceErrorMark}</td>
-            <td>¥${escapeHtml(fmtMoney(value))}</td>
-            <td>${escapeHtml(fmtPercent(pct))}%</td>
-            <td>
-              <div class="asset-actions">
-                <button class="btn primary" data-action="open-asset-amount" data-asset-index="${index}">新增金额</button>
-                <button class="btn danger" data-action="delete-asset" data-asset-index="${index}">删除</button>
+        return {
+          raw,
+          index,
+          asset,
+          value,
+          pct: summary.total > 0 ? (value / summary.total) * 100 : 0,
+          isCash: isCashAsset(asset),
+          priceError: isCashAsset(asset) ? "" : String(raw?.lastPriceError || "")
+        };
+      });
+      const knownCategories = new Set(assetCategories.map((item) => item.value));
+      const categoryEntries = [
+        ...assetCategories,
+        { value: "__uncategorized", label: "未分类" }
+      ];
+      const categorySections = categoryEntries.map((item) => {
+        const records = item.value === "__uncategorized"
+          ? assetRecords.filter(({ asset }) => !knownCategories.has(asset.category))
+          : assetRecords.filter(({ asset }) => asset.category === item.value);
+        if (!records.length) return "";
+        const valueCny = records.reduce((total, record) => total + record.value, 0);
+        const categoryPct = summary.total > 0 ? (valueCny / summary.total) * 100 : 0;
+        const cards = records.map(({ index, asset, value, pct, isCash, priceError }) => {
+          const priceErrorMark = priceError ? ` <span class="price-error" title="上次刷新失败：${escapeHtml(priceError)}">⚠</span>` : "";
+          const categoryOptions = assetCategories
+            .map((option) => `<option value="${escapeHtml(option.value)}" ${asset.category === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`)
+            .join("");
+          return `
+            <article class="asset-card">
+              <div class="asset-card-main">
+                <div class="asset-card-identity">
+                  <div class="asset-card-name">
+                    <input data-asset-index="${index}" data-asset-field="name" value="${escapeHtml(asset.name)}" aria-label="资产名称" />
+                  </div>
+                  <div class="asset-card-meta">
+                    <span class="asset-card-code">${escapeHtml(asset.code || "无代码")}</span>
+                    <label class="asset-card-category">
+                      <span class="sr-only">资产分类</span>
+                      <select data-asset-index="${index}" data-asset-field="category" aria-label="资产分类">
+                        ${categoryOptions}
+                      </select>
+                    </label>
+                  </div>
+                </div>
+                <div class="asset-card-metric price">
+                  <span>价格/净值</span>
+                  <strong>¥${escapeHtml(fmtMoney(asset.lastPrice))}${priceErrorMark}</strong>
+                </div>
+                <div class="asset-card-metric emphasis">
+                  <span>市值</span>
+                  <strong>¥${escapeHtml(fmtMoney(value))}</strong>
+                </div>
+                <div class="asset-card-metric">
+                  <span>组合占比</span>
+                  <strong>${escapeHtml(fmtPercent(pct))}%</strong>
+                </div>
+                <div class="asset-actions asset-card-actions">
+                  <button class="btn primary" data-action="open-asset-amount" data-asset-index="${index}">新增金额</button>
+                  <button class="btn danger" data-action="delete-asset" data-asset-index="${index}">删除</button>
+                </div>
               </div>
-            </td>
-          </tr>
+              <details class="asset-edit-details">
+                <summary>编辑持仓数据</summary>
+                <div class="asset-edit-grid">
+                  <label class="asset-edit-field">代码
+                    <input data-asset-index="${index}" data-asset-field="code" value="${escapeHtml(asset.code)}" ${isCash ? "disabled" : ""} />
+                  </label>
+                  <label class="asset-edit-field">份额
+                    <input data-asset-index="${index}" data-asset-field="shares" type="number" step="0.01" min="0" value="${escapeHtml(asset.shares)}" ${isCash ? "disabled" : ""} />
+                  </label>
+                  <label class="asset-edit-field">固定金额
+                    <input data-asset-index="${index}" data-asset-field="amountCny" type="number" step="100" min="0" value="${escapeHtml(asset.amountCny)}" ${isCash ? "" : "disabled"} />
+                  </label>
+                </div>
+              </details>
+            </article>
+          `;
+        }).join("");
+        return `
+          <section class="asset-category-group" data-category="${escapeHtml(item.value === "__uncategorized" ? "other" : item.value)}">
+            <header class="asset-category-head">
+              <div class="asset-category-identity">
+                <span class="asset-category-dot" aria-hidden="true"></span>
+                <div>
+                  <div class="asset-category-name">${escapeHtml(item.label)}</div>
+                  <div class="asset-category-count">${records.length} 项资产</div>
+                </div>
+              </div>
+              <div class="asset-category-summary">
+                <strong>¥${escapeHtml(fmtMoney(valueCny))}</strong>
+                <span>${escapeHtml(fmtPercent(categoryPct))}%</span>
+              </div>
+            </header>
+            <div class="asset-card-list">${cards}</div>
+          </section>
         `;
       }).join("");
-      const categoryRows = assetCategories
-        .map((item) => ({ ...item, valueCny: summary.byCategory[item.value] || 0 }))
-        .filter((item) => item.valueCny > 0)
-        .map((item) => `<span class="tag info">${escapeHtml(item.label)}：¥${escapeHtml(fmtMoney(item.valueCny))} / ${escapeHtml(fmtPercent(summary.total > 0 ? (item.valueCny / summary.total) * 100 : 0))}%</span>`)
-        .join("");
       return `
         <section class="section">
           <div class="section-head">
@@ -2353,33 +2619,12 @@
           ${renderNotice(state.assetPriceMessage, state.assetPriceMessageType)}
           <div class="meta" style="justify-content:flex-start;margin-bottom:12px">
             <span class="tag gold">总资产：¥${escapeHtml(fmtMoney(summary.total))}</span>
-            ${categoryRows}
           </div>
           ${renderAssetCategoryPie(summary)}
-          ${rows ? (state.assetRowsCollapsed ? `
+          ${assetRecords.length ? (state.assetRowsCollapsed ? `
             <div class="empty">已收起 ${escapeHtml(portfolioAssets().length)} 条资产明细。点击“展开”可继续编辑。</div>
           ` : `
-            <div style="overflow-x:auto">
-            <table class="data-table asset-table" style="min-width:960px">
-              <colgroup>
-                <col class="asset-col-name" style="width:170px" />
-                <col class="asset-col-category" style="width:130px" />
-                <col class="asset-col-code" style="width:92px" />
-                <col class="asset-col-shares" style="width:92px" />
-                <col class="asset-col-amount" style="width:110px" />
-                <col class="asset-col-price" style="width:110px" />
-                <col class="asset-col-value" style="width:110px" />
-                <col class="asset-col-percent" style="width:70px" />
-                <col class="asset-col-action" style="width:180px" />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th>名称</th><th>分类</th><th>代码</th><th>份额</th><th>固定金额</th><th>价格/净值</th><th>市值</th><th>占比</th><th>操作</th>
-                </tr>
-              </thead>
-              <tbody>${rows}</tbody>
-            </table>
-            </div>
+            <div class="asset-category-list">${categorySections}</div>
           `) : '<div class="empty">暂无资产。点击“新增资产”开始记录份额、代码或现金金额。</div>'}
         </section>
       `;
