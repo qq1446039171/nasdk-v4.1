@@ -18,6 +18,7 @@ assert.match(
   'asset holdings should appear after the v4.1 strategy block with a divider'
 );
 assert.doesNotMatch(html, /\$\{renderStateSection\(\)\}/, 'legacy state.json status block should not be rendered');
+assert.match(html, /id: "portfolio",\s*titleZh: "投资金额（手动输入）",\s*titleEn: "Portfolio Amounts",\s*hidden: true/, 'legacy manual portfolio amount group should be hidden');
 assert.match(html, /强势\/过渡\/防守/, 'web should explain the three market states');
 assert.match(html, /本月具体金额变动方向/, 'web should show exact monthly money directions');
 assert.match(html, /各状态对应资产仓位/, 'web should show the allocation table for all market states');

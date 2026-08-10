@@ -904,6 +904,7 @@
           id: "portfolio",
           titleZh: "投资金额（手动输入）",
           titleEn: "Portfolio Amounts",
+          hidden: true,
           fields: [
             { key: "portfolio.assets", nameZh: "资产持仓表", nameEn: "Portfolio Assets", description: "统一维护 ETF、股票、场外基金、现金和纳指回撤备用金。", type: "objectArray", default: [], hidden: true, validation: { required: false } },
             { key: "portfolio.profitHistory", nameZh: "资产盈利历史", nameEn: "Portfolio Profit History", description: "按日期保存总资产快照，用于计算昨日盈亏和盈利走势图。", type: "objectArray", default: [], hidden: true, validation: { required: false } },
