@@ -28,6 +28,9 @@ assert.match(html, /function calculateAssetAddition\(asset, amountCny\)/, 'asset
 assert.match(html, /data-asset-payment-account/, 'asset amount modal should include an optional payment account');
 assert.match(html, /asset\.category === "cash"/, 'payment account options should only include ordinary cash assets');
 assert.match(html, /其他资产与现金/, 'overview should label the combined non-NASDAQ bucket clearly');
+assert.match(html, /function v41MonthlyCashflowPlan\(summary, targets\)/, 'v4.1 should calculate a monthly cashflow allocation plan');
+assert.match(html, /本月新增现金分配建议/, 'v4.1 should display the monthly cashflow allocation advice');
+assert.match(html, /目标缺口优先/, 'cashflow advice should explain the allocation rule');
 assert.doesNotMatch(html, /<div class="stat-label">黄金<\/div>/, 'gold should not be shown as a standalone overview card');
 assert.doesNotMatch(html, /<div class="stat-label">其他股票\/ETF<\/div>/, 'other stock and ETF should not be shown as a standalone overview card');
 

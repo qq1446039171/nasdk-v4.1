@@ -147,6 +147,7 @@ const buildExecutionPlan = ({
     || Boolean(previousSignal.highVolatility) !== Boolean(currentSignal.highVolatility);
   const thresholdBreached = Object.values(driftPercent).some((value) => Math.abs(value) > Number(thresholdPercent));
   const rebalanceRequired = stateChanged || thresholdBreached;
+  const monthlyCashflowAllocation = allocateCashToGaps(current, targets, monthly);
 
   let actions;
   if (rebalanceRequired) {
@@ -157,8 +158,7 @@ const buildExecutionPlan = ({
       other: round2(-current.other),
     };
   } else {
-    const cashAllocation = allocateCashToGaps(current, targets, monthly);
-    actions = { ...cashAllocation, other: 0 };
+    actions = { ...monthlyCashflowAllocation, other: 0 };
   }
 
   return {
@@ -168,6 +168,7 @@ const buildExecutionPlan = ({
     currentPercents,
     driftPercent,
     actions,
+    monthlyCashflowAllocation,
   };
 };
 

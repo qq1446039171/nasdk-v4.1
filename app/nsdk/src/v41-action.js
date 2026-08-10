@@ -36,6 +36,19 @@ const actionLines = (plan, cfg) => {
   return lines.length ? lines : ['无需交易；保持当前仓位'];
 };
 
+const monthlyCashflowLines = (plan, cfg) => {
+  const labels = {
+    nasdaq: '纳斯达克（优先 513100）',
+    gold: '黄金基金',
+    bond: `${cfg.strategyV41.bondName}（${cfg.strategyV41.bondCode}）`,
+  };
+  const allocation = plan.monthlyCashflowAllocation || {};
+  const lines = Object.keys(labels)
+    .filter((key) => Number(allocation[key]) > 0.01)
+    .map((key) => `${labels[key]} ¥${fmtCny(allocation[key])}`);
+  return lines.length ? lines.join('；') : '本月无新增现金';
+};
+
 const buildMessage = ({ cfg, signal, targets, portfolio, plan, provider }) => {
   const reason = plan.reason === 'state_changed'
     ? '市场状态或高波动保护发生变化，需要整体调仓'
@@ -47,6 +60,7 @@ const buildMessage = ({ cfg, signal, targets, portfolio, plan, provider }) => {
     `6月年化波动率：${signal.annualizedVolatilityPercent.toFixed(2)}%（阈值 ${signal.volatilityThresholdPercent.toFixed(2)}%）`,
     `目标仓位：纳指 ${targets.nasdaq}% / 黄金 ${targets.gold}% / 债券 ${targets.bond}%`,
     `策略内资产：¥${fmtCny(portfolio.investableTotalCny)}；独立应急金：¥${fmtCny(portfolio.excludedEmergencyCashCny)}；本月新增：¥${fmtCny(cfg.monthlyCashflowCny)}`,
+    `本月新增现金分配建议：${monthlyCashflowLines(plan, cfg)}`,
     `处理原因：${reason}`,
     ...actionLines(plan, cfg),
     '执行时间：信号确认后的下一个中国可交易日；金额按当日成交价允许有少量误差。',
@@ -120,5 +134,6 @@ module.exports = {
   runV41MonthEnd,
   buildMessage,
   actionLines,
+  monthlyCashflowLines,
   getSignalRows,
 };

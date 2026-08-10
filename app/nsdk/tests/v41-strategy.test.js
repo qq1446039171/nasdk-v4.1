@@ -65,6 +65,7 @@ assert.strictEqual(rebalance.actions.gold, -4400);
 assert.strictEqual(rebalance.actions.bond, -4400);
 assert.strictEqual(rebalance.actions.other, -10000);
 assert.strictEqual(Object.values(rebalance.actions).reduce((sum, value) => sum + value, 0), 4000);
+assert.deepStrictEqual(rebalance.monthlyCashflowAllocation, { nasdaq: 4000, gold: 0, bond: 0 });
 
 const cashOnly = buildExecutionPlan({
   amounts: { nasdaq: 68000, gold: 15000, bond: 15000, other: 2000 },
@@ -79,5 +80,6 @@ assert.strictEqual(cashOnly.actions.nasdaq, 4000);
 assert.strictEqual(cashOnly.actions.gold, 0);
 assert.strictEqual(cashOnly.actions.bond, 0);
 assert.strictEqual(cashOnly.actions.other, 0);
+assert.deepStrictEqual(cashOnly.monthlyCashflowAllocation, { nasdaq: 4000, gold: 0, bond: 0 });
 
 console.log('v41-strategy.test.js passed');
