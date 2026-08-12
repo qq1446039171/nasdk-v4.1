@@ -2002,7 +2002,7 @@
             return true;
           }
         } catch {
-          // Try the next snapshot location, then fall back to legacy direct requests.
+          // Try the next snapshot location. The strategy panel never clears a last-good snapshot.
         }
       }
       return false;
@@ -2252,25 +2252,25 @@
       if (!state.settings || state.latestDataRefreshing) return;
       state.latestDataRefreshing = true;
       state.assetPriceMessageType = "info";
-      state.assetPriceMessage = "正在强制获取最新市场数据和资产价格...";
+      state.assetPriceMessage = "正在读取最新云端行情快照...";
       render();
-      const failures = [];
-      let signalOk = false;
-      let assetResult = null;
       try {
-        signalOk = await refreshV41LiveSignal({ forceDirect: true });
-        if (!signalOk) failures.push(`QQQ 月线：${state.v41Live.error || "获取失败"}`);
-        try {
-          await fetchLatestNdxBenchmark();
-        } catch (error) {
-          failures.push(`NDX：${error?.message || String(error)}`);
+        const loaded = await tryLoadMarketSnapshot();
+        if (!loaded) {
+          state.assetPriceMessageType = "warning";
+          state.assetPriceMessage = "最新云端行情快照暂不可用，已保留页面中的最后有效数据；本按钮不会退回浏览器直连旧行情接口。";
+          return;
         }
-        assetResult = await refreshAssetPrices({ forceDirect: true });
-        if (assetResult?.failed) failures.push(`${assetResult.failed} 个资产价格获取失败`);
-        state.assetPriceMessageType = failures.length ? "warning" : "success";
-        state.assetPriceMessage = failures.length
-          ? `最新数据刷新完成，但有部分数据沿用上次有效值：${failures.join("；")}`
-          : `最新数据刷新完成：QQQ 状态、NDX 和 ${assetResult?.updated || 0} 个资产价格均已更新。`;
+        recordTodayProfitSnapshot();
+        const snapshot = state.marketSnapshot || {};
+        const sourceText = [snapshot.sources?.signal, snapshot.sources?.benchmark].filter(Boolean).join(" / ") || "云端行情快照";
+        state.assetPriceMessageType = snapshot.stale || state.v41Live.warnings.length ? "warning" : "success";
+        state.assetPriceMessage = snapshot.stale
+          ? `已重新加载最后有效云端快照（${snapshot.generatedAt || "时间未知"}，${sourceText}）；本次快照标记为沿用数据。`
+          : `已重新加载云端最新可用快照：${snapshot.generatedAt || "时间未知"}（${sourceText}）。云端任务生成新快照后，再点此按钮即可读到。`;
+      } catch (error) {
+        state.assetPriceMessageType = "warning";
+        state.assetPriceMessage = `云端行情快照读取失败，已保留页面中的最后有效数据：${error?.message || String(error)}`;
       } finally {
         state.latestDataRefreshing = false;
         render();
