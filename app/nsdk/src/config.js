@@ -72,6 +72,8 @@ const summarizePortfolioAssets = (assets) => {
       shares: clampNumber(asset.shares, 0),
       amountCny: clampNumber(asset.amountCny, 0),
       lastPrice: clampNumber(asset.lastPrice, 0),
+      lastPriceAt: String(asset.lastPriceAt || ''),
+      lastPriceError: String(asset.lastPriceError || ''),
       marketValueCny: Math.round(value * 100) / 100,
       enabled: true,
     };
@@ -163,7 +165,11 @@ const buildConfigFromSettings = (settings, localSecrets = {}) => {
   const drawdownLevels = normalizeLevels(safeGet(settings, ['drawdown', 'levelsPercent'])) || [10, 15, 20, 25];
   const drawdownExecutedLevels = normalizeExecutedLevels(safeGet(settings, ['drawdown', 'executedLevels']), drawdownLevels);
 
+  const marketData = nsdk.marketData && typeof nsdk.marketData === 'object' ? nsdk.marketData : {};
   const finnhubApiKey = String(process.env.FINNHUB_API_KEY || (nsdk.finnhub && nsdk.finnhub.apiKey) || '').trim();
+  const tiingoApiToken = String(process.env.TIINGO_API_TOKEN || localSecrets.tiingoApiToken || marketData.tiingoApiToken || '').trim();
+  const fredApiKey = String(process.env.FRED_API_KEY || localSecrets.fredApiKey || marketData.fredApiKey || '').trim();
+  const tushareToken = String(process.env.TUSHARE_TOKEN || localSecrets.tushareToken || marketData.tushareToken || '').trim();
   const strategy = settings && settings.strategyV41 && typeof settings.strategyV41 === 'object'
     ? settings.strategyV41
     : {};
@@ -179,6 +185,9 @@ const buildConfigFromSettings = (settings, localSecrets = {}) => {
     fund: nsdk.fund,
     benchmark,
     finnhubApiKey,
+    tiingoApiToken,
+    fredApiKey,
+    tushareToken,
     timezone: nsdk.timezone,
     logDir: nsdk.logDir,
     pushEnabled: nsdk.pushEnabled !== false,

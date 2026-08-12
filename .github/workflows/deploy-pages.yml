@@ -37,6 +37,7 @@ jobs:
           mkdir -p _site/Config
           cp web/index.html _site/index.html
           cp "${CONFIG_PATH}" _site/Config/settings.json
+          cp Config/market-snapshot.json _site/Config/market-snapshot.json
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

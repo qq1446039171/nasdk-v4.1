@@ -10,6 +10,10 @@ assert.match(html, /async function refreshV41LiveSignal\(/, 'web should refresh 
 assert.match(html, /function computeV41LiveSignal\(/, 'web should calculate the v4.1 signal from completed QQQ months');
 assert.match(html, /const signal = live\.signal \|\| runtime\.lastSignal \|\| null/, 'live signal should take priority over cloud state fallback');
 assert.match(html, /await refreshV41LiveSignal\(\)/, 'settings load should trigger a live signal refresh');
+assert.match(html, /async function tryLoadMarketSnapshot\(/, 'web should load the GitHub Actions market snapshot');
+assert.match(html, /Config\/market-snapshot\.json/, 'web should use the persisted market snapshot');
+assert.match(html, /if \(await tryLoadMarketSnapshot\(\)\)/, 'web should prefer the snapshot before direct market requests');
+assert.match(html, /hasPortfolioAssets\(\) && !state\.marketSnapshot/, 'automatic loading should avoid direct per-asset requests after the snapshot succeeds');
 assert.match(html, /row\.month < currentMonth/, 'the current incomplete month must not be used by the signal');
 assert.match(html, /当前有效状态/, 'web should label the state as currently effective rather than a daily trading signal');
 assert.match(
@@ -47,8 +51,18 @@ assert.strictEqual(settings.strategyV41.bondCode, '511360');
 assert.strictEqual(settings.strategyV41.marketStateTimelineStartMonth, '2026-08');
 assert.strictEqual(settings.strategyV41.rebalanceThresholdPercent, 3);
 assert.ok(settings.portfolio.assets.some((asset) => asset.code === '511360' && asset.category === 'bond'));
+assert.ok(settings.portfolio.assets.filter((asset) => ['270042', '018043', '000834', '019172', '016452', '017436', '008976', '110020', '000217', '009505'].includes(asset.code)).every((asset) => asset.kind === 'fund' && asset.secid === ''), 'OTC funds must not be sent to exchange quote APIs');
 assert.strictEqual(settings.nsdk.serverChan.sendKey, '');
 assert.strictEqual(settings.nsdk.finnhub.apiKey, '');
+assert.strictEqual(settings.nsdk.marketData.tiingoApiToken, '', 'tracked settings must not contain the Tiingo token');
+assert.strictEqual(settings.nsdk.marketData.fredApiKey, '', 'tracked settings must not contain the FRED key');
+assert.strictEqual(settings.nsdk.marketData.tushareToken, '', 'tracked settings must not contain the Tushare token');
+assert.match(html, /nsdk\.marketData\.tiingoApiToken/, 'web normalization should preserve the Tiingo token');
+assert.match(html, /nsdk\.marketData\.fredApiKey/, 'web normalization should preserve the FRED key');
+assert.match(html, /nsdk\.marketData\.tushareToken/, 'web normalization should preserve the Tushare token');
+assert.match(html, /deepSet\(repositorySettings, "nsdk\.marketData\.tiingoApiToken", ""\)/, 'GitHub save must redact Tiingo credentials');
+assert.match(html, /deepSet\(repositorySettings, "nsdk\.marketData\.fredApiKey", ""\)/, 'GitHub save must redact FRED credentials');
+assert.match(html, /deepSet\(repositorySettings, "nsdk\.marketData\.tushareToken", ""\)/, 'GitHub save must redact Tushare credentials');
 assert.ok(fs.existsSync(path.join(__dirname, '..', 'assets', 'v41-market-state-timeline.svg')));
 
 console.log('v41-panel.test.js passed');

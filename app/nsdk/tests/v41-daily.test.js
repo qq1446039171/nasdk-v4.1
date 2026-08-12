@@ -72,6 +72,9 @@ assert.doesNotMatch(message.body, /买入|卖出|调仓金额/);
     })),
     getMarketSnapshot: async () => ({ ...market, market }),
     summarizePortfolio: () => portfolio,
+    saveSnapshot: () => {},
+    logEvent: () => {},
+    logPush: () => {},
     push: async (_cfg, preview) => {
       pushed.push(preview);
       return { ok: true, status: 200, code: 0 };
@@ -81,6 +84,23 @@ assert.doesNotMatch(message.body, /买入|卖出|调仓金额/);
   assert.strictEqual(pushed.length, 1);
   assert.strictEqual(state.v41Daily.lastSignal.state, 'strong');
   assert.deepStrictEqual(state.v41Daily.lastTargets, targets);
+
+  const staleMessages = [];
+  let savedSnapshot;
+  const staleOk = await runV41DailySummary(cfg, {}, {
+    refreshHoldings: async () => ({ ok: 0, failed: 1 }),
+    getSignalData: async () => { throw new Error('all monthly providers failed'); },
+    getBenchmarkData: async () => { throw new Error('all benchmark providers failed'); },
+    loadSnapshot: () => ({ signal, targets, benchmark: market.benchmark, sources: { signal: 'tiingo-adjusted' } }),
+    summarizePortfolio: () => portfolio,
+    saveSnapshot: (value) => { savedSnapshot = value; },
+    logEvent: () => {},
+    logPush: () => {},
+    push: async (_cfg, preview) => { staleMessages.push(preview); return { ok: true, status: 200, code: 0 }; },
+  });
+  assert.strictEqual(staleOk, true, 'daily push should remain available from the last good snapshot');
+  assert.strictEqual(savedSnapshot.stale, true);
+  assert.match(staleMessages[0].body, /最后有效快照/);
   console.log('v41-daily.test.js passed');
 })().catch((error) => {
   console.error(error);

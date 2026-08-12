@@ -1181,6 +1181,9 @@
             { key: "nsdk.benchmark.secid", nameZh: "回撤基准 Eastmoney secid", nameEn: "Benchmark Eastmoney SecID", description: "provider=eastmoney 时使用，例如 1.513100。", type: "string", default: "1.513100", validation: { required: false, maxLength: 64 } },
             { key: "nsdk.benchmark.symbol", nameZh: "回撤基准 Stooq Symbol", nameEn: "Benchmark Stooq Symbol", description: "provider=stooq 或 finnhub 时使用，例如 NDX / QQQ。finnhub 免费档下 NDX 实际用 QQQ 拉数。", type: "string", default: "QQQ", validation: { required: false, maxLength: 64 } },
             { key: "nsdk.finnhub.apiKey", nameZh: "Finnhub API Key", nameEn: "Finnhub API Key", description: "provider=finnhub 时必填；也可用环境变量 FINNHUB_API_KEY（优先）。", type: "string", default: "", props: { type: "password", showPassword: true }, validation: { required: false, maxLength: 128 } },
+            { key: "nsdk.marketData.tiingoApiToken", nameZh: "Tiingo API Token", nameEn: "Tiingo API Token", description: "QQQ 复权月线主数据源。", type: "string", default: "", hidden: true, validation: { required: false, maxLength: 128 } },
+            { key: "nsdk.marketData.fredApiKey", nameZh: "FRED API Key", nameEn: "FRED API Key", description: "NDX 日线主数据源。", type: "string", default: "", hidden: true, validation: { required: false, maxLength: 128 } },
+            { key: "nsdk.marketData.tushareToken", nameZh: "Tushare Token", nameEn: "Tushare Token", description: "中国 ETF 与基金主数据源。", type: "string", default: "", hidden: true, validation: { required: false, maxLength: 128 } },
             { key: "nsdk.benchmark.name", nameZh: "回撤基准名称", nameEn: "Benchmark Name", description: "用于展示与推送文案，例如 纳指指数（IXIC）。", type: "string", default: "纳指指数（IXIC）", validation: { required: false, maxLength: 64 } },
             { key: "nsdk.timezone", nameZh: "时区", nameEn: "Timezone", description: "建议保持 Asia/Shanghai。", type: "string", default: "Asia/Shanghai", validation: { required: true, maxLength: 64 } },
             { key: "nsdk.logDir", nameZh: "日志目录", nameEn: "Log Directory", description: "例如 D:/log-nsdk。", type: "string", default: "D:/log-nsdk", validation: { required: false, maxLength: 256 } },
@@ -1269,8 +1272,12 @@
         signal: null,
         targets: null,
         provider: "",
-        updatedAt: ""
+        updatedAt: "",
+        stale: false,
+        warnings: [],
+        benchmark: null
       },
+      marketSnapshot: null,
       assetRowsCollapsed: true,
       balancesHidden: false,
       profitRange: "week"
@@ -1746,7 +1753,7 @@
         category,
         kind,
         code: cash ? "" : code,
-        secid: cash ? "" : String(asset?.secid || inferSecid(code)).trim(),
+        secid: cash || kind === "fund" ? "" : String(asset?.secid || inferSecid(code)).trim(),
         shares,
         amountCny,
         lastPrice,
@@ -1932,10 +1939,72 @@
       return { nasdaq, gold: base.gold, bond: 100 - nasdaq - base.gold };
     }
 
+    function applyMarketSnapshot(snapshot) {
+      if (!snapshot || typeof snapshot !== "object" || !snapshot.signal || !snapshot.targets) return false;
+      state.marketSnapshot = snapshot;
+      state.v41Live.signal = snapshot.signal;
+      state.v41Live.targets = snapshot.targets;
+      state.v41Live.provider = snapshot.sources?.signal || "云端行情快照";
+      state.v41Live.updatedAt = snapshot.generatedAt || "";
+      state.v41Live.stale = Boolean(snapshot.stale);
+      state.v41Live.warnings = Array.isArray(snapshot.warnings) ? snapshot.warnings : [];
+      state.v41Live.benchmark = snapshot.benchmark || null;
+      state.v41Live.error = "";
+
+      if (state.settings && Array.isArray(snapshot.holdings)) {
+        const prices = new Map(snapshot.holdings.map((item) => [String(item?.id || item?.code || ""), item]));
+        for (const asset of portfolioAssets()) {
+          const quote = prices.get(String(asset?.id || "")) || prices.get(String(asset?.code || ""));
+          if (!quote || !(Number(quote.lastPrice) > 0)) continue;
+          asset.lastPrice = Math.round(Number(quote.lastPrice) * 10000) / 10000;
+          asset.lastPriceAt = quote.lastPriceAt || snapshot.generatedAt || "";
+          asset.lastPriceError = quote.lastPriceError || "";
+        }
+        syncDerived();
+      }
+      return true;
+    }
+
+    async function tryLoadMarketSnapshot() {
+      const owner = state.githubRepoOwner.trim();
+      const repo = state.githubRepoName.trim();
+      const branch = state.githubBranch.trim() || "master";
+      const candidates = [];
+      if (owner && repo) {
+        candidates.push(`https://raw.githubusercontent.com/${owner}/${repo}/${branch}/Config/market-snapshot.json?ts=${Date.now()}`);
+      }
+      candidates.push(`./Config/market-snapshot.json?ts=${Date.now()}`);
+      for (const url of candidates) {
+        try {
+          const response = await fetch(url, { cache: "no-store" });
+          if (!response.ok) continue;
+          const snapshot = await response.json();
+          if (applyMarketSnapshot(snapshot)) {
+            const snapshotWarnings = Array.isArray(snapshot.warnings) ? snapshot.warnings.filter(Boolean) : [];
+            state.assetPriceMessageType = snapshot.stale || snapshotWarnings.length ? "warning" : "success";
+            state.assetPriceMessage = snapshot.stale
+              ? `已加载最后有效行情快照（${snapshot.generatedAt || "时间未知"}）；本次数据源异常，页面不会清空旧数据。`
+              : (snapshotWarnings.length
+                ? `已加载云端行情快照：${snapshot.generatedAt || "时间未知"}；主数据源异常，已由备用源接管。`
+                : `已加载云端行情快照：${snapshot.generatedAt || "时间未知"}`);
+            return true;
+          }
+        } catch {
+          // Try the next snapshot location, then fall back to legacy direct requests.
+        }
+      }
+      return false;
+    }
+
     async function refreshV41LiveSignal() {
       state.v41Live.loading = true;
       state.v41Live.error = "";
       render();
+      if (await tryLoadMarketSnapshot()) {
+        state.v41Live.loading = false;
+        render();
+        return true;
+      }
       const fields1 = "f1,f2,f3,f4,f5,f6";
       const fields2 = "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61";
       const url = `https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=105.QQQ&klt=103&fqt=1&lmt=60&end=20500101&fields1=${fields1}&fields2=${fields2}`;
@@ -1963,6 +2032,7 @@
         state.v41Live.loading = false;
         render();
       }
+      return false;
     }
 
     function parseFundQuoteNumber(...values) {
@@ -2070,6 +2140,11 @@
 
     async function refreshAssetPrices() {
       if (!state.settings || state.assetPriceLoading) return;
+      if (await tryLoadMarketSnapshot()) {
+        recordTodayProfitSnapshot();
+        render();
+        return;
+      }
       normalizeAssetsInSettings();
       recordSavedAssetSnapshot();
       state.assetPriceLoading = true;
@@ -2381,7 +2456,7 @@
           await addLog({ action: "autoLoad", ok: true, reason: candidate.url, bytes: text.length });
           render();
           await refreshV41LiveSignal();
-          if (hasPortfolioAssets()) await refreshAssetPrices();
+          if (hasPortfolioAssets() && !state.marketSnapshot) await refreshAssetPrices();
           return true;
         } catch {
           // keep trying candidates
@@ -2926,7 +3001,7 @@
         ? "状态变化：整体调仓"
         : (plan?.reason === "drift_over_threshold" ? "偏离超过 3 个百分点：整体再平衡" : (plan ? "状态未变：仅分配本月现金" : (signal ? "状态已确认，月末再计算调仓" : (live.loading ? "正在获取最新月线" : "等待市场数据"))));
       const signalSource = live.signal
-        ? `网页实时计算 · ${live.provider || "东方财富"}`
+        ? `${live.stale ? "最后有效快照" : "云端行情快照"} · ${live.provider || "行情源"}${live.updatedAt ? ` · 更新于 ${live.updatedAt}` : ""}`
         : (runtime.lastSignal ? "云端月末状态（备用）" : (live.error ? `自动计算失败：${live.error}` : "正在读取最新完整月数据"));
       const allocationStates = [
         { key: "strong", label: "强势", rule: "趋势与动量都为正", nasdaq: 70, gold: 15, bond: 15 },
@@ -2948,7 +3023,7 @@
           <div class="section-head">
             <div>
               <h2 class="section-title gold">纳斯达克长期投资策略 v4.1</h2>
-              <div class="subtitle">每次打开自动计算今天沿用的 QQQ 月线状态；状态只在完整月结束后变化，下一个中国可交易日执行，页面不直接下单。</div>
+              <div class="subtitle">每次打开优先读取 GitHub Actions 生成的统一行情快照；状态只在完整月结束后变化，下一个中国可交易日执行，页面不直接下单。</div>
             </div>
             <button class="btn privacy-toggle" data-action="toggle-balances">${state.balancesHidden ? "显示余额" : "隐藏余额"}</button>
           </div>
@@ -3774,6 +3849,9 @@
         const repositorySettings = cloneValue(state.settings);
         deepSet(repositorySettings, "nsdk.finnhub.apiKey", "");
         deepSet(repositorySettings, "nsdk.serverChan.sendKey", "");
+        deepSet(repositorySettings, "nsdk.marketData.tiingoApiToken", "");
+        deepSet(repositorySettings, "nsdk.marketData.fredApiKey", "");
+        deepSet(repositorySettings, "nsdk.marketData.tushareToken", "");
         const payload = {
           ref: state.githubBranch.trim(),
           inputs: {

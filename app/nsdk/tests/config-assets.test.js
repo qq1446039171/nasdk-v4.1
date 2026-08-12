@@ -32,11 +32,21 @@ const baseSettings = {
     logDir: 'D:/log-nsdk',
     pushEnabled: false,
     serverChan: { sendKey: '' },
+    marketData: {
+      tiingoApiToken: 'settings-tiingo-key',
+      fredApiKey: 'settings-fred-key',
+      tushareToken: 'settings-tushare-key',
+    },
     dailyChecks: [],
   },
 };
 
-const cfg = buildConfigFromSettings(baseSettings, { serverChanSendKey: 'local-test-key' });
+const cfg = buildConfigFromSettings(baseSettings, {
+  serverChanSendKey: 'local-test-key',
+  tiingoApiToken: 'tiingo-test-key',
+  fredApiKey: 'fred-test-key',
+  tushareToken: 'tushare-test-key',
+});
 
 assert.strictEqual(cfg.portfolio.investedNasdaqCny, 2800);
 assert.strictEqual(cfg.portfolio.reserveCashNasdaqCny, 60000);
@@ -44,5 +54,13 @@ assert.strictEqual(cfg.portfolio.otherCashCny, 75500);
 assert.strictEqual(cfg.baseTotalAssetsCny, 138300);
 assert.strictEqual(cfg.portfolio.assets.length, 5);
 assert.strictEqual(cfg.serverChan.sendKey, 'local-test-key');
+assert.strictEqual(cfg.tiingoApiToken, 'tiingo-test-key');
+assert.strictEqual(cfg.fredApiKey, 'fred-test-key');
+assert.strictEqual(cfg.tushareToken, 'tushare-test-key');
+
+const settingsKeyCfg = buildConfigFromSettings(baseSettings, {});
+assert.strictEqual(settingsKeyCfg.tiingoApiToken, 'settings-tiingo-key');
+assert.strictEqual(settingsKeyCfg.fredApiKey, 'settings-fred-key');
+assert.strictEqual(settingsKeyCfg.tushareToken, 'settings-tushare-key');
 
 console.log('config-assets.test.js passed');

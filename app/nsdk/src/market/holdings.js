@@ -12,6 +12,7 @@
  *   （旧 fundgz JSONP 接口已下线）
  */
 const { getLatestPrice, getLatestKlineClose } = require('./eastmoney');
+const { fetchTushareHoldingPrice } = require('./tushare');
 const { summarizePortfolioAssets } = require('../config');
 
 const round4 = (n) => Math.round(Number(n) * 10000) / 10000;
@@ -135,9 +136,20 @@ const fetchHoldingPrice = async (asset, deps = {}) => {
   const _getLatest = deps.getLatestPrice || getLatestPrice;
   const _getLatestKlineClose = deps.getLatestKlineClose || getLatestKlineClose;
   const _fetchFund = deps.fetchFundNav || fetchFundNav;
+  const _fetchTushare = deps.fetchTushareHoldingPrice || fetchTushareHoldingPrice;
 
   const secid = asset && asset.secid ? String(asset.secid).trim() : '';
   const code = asset && asset.code ? String(asset.code).trim() : '';
+
+  if (deps.tushareToken && code) {
+    try {
+      const quote = await _fetchTushare(asset, { token: deps.tushareToken });
+      const price = Number(quote && quote.price);
+      if (Number.isFinite(price) && price > 0) return price;
+    } catch (err) {
+      // Existing Eastmoney/fund routes remain the compatibility fallback.
+    }
+  }
 
   // 主路径：东财 push2（与网页 fetchExchangePrice 同源）
   if (secid) {
@@ -203,7 +215,10 @@ const applyFreshHoldings = async (cfg, deps = {}) => {
   const assets = cfg && cfg.portfolio && Array.isArray(cfg.portfolio.assets) ? cfg.portfolio.assets : null;
   if (!assets || assets.length === 0) return { ok: 0, failed: 0 };
 
-  const result = await refreshHoldingsPrices(assets, deps);
+  const result = await refreshHoldingsPrices(assets, {
+    ...deps,
+    tushareToken: deps.tushareToken || (cfg && cfg.tushareToken) || '',
+  });
   const summary = summarizePortfolioAssets(assets);
 
   cfg.portfolio.investedNasdaqCny = summary.investedNasdaqCny;

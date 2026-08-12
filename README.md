@@ -39,7 +39,7 @@ npm run app:run-once -- once
 
 本地运行默认读取被 Git 忽略的 `Config/local-secrets.json`，因此可以像旧版一样直接推送，不必每次设置环境变量。模板见 `Config/local-secrets.example.json`。环境变量 `NSDK_SERVERCHAN_SENDKEY` 的优先级更高，可临时覆盖本地文件。
 
-行情 API Key 和 SendKey 不应写入会提交的 `Config/settings.json`。
+本地行情 API Key 保存在被 Git 忽略的 `Config/local-secrets.json`；GitHub Actions 可使用同名 Secrets。程序读取优先级为环境变量、`local-secrets.json`、`settings.json`，而网页保存到 GitHub 时会清空敏感字段。v4.1 会优先使用 Tiingo（QQQ 复权月线）、FRED（NDX 日线）和 Tushare（中国基金/ETF），失败时自动回退原有接口；网页优先读取 `Config/market-snapshot.json`，避免打开页面时集中请求行情接口。
 
 ## GitHub Actions
 
@@ -48,16 +48,18 @@ npm run app:run-once -- once
 - `nsdk-daily.yml`：按当前 `dailyChecks` 对应的北京时间11:00、14:00运行每日观察，并在发送失败时短时重试。
 - `save-settings.yml`：接收网页配置并保存到 `Config/settings.json`。
 
-仓库 Settings → Secrets and variables → Actions 中至少配置：
+微信推送仍使用已有的 `NSDK_SERVERCHAN_SENDKEY`；行情数据不需要额外配置 GitHub Secrets：
 
 - `NSDK_SERVERCHAN_SENDKEY`
-- `FINNHUB_API_KEY`（仅旧版兼容功能需要，v4.1 月末信号不依赖）
+- `TIINGO_API_TOKEN`、`FRED_API_KEY`、`TUSHARE_TOKEN`（可选；未配置时自动使用备用源和最后有效快照）
+- `FINNHUB_API_KEY`（可选，仅旧版兼容功能需要，v4.1 月末信号不依赖）
 
 GitHub Pages 地址应为 `https://qq1446039171.github.io/nasdk-v4.1/`。
 
 ## 主要文件
 
 - `Config/settings.json`：持仓和 v4.1 参数。
+- `Config/market-snapshot.json`：每日/月末任务生成的统一行情快照，供网页和推送共享。
 - `app/nsdk/src/v41-strategy.js`：纯策略计算。
 - `app/nsdk/src/v41-action.js`：月末行情、金额建议和推送。
 - `app/nsdk/src/v41-daily.js`：每日行情、当前状态与仓位目标差异推送。

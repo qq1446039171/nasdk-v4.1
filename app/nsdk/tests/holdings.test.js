@@ -10,6 +10,20 @@ const {
 const { getLatestPrice: getLatestEastmoneyPrice } = require('../src/market/eastmoney');
 const { buildConfigFromSettings } = require('../src/config');
 
+(async () => {
+  let legacyCalled = false;
+  const price = await fetchHoldingPrice(
+    { secid: '1.513100', code: '513100', kind: 'exchange' },
+    {
+      tushareToken: 'token',
+      fetchTushareHoldingPrice: async () => ({ price: 2.35, provider: 'tushare' }),
+      getLatestPrice: async () => { legacyCalled = true; throw new Error('should not run'); },
+    }
+  );
+  assert.strictEqual(price, 2.35, 'Tushare should be the first holding-price provider when configured');
+  assert.strictEqual(legacyCalled, false, 'legacy provider should not run after Tushare succeeds');
+})();
+
 // ============ 行情主源：推送端也必须使用当前可访问的 push2delay ============
 const eastmoneySource = fs.readFileSync(path.join(__dirname, '..', 'src', 'market', 'eastmoney.js'), 'utf8');
 assert.ok(!eastmoneySource.includes('https://push2.eastmoney.com/api/qt/stock/get'), '推送端不得继续使用会断开连接的 push2 主域');

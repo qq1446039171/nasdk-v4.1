@@ -1,5 +1,6 @@
-const { getCompletedMonthlyAdjustedCloses: getEastmoneyMonthlyCloses } = require('./market/qqq-monthly');
+const { getSignalRows: getProviderSignalRows } = require('./market/providers');
 const { applyFreshHoldings } = require('./market/holdings');
+const { buildMarketSnapshot, loadMarketSnapshot, saveMarketSnapshot } = require('./market/snapshot');
 const {
   computeSignal,
   buildTargets,
@@ -13,10 +14,10 @@ const fmtCny = (value) => Number(value || 0).toLocaleString('zh-CN', { maximumFr
 const signedPercent = (value) => `${Number(value) >= 0 ? '+' : ''}${Number(value).toFixed(2)}%`;
 
 const getSignalRows = async (cfg, deps = {}) => {
-  const strategy = cfg.strategyV41 || {};
-  const symbol = strategy.signalSymbol || 'QQQ';
-  const eastmoney = deps.getEastmoneyRows || getEastmoneyMonthlyCloses;
-  return { rows: await eastmoney(symbol), provider: 'eastmoney-adjusted' };
+  return getProviderSignalRows(cfg, {
+    getTiingoRows: deps.getTiingoRows,
+    getEastmoneyRows: deps.getEastmoneyRows,
+  });
 };
 
 const actionLines = (plan, cfg) => {
@@ -124,6 +125,24 @@ const runV41MonthEnd = async (cfg, state, options = {}) => {
     lastProvider: provider,
     lastMessage: message,
   };
+  const cachedSnapshot = (options.deps && options.deps.loadSnapshot || loadMarketSnapshot)() || {};
+  const snapshot = buildMarketSnapshot({
+    signal,
+    targets,
+    portfolio: cfg.portfolio && cfg.portfolio.assetSummary || cfg.portfolio,
+    benchmark: cachedSnapshot.benchmark || null,
+    warnings: [],
+    sources: {
+      signal: provider,
+      benchmark: cachedSnapshot.sources && cachedSnapshot.sources.benchmark || 'pending-daily-refresh',
+      holdings: cfg.tushareToken ? 'tushare+fallback' : 'eastmoney+fund-fallback',
+    },
+  });
+  try {
+    (options.deps && options.deps.saveSnapshot || saveMarketSnapshot)(snapshot);
+  } catch (error) {
+    logEvent({ type: 'v41_market_snapshot_save_failed', error: error?.message || String(error) });
+  }
   if (pushRet?.ok) state.v41.lastNotifiedSignalMonth = signal.signalMonth;
   logEvent({ type: 'v41_month_end', signal, targets, plan, pushRet });
   logPush({ kind: 'v41-month-end', title: message.title, ok: Boolean(pushRet?.ok), status: pushRet?.status ?? null, code: pushRet?.code ?? null });
