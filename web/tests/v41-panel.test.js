@@ -12,10 +12,14 @@ assert.match(html, /const signal = live\.signal \|\| runtime\.lastSignal \|\| nu
 assert.match(html, /await refreshV41LiveSignal\(\)/, 'settings load should trigger a live signal refresh');
 assert.match(html, /async function tryLoadMarketSnapshot\(/, 'web should load the GitHub Actions market snapshot');
 assert.match(html, /Config\/market-snapshot\.json/, 'web should use the persisted market snapshot');
-assert.match(html, /if \(await tryLoadMarketSnapshot\(\)\)/, 'web should prefer the snapshot before direct market requests');
+assert.match(html, /if \(!forceDirect && await tryLoadMarketSnapshot\(\)\)/, 'automatic refresh should prefer the snapshot while manual refresh can bypass it');
 assert.match(html, /hasPortfolioAssets\(\) && !state\.marketSnapshot/, 'automatic loading should avoid direct per-asset requests after the snapshot succeeds');
 assert.match(html, /row\.month < currentMonth/, 'the current incomplete month must not be used by the signal');
 assert.match(html, /当前有效状态/, 'web should label the state as currently effective rather than a daily trading signal');
+assert.match(html, /data-action="refresh-latest-data"/, 'effective state card should expose a latest-data refresh button');
+assert.match(html, /async function refreshLatestData\(\)/, 'web should coordinate a full latest-data refresh');
+assert.match(html, /refreshV41LiveSignal\(\{ forceDirect: true \}\)/, 'manual latest refresh must bypass the static snapshot for the signal');
+assert.match(html, /refreshAssetPrices\(\{ forceDirect: true \}\)/, 'manual latest refresh must bypass the static snapshot for asset prices');
 assert.match(
   html,
   /\$\{renderV41Overview\(\)\}[\s\S]*strategy-maintenance-divider[\s\S]*\$\{renderAssetSection\(\)\}[\s\S]*\$\{renderGroups\(\)\}/,
