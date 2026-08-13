@@ -1219,7 +1219,7 @@
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
-      hour12: false
+      hourCycle: "h23"
     });
     const assetCategories = [
       { value: "nasdaq", label: "纳斯达克持仓" },
@@ -1901,7 +1901,7 @@
       if (!value) return "";
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return String(value);
-      return `${chinaDateTimeFormatter.format(date).replaceAll("/", "-")}（北京时间）`;
+      return chinaDateTimeFormatter.format(date).replaceAll("/", "-");
     }
 
     function v41Round2(value) {
@@ -2020,11 +2020,12 @@
           if (applyMarketSnapshot(snapshot)) {
             const snapshotWarnings = Array.isArray(snapshot.warnings) ? snapshot.warnings.filter(Boolean) : [];
             state.assetPriceMessageType = snapshot.stale || snapshotWarnings.length ? "warning" : "success";
+            const snapshotTime = formatChinaDateTime(snapshot.generatedAt) || "时间未知";
             state.assetPriceMessage = snapshot.stale
-              ? `已加载最后有效行情快照（${snapshot.generatedAt || "时间未知"}）；本次数据源异常，页面不会清空旧数据。`
+              ? `已加载最后有效行情快照（${snapshotTime}）；本次数据源异常，页面不会清空旧数据。`
               : (snapshotWarnings.length
-                ? `已加载云端行情快照：${snapshot.generatedAt || "时间未知"}；主数据源异常，已由备用源接管。`
-                : `已加载云端行情快照：${snapshot.generatedAt || "时间未知"}`);
+                ? `已加载云端行情快照：${snapshotTime}；主数据源异常，已由备用源接管。`
+                : `已加载云端行情快照：${snapshotTime}`);
             return true;
           }
         } catch {
@@ -2663,7 +2664,7 @@
             </div>
             <div class="meta">
               <span>配置版本：${escapeHtml(state.settings?.meta?.configVersion ?? "-")}</span>
-              <span>最后保存：${escapeHtml(state.settings?.meta?.lastSavedAt || "-")}</span>
+              <span>最后保存：${escapeHtml(formatChinaDateTime(state.settings?.meta?.lastSavedAt) || "-")}</span>
               <span>文件：${escapeHtml(state.fileName || "-")}</span>
             </div>
           </div>
@@ -3675,7 +3676,7 @@
               <h3 class="section-title">版本列表</h3>
               ${versions.length ? `
                 <table class="data-table"><thead><tr><th>版本ID</th><th>时间</th><th>原因</th><th>操作</th></tr></thead><tbody>
-                  ${versions.map((v) => `<tr><td>${escapeHtml(v.id)}</td><td>${escapeHtml(v.savedAt)}</td><td>${escapeHtml(v.reason || "")}</td><td><button class="btn" data-action="compare-version" data-version="${escapeHtml(v.id)}">对比</button> <button class="btn primary" data-action="rollback-version" data-version="${escapeHtml(v.id)}">回滚</button></td></tr>`).join("")}
+                  ${versions.map((v) => `<tr><td>${escapeHtml(v.id)}</td><td>${escapeHtml(formatChinaDateTime(v.savedAt) || "-")}</td><td>${escapeHtml(v.reason || "")}</td><td><button class="btn" data-action="compare-version" data-version="${escapeHtml(v.id)}">对比</button> <button class="btn primary" data-action="rollback-version" data-version="${escapeHtml(v.id)}">回滚</button></td></tr>`).join("")}
                 </tbody></table>
               ` : '<div class="empty">暂无版本快照</div>'}
             </div>
@@ -3691,7 +3692,7 @@
               <h3 class="section-title">操作日志</h3>
               ${logs.length ? `
                 <table class="data-table"><thead><tr><th>时间</th><th>动作</th><th>成功</th><th>大小</th><th>原因</th></tr></thead><tbody>
-                  ${logs.map((log) => `<tr><td>${escapeHtml(log.at)}</td><td>${escapeHtml(log.action)}</td><td>${escapeHtml(log.ok)}</td><td>${escapeHtml(log.bytes ?? 0)}</td><td>${escapeHtml(log.reason || "")}</td></tr>`).join("")}
+                  ${logs.map((log) => `<tr><td>${escapeHtml(formatChinaDateTime(log.at) || "-")}</td><td>${escapeHtml(log.action)}</td><td>${escapeHtml(log.ok)}</td><td>${escapeHtml(log.bytes ?? 0)}</td><td>${escapeHtml(log.reason || "")}</td></tr>`).join("")}
                 </tbody></table>
               ` : '<div class="empty">暂无日志</div>'}
             </div>

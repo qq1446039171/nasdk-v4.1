@@ -1,6 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const settings = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'Config', 'settings.json'), 'utf8'));
@@ -25,6 +26,22 @@ assert.match(html, /generatedAt >= requestedAt - 5000/, 'manual refresh must not
 assert.doesNotMatch(latestRefreshBody, /forceDirect/, 'manual latest refresh must not bypass the cloud snapshot');
 assert.doesNotMatch(latestRefreshBody, /fetchLatestNdxBenchmark/, 'manual latest refresh must not call the legacy browser NDX endpoint');
 assert.match(html, /formatChinaDateTime\(live\.updatedAt\)/, 'snapshot timestamps should be shown in Asia\/Shanghai time');
+assert.match(html, /hourCycle:\s*"h23"/, 'visible timestamps should use the 00–23 Beijing clock');
+assert.match(html, /function formatChinaDateTime\(value\)[\s\S]*return chinaDateTimeFormatter\.format\(date\)\.replaceAll\("\/", "-"\);/, 'visible timestamps should be formatted as YYYY-MM-DD HH:mm:ss without UTC suffixes');
+assert.match(html, /formatChinaDateTime\(snapshot\.generatedAt\)/, 'snapshot notices should not expose raw UTC timestamps');
+assert.match(html, /formatChinaDateTime\(state\.settings\?\.meta\?\.lastSavedAt\)/, 'saved timestamps should use Beijing display format');
+const formatterStart = html.indexOf('const chinaDateTimeFormatter = new Intl.DateTimeFormat');
+const formatterEnd = html.indexOf('\n    const assetCategories', formatterStart);
+const functionStart = html.indexOf('function formatChinaDateTime(value)', formatterEnd);
+const functionEnd = html.indexOf('\n    function v41Round2', functionStart);
+const timeFormattingSource = formatterStart >= 0 && formatterEnd > formatterStart && functionStart >= 0 && functionEnd > functionStart
+  ? `${html.slice(formatterStart, formatterEnd)}\n${html.slice(functionStart, functionEnd)}`
+  : '';
+assert.ok(timeFormattingSource, 'Beijing time formatter source should exist');
+const timeFormattingSandbox = { Intl, Date };
+vm.createContext(timeFormattingSandbox);
+vm.runInContext(`${timeFormattingSource}\nglobalThis.formattedTime = formatChinaDateTime('2026-08-13T03:30:39.383Z');`, timeFormattingSandbox);
+assert.strictEqual(timeFormattingSandbox.formattedTime, '2026-08-13 11:30:39', 'UTC timestamps should display as YYYY-MM-DD HH:mm:ss in Beijing time');
 assert.match(
   html,
   /\$\{renderV41Overview\(\)\}[\s\S]*strategy-maintenance-divider[\s\S]*\$\{renderAssetSection\(\)\}[\s\S]*\$\{renderGroups\(\)\}/,
