@@ -19,9 +19,12 @@ assert.match(html, /当前有效状态/, 'web should label the state as currentl
 assert.match(html, /data-action="refresh-latest-data"/, 'effective state card should expose a latest-data refresh button');
 assert.match(html, /async function refreshLatestData\(\)/, 'web should coordinate a full latest-data refresh');
 const latestRefreshBody = html.match(/async function refreshLatestData\(\) \{[\s\S]*?\n    \}/)?.[0] || '';
-assert.match(latestRefreshBody, /await tryLoadMarketSnapshot\(\)/, 'manual latest refresh should reload the cloud snapshot');
+assert.match(latestRefreshBody, /refresh-market\.yml\/dispatches/, 'manual latest refresh should dispatch the dedicated cloud workflow');
+assert.match(latestRefreshBody, /waitForNewMarketSnapshot/, 'manual latest refresh should wait for and apply the new cloud snapshot');
+assert.match(html, /generatedAt >= requestedAt - 5000/, 'manual refresh must not accept an unrelated older snapshot');
 assert.doesNotMatch(latestRefreshBody, /forceDirect/, 'manual latest refresh must not bypass the cloud snapshot');
 assert.doesNotMatch(latestRefreshBody, /fetchLatestNdxBenchmark/, 'manual latest refresh must not call the legacy browser NDX endpoint');
+assert.match(html, /formatChinaDateTime\(live\.updatedAt\)/, 'snapshot timestamps should be shown in Asia\/Shanghai time');
 assert.match(
   html,
   /\$\{renderV41Overview\(\)\}[\s\S]*strategy-maintenance-divider[\s\S]*\$\{renderAssetSection\(\)\}[\s\S]*\$\{renderGroups\(\)\}/,

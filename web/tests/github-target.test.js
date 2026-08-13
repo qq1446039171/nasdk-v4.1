@@ -24,6 +24,8 @@ assert.match(workflows, /TIINGO_API_TOKEN:\s*\$\{\{ secrets\.TIINGO_API_TOKEN \}
 assert.match(workflows, /FRED_API_KEY:\s*\$\{\{ secrets\.FRED_API_KEY \}\}/, 'workflows should pass the FRED key');
 assert.match(workflows, /TUSHARE_TOKEN:\s*\$\{\{ secrets\.TUSHARE_TOKEN \}\}/, 'workflows should pass the Tushare token');
 assert.match(workflows, /Config\/market-snapshot\.json/, 'workflows should persist and deploy the shared market snapshot');
+assert.match(workflows, /Refresh v4\.1 Market Snapshot and Push/, 'workflows should include an on-demand snapshot and WeChat refresh');
+assert.match(workflows, /manual-refresh/, 'the on-demand workflow should bypass daily schedule deduplication');
 assert.match(workflows, /0,15,30,45 3,6 \* \* 1-5/, 'daily observer should cover 11:00 and 14:00 Asia\/Shanghai with retries');
 assert.match(workflows, /CONFIG_PATH:\s*Config\/settings\.json/, 'workflows should use Config/settings.json as the config path');
 assert.doesNotMatch(workflows, /enablement:\s*true/, 'workflows should not try to create or enable the Pages site');

@@ -3,6 +3,7 @@ const { loadState, saveState, shouldAttemptSlot, recordSlotAttempt, markSlotDone
 const { marketCheck, weeklyActiveReminder, tryRealtimeDrawdownAlert } = require('./actions');
 const { runV41MonthEnd } = require('./v41-action');
 const { runDueV41DailyChecks } = require('./v41-daily-schedule');
+const { runManualRefresh } = require('./manual-refresh');
 const { recordDailySnapshot } = require('./profit-snapshot');
 const { getParts, isWeekday, isSlotDue } = require('./time');
 
@@ -40,6 +41,7 @@ const maybeRunDailyMarketCheck = async (cfg, state) => {
 const main = async () => {
   const cfg = loadConfig();
   const state = loadState();
+  let exitCode = 0;
 
   const mode = process.argv[2] || 'month-end';
   if (mode === 'once' || mode === 'month-end' || mode === 'v41') {
@@ -48,6 +50,12 @@ const main = async () => {
     const result = await runDueV41DailyChecks(cfg, state);
     if (!result.sent) {
       console.log('[run-once] no due v4.1 dailyChecks slot to push (not yet due, weekend, or already sent)');
+    }
+  } else if (mode === 'manual-refresh') {
+    const result = await runManualRefresh(cfg, state);
+    if (!result.pushed) {
+      console.error('[run-once] manual market refresh saved its snapshot, but the WeChat push failed');
+      exitCode = 1;
     }
   } else if (mode === 'weekly') {
     await weeklyActiveReminder(cfg, state);
@@ -64,9 +72,10 @@ const main = async () => {
       console.log('[run-once] no due dailyChecks slot to push (not yet due, or already sent today)');
     }
   } else {
-    throw new Error(`Unknown mode: ${mode}. Use month-end | once | daily | market | realtime | weekly`);
+    throw new Error(`Unknown mode: ${mode}. Use month-end | once | daily | manual-refresh | market | realtime | weekly`);
   }
   saveState(state);
+  if (exitCode) process.exitCode = exitCode;
 };
 
 main().catch(err => {
