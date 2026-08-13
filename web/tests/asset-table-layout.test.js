@@ -38,6 +38,8 @@ assert.match(html, /asset-category-group/, 'asset section should group holdings 
 assert.match(html, /asset-category-summary/, 'each category should show its amount and allocation summary');
 assert.match(html, /asset-card/, 'asset section should render compact asset cards');
 assert.match(html, /asset-edit-details/, 'asset editing fields should use progressive disclosure');
+assert.match(html, /function fmtPrice\(value\)/, 'asset prices should use a dedicated precision formatter');
+assert.match(html, /fmtPrice\(asset\.lastPrice\)/, 'asset cards should preserve ETF and fund price precision');
 assert.match(html, /data-asset-field="name"/, 'asset cards should retain the name editor');
 assert.match(html, /data-asset-field="category"/, 'asset cards should retain the category editor');
 assert.match(html, /data-asset-field="code"/, 'asset cards should retain the code editor');

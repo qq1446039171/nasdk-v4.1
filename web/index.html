@@ -1210,6 +1210,7 @@
     const GITHUB_TOKEN_STORAGE_KEY = `${STORAGE_KEY}:github-token`;
     const TIERS = ["10", "15", "20", "25"];
     const moneyFormatter = new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 2 });
+    const priceFormatter = new Intl.NumberFormat("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 4 });
     const chinaDateTimeFormatter = new Intl.DateTimeFormat("zh-CN", {
       timeZone: "Asia/Shanghai",
       year: "numeric",
@@ -1517,6 +1518,12 @@
       const n = Number(value);
       if (!Number.isFinite(n)) return "-";
       return state.balancesHidden ? "******" : moneyFormatter.format(n);
+    }
+
+    function fmtPrice(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return "-";
+      return state.balancesHidden ? "******" : priceFormatter.format(n);
     }
 
     function fmtPercent(value) {
@@ -2847,7 +2854,7 @@
                 </div>
                 <div class="asset-card-metric price">
                   <span>价格/净值</span>
-                  <strong>¥${escapeHtml(fmtMoney(asset.lastPrice))}${priceErrorMark}</strong>
+                  <strong>¥${escapeHtml(fmtPrice(asset.lastPrice))}${priceErrorMark}</strong>
                 </div>
                 <div class="asset-card-metric emphasis">
                   <span>市值</span>
@@ -3528,7 +3535,7 @@
         return `当前固定金额：¥${fmtMoney(asset.amountCny)} · 调整后：¥${fmtMoney(result.nextAmountCny)}`;
       }
       const action = result.addedShares >= 0 ? "增加" : "减少";
-      return `当前价格/净值：¥${fmtMoney(asset.lastPrice)} · 预计${action}份额：${moneyFormatter.format(Math.abs(result.addedShares))} · 调整后份额：${moneyFormatter.format(result.nextShares)}`;
+      return `当前价格/净值：¥${fmtPrice(asset.lastPrice)} · 预计${action}份额：${moneyFormatter.format(Math.abs(result.addedShares))} · 调整后份额：${moneyFormatter.format(result.nextShares)}`;
     }
 
     function paymentAccountPreviewText(payment, result) {
@@ -3637,7 +3644,7 @@
                   <tbody>
                     ${detail.rows.map((row) => {
                       const rowClass = row.profitCny === 0 ? "profit-neutral" : row.profitCny > 0 ? "profit-positive" : "profit-negative";
-                      return `<tr><td>${escapeHtml(row.name)}</td><td>${escapeHtml(categoryLabel(row.category))}</td><td>¥${escapeHtml(fmtMoney(row.previousPrice))}</td><td>¥${escapeHtml(fmtMoney(row.currentPrice))}</td><td class="${rowClass}">${escapeHtml(signedMoney(row.profitCny))}</td></tr>`;
+                      return `<tr><td>${escapeHtml(row.name)}</td><td>${escapeHtml(categoryLabel(row.category))}</td><td>¥${escapeHtml(fmtPrice(row.previousPrice))}</td><td>¥${escapeHtml(fmtPrice(row.currentPrice))}</td><td class="${rowClass}">${escapeHtml(signedMoney(row.profitCny))}</td></tr>`;
                     }).join("")}
                   </tbody>
                 </table>

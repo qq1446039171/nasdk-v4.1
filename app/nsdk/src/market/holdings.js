@@ -140,6 +140,7 @@ const fetchHoldingPrice = async (asset, deps = {}) => {
 
   const secid = asset && asset.secid ? String(asset.secid).trim() : '';
   const code = asset && asset.code ? String(asset.code).trim() : '';
+  const isExchangeAsset = asset && asset.kind === 'exchange';
 
   if (deps.tushareToken && code) {
     try {
@@ -165,12 +166,13 @@ const fetchHoldingPrice = async (asset, deps = {}) => {
       const price = Number(quote && quote.price);
       if (Number.isFinite(price) && price > 0) return price;
     } catch (err) {
-      // 再落到基金净值回退
+      // 场内资产不再回退到场外基金净值
     }
   }
 
-  // 回退：场外基金净值
-  if (code) {
+  // 只有场外基金才能回退到基金净值。场内 ETF 的基金净值与成交价口径不同，
+  // 不能拿来计算场内持仓市值。
+  if (code && !isExchangeAsset) {
     const navPrice = await _fetchFund(code);
     if (Number.isFinite(navPrice) && navPrice > 0) return navPrice;
   }

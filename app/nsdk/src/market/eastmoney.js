@@ -69,7 +69,9 @@ const parseLatestKline = (secid, json, fallbackName = null) => {
 const getLatestKlineClose = async (secid, fallbackName = null) => {
   const fields1 = 'f1,f2,f3,f4,f5,f6';
   const fields2 = 'f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61';
-  const url = `https://push2his.eastmoney.com/api/qt/stock/kline/get?ut=fa5fd1943c7b386f172d6893dbfba10b&secid=${encodeURIComponent(secid)}&fields1=${fields1}&fields2=${fields2}&klt=101&fqt=1&beg=0&end=20500101&lmt=1`;
+  // 场内资产的兜底价格必须使用不复权收盘价。前复权价格会在分红后偏离真实成交价，
+  // 不能用于持仓市值计算。
+  const url = `https://push2his.eastmoney.com/api/qt/stock/kline/get?ut=fa5fd1943c7b386f172d6893dbfba10b&secid=${encodeURIComponent(secid)}&fields1=${fields1}&fields2=${fields2}&klt=101&fqt=0&beg=0&end=20500101&lmt=1`;
   return parseLatestKline(secid, await getJson(url), fallbackName);
 };
 

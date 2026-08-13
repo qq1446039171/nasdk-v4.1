@@ -184,6 +184,7 @@ fetchFundNavTests = fetchFundNavTests.then(async () => {
     assert.strictEqual(quote.name, '纳指ETF国泰', 'K 线兜底应保留名称');
     assert.ok(calls[0].includes('push2delay.eastmoney.com'), '第一路应先查 push2delay');
     assert.ok(calls[1].includes('push2his.eastmoney.com'), '第二路应再查 push2his');
+    assert.ok(calls[1].includes('fqt=0'), '场内资产 K 线兜底必须使用不复权价格');
     console.log('ok - getLatestPrice push2delay 失败后用日 K 兜底');
   } finally {
     if (originalFetch) global.fetch = originalFetch;
@@ -209,20 +210,18 @@ fetchFundNavTests.catch((err) => {
   console.log('ok - fetchHoldingPrice 走 push2 主路径');
 })();
 
-// ============ fetchHoldingPrice：push2 失败 -> 基金净值回退 ============
+// ============ fetchHoldingPrice：场外基金使用基金净值 ============
 (async () => {
-  const getLatestPrice = makeFakeGetLatestPrice({ '0.270042': null }); // push2 抛错
   let fundCalledWith = null;
   const price = await fetchHoldingPrice(
-    { secid: '0.270042', code: '270042', kind: 'exchange' },
+    { secid: '', code: '270042', kind: 'fund' },
     {
-      getLatestPrice,
       fetchFundNav: async (code) => { fundCalledWith = code; return 8.2947; },
     }
   );
-  assert.strictEqual(price, 8.2947, 'push2 失败时应用基金净值');
-  assert.strictEqual(fundCalledWith, '270042', '基金回退应按 code 查询');
-  console.log('ok - fetchHoldingPrice push2 失败回退基金净值');
+  assert.strictEqual(price, 8.2947, '场外基金应用基金净值');
+  assert.strictEqual(fundCalledWith, '270042', '基金净值应按 code 查询');
+  console.log('ok - fetchHoldingPrice 场外基金使用基金净值');
 })();
 
 // ============ fetchHoldingPrice：场内 ETF push2 返回 0 时，不得误用基金净值 ============
@@ -242,6 +241,28 @@ fetchFundNavTests.catch((err) => {
   assert.strictEqual(price, 2.127, '场内 ETF 应用日 K 收盘价兜底');
   assert.strictEqual(fundCalled, false, '场内 ETF 有 K 线兜底时不得误用基金净值');
   console.log('ok - fetchHoldingPrice 场内 ETF 用 K 线兜底');
+})();
+
+// ============ fetchHoldingPrice：场内 ETF 行情全失败时，不得回退到场外基金净值 ============
+(async () => {
+  let fundCalled = false;
+  await assert.rejects(
+    () => fetchHoldingPrice(
+      { secid: '1.513100', code: '513100', kind: 'exchange' },
+      {
+        getLatestPrice: async () => { throw new Error('实时行情失败'); },
+        getLatestKlineClose: async () => { throw new Error('日 K 行情失败'); },
+        fetchFundNav: async () => {
+          fundCalled = true;
+          return 1.9985;
+        },
+      }
+    ),
+    /无法获取|513100/,
+    '场内行情全失败时应保留旧价并报告失败'
+  );
+  assert.strictEqual(fundCalled, false, '场内 ETF 不得使用场外基金净值');
+  console.log('ok - fetchHoldingPrice 场内 ETF 不回退基金净值');
 })();
 
 // ============ refreshHoldingsPrices：更新非现金、跳过现金、失败保留旧价 ============
