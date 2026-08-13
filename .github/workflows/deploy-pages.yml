@@ -5,6 +5,9 @@ on:
   push:
     branches: ["master"]
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Refresh v4.1 Market Snapshot and Push"]
+    types: [completed]
 
 permissions:
   contents: read
@@ -27,6 +30,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: master
 
       # Pages must be enabled once in repo Settings -> Pages -> Source: GitHub Actions.
       - name: Configure Pages
