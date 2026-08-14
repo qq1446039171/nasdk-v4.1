@@ -62,7 +62,7 @@ const buildDailyMessage = ({ cfg, signal, targets, portfolio, market, stale = fa
     `策略外/待归类：${comparisonText(comparisons.other)}`,
   ].join('\n\n');
   return {
-    title: `NDX回撤 -${Math.abs(drawdown).toFixed(2)}%｜${signal.stateLabel}${protection}${stale ? '｜缓存' : ''}`,
+    title: `每日：-${Math.abs(drawdown).toFixed(2)}%｜${signal.stateLabel}${protection}${stale ? '｜缓存' : ''}`,
     body,
   };
 };
