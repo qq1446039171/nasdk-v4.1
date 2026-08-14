@@ -36,11 +36,12 @@ const message = buildDailyMessage({
   portfolio,
   market,
 });
-assert.strictEqual(message.title, 'v4.1每日观察：强势｜NDX回撤-4.11%');
+assert.strictEqual(message.title, 'NDX回撤 -4.11%｜强势');
 assert.match(message.body, /当前模式：强势（信号月份 2026-07）/);
 assert.match(message.body, /NDX当前点位：29,497\.25/);
 assert.match(message.body, /NDX近一年高点：30,762\.2（2026-06-03）/);
 assert.match(message.body, /当前距离近一年高点：-4\.11%/);
+assert.match(message.body, /当前金额：纳指 ¥80,000｜黄金 ¥60,000/);
 assert.doesNotMatch(message.body, /513100当前价格/);
 assert.match(message.body, /纳指：当前 50\.00%\/目标 70\.00%（低配 20\.00 个百分点）/);
 assert.match(message.body, /黄金：当前 37\.50%\/目标 15\.00%（超配 22\.50 个百分点）/);

@@ -11,6 +11,7 @@ const { push } = require('./push');
 
 const round2 = (value) => Math.round(Number(value) * 100) / 100;
 const fmtNumber = (value) => Number(value).toLocaleString('zh-CN', { maximumFractionDigits: 2 });
+const fmtCny = (value) => Number(value || 0).toLocaleString('zh-CN', { maximumFractionDigits: 0 });
 
 const getDailyMarketSnapshot = async (cfg, deps = {}) => {
   const benchmark = await getBenchmarkSnapshot(cfg, deps);
@@ -53,6 +54,7 @@ const buildDailyMessage = ({ cfg, signal, targets, portfolio, market, stale = fa
     `NDX当前点位：${fmtNumber(benchmark.price)}`,
     `NDX近一年高点：${fmtNumber(benchmark.high1y)}（${benchmark.high1yDay || '日期未知'}）`,
     `当前距离近一年高点：-${Math.abs(drawdown).toFixed(2)}%`,
+    `当前金额：纳指 ¥${fmtCny(portfolio.amounts && portfolio.amounts.nasdaq)}｜黄金 ¥${fmtCny(portfolio.amounts && portfolio.amounts.gold)}`,
     '当前仓位 vs 当前模式目标（策略内资产口径，不含独立应急金）：',
     `纳指：${comparisonText(comparisons.nasdaq)}`,
     `黄金：${comparisonText(comparisons.gold)}`,
@@ -60,7 +62,7 @@ const buildDailyMessage = ({ cfg, signal, targets, portfolio, market, stale = fa
     `策略外/待归类：${comparisonText(comparisons.other)}`,
   ].join('\n\n');
   return {
-    title: `v4.1每日观察：${signal.stateLabel}${protection}｜NDX回撤-${Math.abs(drawdown).toFixed(2)}%${stale ? '｜缓存' : ''}`,
+    title: `NDX回撤 -${Math.abs(drawdown).toFixed(2)}%｜${signal.stateLabel}${protection}${stale ? '｜缓存' : ''}`,
     body,
   };
 };
