@@ -16,6 +16,7 @@ const portfolio = {
   amounts: { nasdaq: 80000, gold: 60000, bond: 0, other: 20000 },
   investableTotalCny: 160000,
   excludedEmergencyCashCny: 36000,
+  totalAssetsCny: 196000,
 };
 const market = {
   benchmark: { name: '纳斯达克100', code: 'NDX', price: 29497.25, high1y: 30762.2, high1yDay: '2026-06-03', drawdownPct: 4.11 },
@@ -38,6 +39,7 @@ const message = buildDailyMessage({
 });
 assert.strictEqual(message.title, '每日：-4.11%｜强势');
 assert.match(message.body, /当前模式：强势（信号月份 2026-07）/);
+assert.match(message.body, /当前总资产：¥196,000/);
 assert.match(message.body, /NDX当前点位：29,497\.25/);
 assert.match(message.body, /NDX近一年高点：30,762\.2（2026-06-03）/);
 assert.match(message.body, /当前距离近一年高点：-4\.11%/);

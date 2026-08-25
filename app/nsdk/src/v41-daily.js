@@ -51,6 +51,7 @@ const buildDailyMessage = ({ cfg, signal, targets, portfolio, market, stale = fa
     '【每日观察】只作观察提示，不给出买卖建议；正式操作以月末通知为准。',
     dataStatus,
     `当前模式：${signal.stateLabel}${protection}（信号月份 ${signal.signalMonth}）`,
+    `当前总资产：¥${fmtCny(portfolio.totalAssetsCny)}`,
     `NDX当前点位：${fmtNumber(benchmark.price)}`,
     `NDX近一年高点：${fmtNumber(benchmark.high1y)}（${benchmark.high1yDay || '日期未知'}）`,
     `当前距离近一年高点：-${Math.abs(drawdown).toFixed(2)}%`,
