@@ -240,16 +240,16 @@
     "at": "2026-08-31T09:30:48.985Z"
   },
   "v41": {
-    "lastCheckedAt": "2026-08-29T03:48:22.020Z",
-    "lastNotifiedSignalMonth": "2026-07",
+    "lastCheckedAt": "2026-09-01T01:21:24.881Z",
+    "lastNotifiedSignalMonth": "2026-08",
     "lastSignal": {
-      "signalMonth": "2026-07",
+      "signalMonth": "2026-08",
       "state": "strong",
       "stateLabel": "强势",
-      "close": 687.99,
-      "sma10": 648.83,
-      "momentum12Percent": 22.35,
-      "annualizedVolatilityPercent": 31.16,
+      "close": 716.76,
+      "sma10": 657.84,
+      "momentum12Percent": 26.26,
+      "annualizedVolatilityPercent": 30.3,
       "trendPositive": true,
       "momentumPositive": true,
       "highVolatility": false,
@@ -262,42 +262,47 @@
     },
     "lastPortfolio": {
       "amounts": {
-        "nasdaq": 78259.35,
-        "gold": 65140.01,
+        "nasdaq": 77712.92,
+        "gold": 64060.38,
         "bond": 0,
-        "other": 27123.3
+        "other": 25573.11
       },
-      "investableTotalCny": 170522.66,
+      "investableTotalCny": 167346.41,
       "excludedEmergencyCashCny": 36000,
-      "totalAssetsCny": 206522.66
+      "totalAssetsCny": 203346.41
     },
     "lastPlan": {
       "rebalanceRequired": true,
-      "reason": "state_changed",
-      "projectedTotalCny": 174522.66,
+      "reason": "drift_over_threshold",
+      "projectedTotalCny": 171346.41,
       "currentPercents": {
-        "nasdaq": 45.89,
-        "gold": 38.2,
+        "nasdaq": 46.44,
+        "gold": 38.28,
         "bond": 0,
-        "other": 15.91
+        "other": 15.28
       },
       "driftPercent": {
-        "nasdaq": -24.11,
-        "gold": 23.2,
+        "nasdaq": -23.56,
+        "gold": 23.28,
         "bond": -15,
-        "other": 15.91
+        "other": 15.28
       },
       "actions": {
-        "nasdaq": 43906.51,
-        "gold": -38961.61,
-        "bond": 26178.4,
-        "other": -27123.3
+        "nasdaq": 42229.57,
+        "gold": -38358.42,
+        "bond": 25701.96,
+        "other": -25573.11
+      },
+      "monthlyCashflowAllocation": {
+        "nasdaq": 4000,
+        "gold": 0,
+        "bond": 0
       }
     },
-    "lastProvider": "eastmoney-adjusted",
+    "lastProvider": "tiingo-adjusted",
     "lastMessage": {
       "title": "v4.1月末：强势",
-      "body": "信号月份：2026-07（数据源：eastmoney-adjusted，QQQ 月度复权价）\n\n趋势：收盘 687.99 > SMA10 648.83；12月动量 +22.35%\n\n6月年化波动率：31.16%（阈值 35.00%）\n\n目标仓位：纳指 70% / 黄金 15% / 债券 15%\n\n策略内资产：¥170,523；独立应急金：¥36,000；本月新增：¥4,000\n\n处理原因：市场状态或高波动保护发生变化，需要整体调仓\n\n卖出/转出 策略外股票/现金：¥27,123\n\n买入/转入 纳斯达克（优先 513100）：¥43,907\n\n卖出/转出 黄金基金：¥38,962\n\n买入/转入 海富通中证短融ETF（511360）：¥26,178\n\n执行时间：信号确认后的下一个中国可交易日；金额按当日成交价允许有少量误差。"
+      "body": "信号月份：2026-08（数据源：tiingo-adjusted，QQQ 月度复权价）\n\n趋势：收盘 716.76 > SMA10 657.84；12月动量 +26.26%\n\n6月年化波动率：30.30%（阈值 35.00%）\n\n目标仓位：纳指 70% / 黄金 15% / 债券 15%\n\n策略内资产：¥167,346；独立应急金：¥36,000；本月新增：¥4,000\n\n本月新增现金分配建议：纳斯达克（优先 513100） ¥4,000\n\n处理原因：至少一类资产偏离目标超过 3 个百分点，需要再平衡\n\n卖出/转出 策略外股票/现金：¥25,573\n\n买入/转入 纳斯达克（优先 513100）：¥42,230\n\n卖出/转出 黄金基金：¥38,358\n\n买入/转入 海富通中证短融ETF（511360）：¥25,702\n\n执行时间：信号确认后的下一个中国可交易日；金额按当日成交价允许有少量误差。"
     }
   },
   "v41Daily": {
