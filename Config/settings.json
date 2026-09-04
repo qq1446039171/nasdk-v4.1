@@ -1299,8 +1299,12 @@
     "weeklyActiveBuy": null,
     "dailyChecks": [
       {
-        "hour": "10",
-        "minute": "35"
+        "hour": "11",
+        "minute": "30"
+      },
+      {
+        "hour": "13",
+        "minute": "30"
       }
     ]
   }
