@@ -1300,7 +1300,7 @@
     "dailyChecks": [
       {
         "hour": "10",
-        "minute": "55"
+        "minute": "35"
       }
     ]
   }
