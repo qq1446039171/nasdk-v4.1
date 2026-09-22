@@ -27,7 +27,7 @@ assert.match(workflows, /Config\/market-snapshot\.json/, 'workflows should persi
 assert.match(workflows, /Refresh v4\.1 Market Snapshot and Push/, 'workflows should include an on-demand snapshot and WeChat refresh');
 assert.match(workflows, /manual-refresh/, 'the on-demand workflow should bypass daily schedule deduplication');
 assert.match(workflows, /workflow_run:[\s\S]*Refresh v4\.1 Market Snapshot and Push/, 'Pages should redeploy after the refresh workflow persists its snapshot');
-assert.match(workflows, /0,15,30,45 3,6 \* \* 1-5/, 'daily observer should cover 11:00 and 14:00 Asia\/Shanghai with retries');
+assert.match(workflows, /cron: "7 0-6 \* \* 1-5"[\s\S]*cron: "37 0-6 \* \* 1-5"/, 'daily observer should cover 08:07-14:37 Asia\/Shanghai every 30 minutes');
 assert.match(workflows, /CONFIG_PATH:\s*Config\/settings\.json/, 'workflows should use Config/settings.json as the config path');
 assert.doesNotMatch(workflows, /enablement:\s*true/, 'workflows should not try to create or enable the Pages site');
 assert.doesNotMatch(html, /New-NASDAQ/, 'web UI should not reference the old New-NASDAQ repo');
