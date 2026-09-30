@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-30T05:23:25.227Z",
+  "generatedAt": "2026-09-30T05:55:14.750Z",
   "stale": false,
   "warnings": [],
   "sources": {
@@ -42,92 +42,92 @@
     {
       "id": "513100",
       "code": "513100",
-      "lastPrice": 2.348,
-      "lastPriceAt": "2026-09-30T05:23:12.438Z",
+      "lastPrice": 2.349,
+      "lastPriceAt": "2026-09-30T05:54:57.088Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780228838359",
       "code": "159941",
-      "lastPrice": 1.726,
-      "lastPriceAt": "2026-09-30T05:23:13.148Z",
+      "lastPrice": 1.729,
+      "lastPriceAt": "2026-09-30T05:54:58.130Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780228876679",
       "code": "270042",
       "lastPrice": 8.3244,
-      "lastPriceAt": "2026-09-30T05:23:14.962Z",
+      "lastPriceAt": "2026-09-30T05:55:00.869Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780228945307",
       "code": "018043",
       "lastPrice": 2.0748,
-      "lastPriceAt": "2026-09-30T05:23:15.447Z",
+      "lastPriceAt": "2026-09-30T05:55:02.103Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229579903",
       "code": "000834",
       "lastPrice": 6.4142,
-      "lastPriceAt": "2026-09-30T05:23:15.909Z",
+      "lastPriceAt": "2026-09-30T05:55:02.658Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229660445",
       "code": "019172",
       "lastPrice": 1.7861,
-      "lastPriceAt": "2026-09-30T05:23:16.430Z",
+      "lastPriceAt": "2026-09-30T05:55:03.201Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229683998",
       "code": "016452",
       "lastPrice": 2.3344,
-      "lastPriceAt": "2026-09-30T05:23:17.394Z",
+      "lastPriceAt": "2026-09-30T05:55:03.912Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229749526",
       "code": "017436",
       "lastPrice": 2.4115,
-      "lastPriceAt": "2026-09-30T05:23:18.341Z",
+      "lastPriceAt": "2026-09-30T05:55:04.432Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229780945",
       "code": "008976",
       "lastPrice": 1.0861,
-      "lastPriceAt": "2026-09-30T05:23:18.923Z",
+      "lastPriceAt": "2026-09-30T05:55:05.100Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229832187",
       "code": "110020",
       "lastPrice": 1.7891,
-      "lastPriceAt": "2026-09-30T05:23:19.397Z",
+      "lastPriceAt": "2026-09-30T05:55:05.628Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780230265572",
       "code": "000217",
       "lastPrice": 3.0159,
-      "lastPriceAt": "2026-09-30T05:23:19.867Z",
+      "lastPriceAt": "2026-09-30T05:55:06.147Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780230333146",
       "code": "009505",
       "lastPrice": 1.8811,
-      "lastPriceAt": "2026-09-30T05:23:20.341Z",
+      "lastPriceAt": "2026-09-30T05:55:06.658Z",
       "lastPriceError": ""
     },
     {
       "id": "511360",
       "code": "511360",
-      "lastPrice": 114.014,
-      "lastPriceAt": "2026-09-30T05:23:21.521Z",
+      "lastPrice": 114.015,
+      "lastPriceAt": "2026-09-30T05:55:10.189Z",
       "lastPriceError": ""
     },
     {
@@ -154,8 +154,8 @@
     {
       "id": "asset-1783591158652",
       "code": "513050",
-      "lastPrice": 1.002,
-      "lastPriceAt": "2026-09-30T05:23:22.033Z",
+      "lastPrice": 1.006,
+      "lastPriceAt": "2026-09-30T05:55:11.253Z",
       "lastPriceError": ""
     }
   ]
