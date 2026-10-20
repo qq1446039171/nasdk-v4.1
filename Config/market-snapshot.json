@@ -1,10 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-20T04:38:23.654Z",
+  "generatedAt": "2026-10-20T09:57:39.298Z",
   "stale": false,
-  "warnings": [
-    "持仓价格 1 项沿用旧值"
-  ],
+  "warnings": [],
   "sources": {
     "signal": "tiingo-adjusted",
     "benchmark": "fred",
@@ -44,92 +42,92 @@
     {
       "id": "513100",
       "code": "513100",
-      "lastPrice": 2.355,
-      "lastPriceAt": "2026-10-20T04:38:11.874Z",
+      "lastPrice": 2.334,
+      "lastPriceAt": "2026-10-20T09:57:27.713Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780228838359",
       "code": "159941",
-      "lastPrice": 1.723,
-      "lastPriceAt": "2026-10-20T04:38:12.392Z",
+      "lastPrice": 1.708,
+      "lastPriceAt": "2026-10-20T09:57:28.206Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780228876679",
       "code": "270042",
       "lastPrice": 7.9912,
-      "lastPriceAt": "2026-10-20T04:38:13.626Z",
+      "lastPriceAt": "2026-10-20T09:57:29.386Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780228945307",
       "code": "018043",
       "lastPrice": 1.9979,
-      "lastPriceAt": "2026-10-20T04:38:14.104Z",
+      "lastPriceAt": "2026-10-20T09:57:29.820Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229579903",
       "code": "000834",
       "lastPrice": 6.1593,
-      "lastPriceAt": "2026-10-20T04:38:14.581Z",
+      "lastPriceAt": "2026-10-20T09:57:30.254Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229660445",
       "code": "019172",
       "lastPrice": 1.7211,
-      "lastPriceAt": "2026-10-20T04:38:15.047Z",
+      "lastPriceAt": "2026-10-20T09:57:30.687Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229683998",
       "code": "016452",
       "lastPrice": 2.2476,
-      "lastPriceAt": "2026-10-20T04:38:15.522Z",
+      "lastPriceAt": "2026-10-20T09:57:31.130Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229749526",
       "code": "017436",
-      "lastPrice": 2.2403,
-      "lastPriceAt": "2026-10-20T04:38:16.013Z",
+      "lastPrice": 2.269,
+      "lastPriceAt": "2026-10-20T09:57:31.571Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229780945",
       "code": "008976",
       "lastPrice": 1.1216,
-      "lastPriceAt": "2026-10-20T04:38:16.480Z",
+      "lastPriceAt": "2026-10-20T09:57:32.001Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229832187",
       "code": "110020",
       "lastPrice": 1.724,
-      "lastPriceAt": "2026-10-20T04:38:16.952Z",
+      "lastPriceAt": "2026-10-20T09:57:32.434Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780230265572",
       "code": "000217",
       "lastPrice": 3.0253,
-      "lastPriceAt": "2026-10-20T04:38:17.423Z",
+      "lastPriceAt": "2026-10-20T09:57:32.866Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780230333146",
       "code": "009505",
       "lastPrice": 1.8908,
-      "lastPriceAt": "2026-10-20T04:38:17.901Z",
+      "lastPriceAt": "2026-10-20T09:57:33.365Z",
       "lastPriceError": ""
     },
     {
       "id": "511360",
       "code": "511360",
-      "lastPrice": 114.067,
-      "lastPriceAt": "2026-10-20T04:38:19.144Z",
+      "lastPrice": 114.069,
+      "lastPriceAt": "2026-10-20T09:57:35.490Z",
       "lastPriceError": ""
     },
     {
@@ -156,9 +154,9 @@
     {
       "id": "asset-1783591158652",
       "code": "513050",
-      "lastPrice": 1.097,
-      "lastPriceAt": "2026-08-14T04:51:53.831Z",
-      "lastPriceError": "无法获取最新价：中概互联"
+      "lastPrice": 0.996,
+      "lastPriceAt": "2026-10-20T09:57:36.386Z",
+      "lastPriceError": ""
     }
   ]
 }
