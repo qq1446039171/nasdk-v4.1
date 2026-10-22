@@ -246,7 +246,8 @@
     "v41-daily:2026-10-20:10:30": "2026-10-20T04:38:23.656Z",
     "v41-daily:2026-10-20:13:30": "2026-10-20T09:57:39.300Z",
     "v41-daily:2026-10-21:10:30": "2026-10-21T04:31:25.663Z",
-    "v41-daily:2026-10-21:13:30": "2026-10-21T10:01:44.094Z"
+    "v41-daily:2026-10-21:13:30": "2026-10-21T10:01:44.094Z",
+    "v41-daily:2026-10-22:10:30": "2026-10-22T04:30:07.804Z"
   },
   "pushAttempts": {
     "v41-daily:2026-09-07:11:30": 1,
@@ -293,18 +294,19 @@
   },
   "lastMarket": {
     "benchmark": {
-      "provider": "fred",
+      "provider": "eastmoney",
       "code": "NDX",
-      "name": "纳斯达克100（NDX）",
-      "price": 29490.28,
-      "pct": -0.13,
-      "priceDay": "2026-10-20",
-      "high1y": 31224.69,
+      "name": "纳斯达克100",
+      "price": 29822.52,
+      "pct": 1.13,
+      "high1y": 31361.37,
       "high1yDay": "2026-10-06",
-      "drawdownPct": 5.55,
-      "warnings": []
+      "drawdownPct": 4.91,
+      "warnings": [
+        "FRED: Unexpected token '<', \"<!doctype \"... is not valid JSON"
+      ]
     },
-    "at": "2026-10-21T10:01:44.093Z"
+    "at": "2026-10-22T04:30:07.803Z"
   },
   "v41": {
     "lastCheckedAt": "2026-10-22T00:48:33.921Z",
@@ -373,7 +375,7 @@
     }
   },
   "v41Daily": {
-    "lastCheckedAt": "2026-10-21T10:01:44.093Z",
+    "lastCheckedAt": "2026-10-22T04:30:07.803Z",
     "lastSignal": {
       "signalMonth": "2026-09",
       "state": "strong",
@@ -394,36 +396,39 @@
     },
     "lastPortfolio": {
       "amounts": {
-        "nasdaq": 78705.07,
-        "gold": 59163.23,
+        "nasdaq": 78145.97,
+        "gold": 58979.32,
         "bond": 0,
-        "other": 24627.46
+        "other": 24329.15
       },
-      "investableTotalCny": 162495.76,
+      "investableTotalCny": 161454.44,
       "excludedEmergencyCashCny": 36000,
-      "totalAssetsCny": 198495.76
+      "totalAssetsCny": 197454.44
     },
     "lastMarket": {
       "benchmark": {
-        "provider": "fred",
+        "provider": "eastmoney",
         "code": "NDX",
-        "name": "纳斯达克100（NDX）",
-        "price": 29490.28,
-        "pct": -0.13,
-        "priceDay": "2026-10-20",
-        "high1y": 31224.69,
+        "name": "纳斯达克100",
+        "price": 29822.52,
+        "pct": 1.13,
+        "high1y": 31361.37,
         "high1yDay": "2026-10-06",
-        "drawdownPct": 5.55,
-        "warnings": []
+        "drawdownPct": 4.91,
+        "warnings": [
+          "FRED: Unexpected token '<', \"<!doctype \"... is not valid JSON"
+        ]
       }
     },
     "lastMessage": {
-      "title": "每日：-5.55%｜强势",
-      "body": "【每日观察】只作观察提示，不给出买卖建议；正式操作以月末通知为准。\n\n数据状态：fred 已更新至 2026-10-20\n\n当前模式：强势（信号月份 2026-09）\n\n当前总资产：¥198,496\n\nNDX当前点位：29,490.28\n\nNDX近一年高点：31,224.69（2026-10-06）\n\n当前距离近一年高点：-5.55%\n\n当前金额：纳指 ¥78,705｜黄金 ¥59,163\n\n当前仓位 vs 当前模式目标（策略内资产口径，不含独立应急金）：\n\n纳指：当前 48.44%/目标 70.00%（低配 21.56 个百分点）\n\n黄金：当前 36.41%/目标 15.00%（超配 21.41 个百分点）\n\n海富通中证短融ETF（511360）：当前 0.00%/目标 15.00%（低配 15.00 个百分点）\n\n策略外/待归类：当前 15.16%/目标 0.00%（超配 15.16 个百分点）"
+      "title": "每日：-4.91%｜强势",
+      "body": "【每日观察】只作观察提示，不给出买卖建议；正式操作以月末通知为准。\n\n数据状态：备用数据源已接管（FRED: Unexpected token '<', \"<!doctype \"... is not valid JSON）\n\n当前模式：强势（信号月份 2026-09）\n\n当前总资产：¥197,454\n\nNDX当前点位：29,822.52\n\nNDX近一年高点：31,361.37（2026-10-06）\n\n当前距离近一年高点：-4.91%\n\n当前金额：纳指 ¥78,146｜黄金 ¥58,979\n\n当前仓位 vs 当前模式目标（策略内资产口径，不含独立应急金）：\n\n纳指：当前 48.40%/目标 70.00%（低配 21.60 个百分点）\n\n黄金：当前 36.53%/目标 15.00%（超配 21.53 个百分点）\n\n海富通中证短融ETF（511360）：当前 0.00%/目标 15.00%（低配 15.00 个百分点）\n\n策略外/待归类：当前 15.07%/目标 0.00%（超配 15.07 个百分点）"
     },
     "stale": false,
-    "warnings": [],
-    "lastNotifiedAt": "2026-10-21T10:01:44.093Z"
+    "warnings": [
+      "FRED: Unexpected token '<', \"<!doctype \"... is not valid JSON"
+    ],
+    "lastNotifiedAt": "2026-10-22T04:30:07.803Z"
   },
   "freeze": {
     "active": false,
