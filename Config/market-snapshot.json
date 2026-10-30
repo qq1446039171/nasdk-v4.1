@@ -1,8 +1,10 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-29T05:35:40.201Z",
+  "generatedAt": "2026-10-30T05:35:59.764Z",
   "stale": false,
-  "warnings": [],
+  "warnings": [
+    "持仓价格 4 项沿用旧值"
+  ],
   "sources": {
     "signal": "tiingo-adjusted",
     "benchmark": "fred",
@@ -30,105 +32,105 @@
     "provider": "fred",
     "code": "NDX",
     "name": "纳斯达克100（NDX）",
-    "price": 29813.16,
-    "pct": 0.55,
-    "priceDay": "2026-10-28",
+    "price": 29402.51,
+    "pct": -1.38,
+    "priceDay": "2026-10-29",
     "high1y": 31224.69,
     "high1yDay": "2026-10-06",
-    "drawdownPct": 4.52,
+    "drawdownPct": 5.84,
     "warnings": []
   },
   "holdings": [
     {
       "id": "513100",
       "code": "513100",
-      "lastPrice": 2.299,
-      "lastPriceAt": "2026-10-29T05:35:24.569Z",
-      "lastPriceError": ""
+      "lastPrice": 2.252,
+      "lastPriceAt": "2026-10-30T05:34:31.032Z",
+      "lastPriceError": "无法获取最新价：同纳指ETF"
     },
     {
       "id": "asset-1780228838359",
       "code": "159941",
-      "lastPrice": 1.696,
-      "lastPriceAt": "2026-10-29T05:35:25.078Z",
-      "lastPriceError": ""
+      "lastPrice": 1.663,
+      "lastPriceAt": "2026-10-30T05:34:31.586Z",
+      "lastPriceError": "无法获取最新价：同纳指ETF"
     },
     {
       "id": "asset-1780228876679",
       "code": "270042",
-      "lastPrice": 8.1077,
-      "lastPriceAt": "2026-10-29T05:35:27.523Z",
+      "lastPrice": 8.152,
+      "lastPriceAt": "2026-10-30T05:35:35.264Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780228945307",
       "code": "018043",
-      "lastPrice": 2.0263,
-      "lastPriceAt": "2026-10-29T05:35:27.981Z",
+      "lastPrice": 2.0366,
+      "lastPriceAt": "2026-10-30T05:35:46.445Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229579903",
       "code": "000834",
-      "lastPrice": 6.2444,
-      "lastPriceAt": "2026-10-29T05:35:28.457Z",
+      "lastPrice": 6.2746,
+      "lastPriceAt": "2026-10-30T05:35:48.604Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229660445",
       "code": "019172",
-      "lastPrice": 1.7454,
-      "lastPriceAt": "2026-10-29T05:35:29.404Z",
+      "lastPrice": 1.7542,
+      "lastPriceAt": "2026-10-30T05:35:49.120Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229683998",
       "code": "016452",
-      "lastPrice": 2.2798,
-      "lastPriceAt": "2026-10-29T05:35:29.875Z",
+      "lastPrice": 2.2915,
+      "lastPriceAt": "2026-10-30T05:35:49.650Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229749526",
       "code": "017436",
-      "lastPrice": 2.2572,
-      "lastPriceAt": "2026-10-29T05:35:30.320Z",
+      "lastPrice": 2.2884,
+      "lastPriceAt": "2026-10-30T05:35:50.169Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229780945",
       "code": "008976",
-      "lastPrice": 1.1062,
-      "lastPriceAt": "2026-10-29T05:35:31.229Z",
+      "lastPrice": 1.1218,
+      "lastPriceAt": "2026-10-30T05:35:50.700Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229832187",
       "code": "110020",
-      "lastPrice": 1.691,
-      "lastPriceAt": "2026-10-29T05:35:31.711Z",
+      "lastPrice": 1.6745,
+      "lastPriceAt": "2026-10-30T05:35:51.258Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780230265572",
       "code": "000217",
-      "lastPrice": 2.9176,
-      "lastPriceAt": "2026-10-29T05:35:35.338Z",
+      "lastPrice": 2.9058,
+      "lastPriceAt": "2026-10-30T05:35:51.772Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780230333146",
       "code": "009505",
-      "lastPrice": 1.8177,
-      "lastPriceAt": "2026-10-29T05:35:35.862Z",
+      "lastPrice": 1.8168,
+      "lastPriceAt": "2026-10-30T05:35:52.282Z",
       "lastPriceError": ""
     },
     {
       "id": "511360",
       "code": "511360",
-      "lastPrice": 114.107,
-      "lastPriceAt": "2026-10-29T05:35:37.172Z",
-      "lastPriceError": ""
+      "lastPrice": 113.806,
+      "lastPriceAt": "2026-08-14T04:51:52.899Z",
+      "lastPriceError": "无法获取最新价：海富通中证短融ETF"
     },
     {
       "id": "asset-1780230365832",
@@ -154,9 +156,9 @@
     {
       "id": "asset-1783591158652",
       "code": "513050",
-      "lastPrice": 0.925,
-      "lastPriceAt": "2026-10-29T05:35:37.736Z",
-      "lastPriceError": ""
+      "lastPrice": 0.939,
+      "lastPriceAt": "2026-10-30T05:34:55.108Z",
+      "lastPriceError": "无法获取最新价：中概互联"
     }
   ]
 }
