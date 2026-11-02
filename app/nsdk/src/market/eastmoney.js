@@ -60,6 +60,7 @@ const parseLatestKline = (secid, json, fallbackName = null) => {
   if (!Number.isFinite(price) || price <= 0) throw new Error(`Invalid kline close: ${secid}`);
   return {
     name: (data && data.name) || fallbackName,
+    day: cols[0],
     price,
     pct: normalizePct(parseNumber(cols[8])),
     raw: data || null,
