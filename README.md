@@ -59,7 +59,7 @@ GitHub Pages 地址应为 `https://qq1446039171.github.io/nasdk-v4.1/`。
 ## 主要文件
 
 - `Config/settings.json`：持仓和 v4.1 参数。
-- `Config/market-snapshot.json`：每日/月末任务生成的统一行情快照，供网页和推送共享。
+- `Config/market-snapshot.json`：每日/月末任务生成的统一行情快照。月末任务在 `signalHistory` 保留各月确认的 QQQ 状态，网页将其显示在下一个生效月份。
 - `app/nsdk/src/v41-strategy.js`：纯策略计算。
 - `app/nsdk/src/v41-action.js`：月末行情、金额建议和推送。
 - `app/nsdk/src/v41-daily.js`：每日行情、当前状态与仓位目标差异推送。

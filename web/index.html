@@ -3020,8 +3020,7 @@
     const MARKET_STATE_TIMELINE_ASSET = "./assets/v41-market-state-timeline.svg";
 
     function currentYearMonth() {
-      const now = new Date();
-      return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+      return localDateKey().slice(0, 7);
     }
 
     function marketTimelineStartMonth() {
@@ -3036,7 +3035,7 @@
           <div class="section-head">
             <div>
               <h3 class="section-title">v4.1 市场状态时间表</h3>
-              <div class="field-desc">从程序启动月份 ${escapeHtml(startMonth)} 开始展示；本月使用已加载的 NDX/QQQ 信号，后续月份在月末确认后更新。</div>
+              <div class="field-desc">从 ${escapeHtml(startMonth)} 开始展示。每个月使用上一个完整月份的 QQQ 信号。</div>
             </div>
             <span class="tag info">起始月份：${escapeHtml(startMonth)}</span>
           </div>
@@ -3063,39 +3062,49 @@
     }
 
     function renderCurrentMarketTimelineSvg(startMonth) {
-      const match = /^(\d{4})-(0[1-9]|1[0-2])$/.exec(startMonth);
-      if (!match) throw new Error("起始月份格式必须为 YYYY-MM");
-      const year = Number(match[1]);
-      const firstMonth = Number(match[2]);
-      const months = Array.from({ length: 13 - firstMonth }, (_, index) => firstMonth + index);
-      const signal = state.v41Live?.signal || state.nsdkState?.v41?.lastSignal || null;
-      const signalState = ["strong", "transition", "defensive"].includes(signal?.state) ? signal.state : "pending";
-      const active = marketTimelineStateMeta(signalState);
+      if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(startMonth)) throw new Error("起始月份格式必须为 YYYY-MM");
+      const currentMonth = currentYearMonth();
+      const endYear = Math.max(Number(startMonth.slice(0, 4)), Number(currentMonth.slice(0, 4)));
+      const months = [];
+      for (const date = new Date(`${startMonth}-01T00:00:00Z`); date.getUTCFullYear() <= endYear; date.setUTCMonth(date.getUTCMonth() + 1)) {
+        months.push(date.toISOString().slice(0, 7));
+      }
+
+      const history = state.marketSnapshot?.signalHistory;
+      const signal = state.v41Live?.signal || state.nsdkState?.v41?.lastSignal;
+      const stateKeys = ["strong", "transition", "defensive", "pending"];
+      const stateForMonth = (month) => {
+        const date = new Date(`${month}-01T00:00:00Z`);
+        date.setUTCMonth(date.getUTCMonth() - 1);
+        const signalMonth = date.toISOString().slice(0, 7);
+        const key = history?.[signalMonth] ?? (signal?.signalMonth === signalMonth ? signal.state : "pending");
+        return stateKeys.includes(key) ? key : "pending";
+      };
+
       const left = 36;
       const cellWidth = 104;
       const gap = 10;
       const width = Math.max(560, left + months.length * cellWidth + (months.length - 1) * gap + 28);
       const height = 142;
-      const monthNames = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
-      const gradients = ["strong", "transition", "defensive", "pending"].map((key) => {
+      const gradients = stateKeys.map((key) => {
         const meta = marketTimelineStateMeta(key);
         return `<linearGradient id="timeline-${key}" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${meta.colorA}"/><stop offset="100%" stop-color="${meta.colorB}"/></linearGradient>`;
       }).join("");
       const cells = months.map((month, index) => {
-        const isCurrent = index === 0;
-        const meta = isCurrent ? active : marketTimelineStateMeta("pending");
-        const label = isCurrent && signalState !== "pending" ? meta.short : "待";
+        const key = month <= currentMonth ? stateForMonth(month) : "pending";
+        const meta = marketTimelineStateMeta(key);
         const x = left + index * (cellWidth + gap);
         return `
-          <g role="img" aria-label="${escapeHtml(`${year}-${String(month).padStart(2, "0")} ${isCurrent && signalState !== "pending" ? meta.label : "待确认"}`)}">
-            <text x="${x + cellWidth / 2}" y="22" text-anchor="middle" fill="#a9bbce" font-size="12" font-weight="600">${escapeHtml(monthNames[month - 1])}</text>
-            <rect x="${x}" y="32" width="${cellWidth}" height="44" rx="6" fill="url(#timeline-${isCurrent ? signalState : "pending"})" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
-            <text x="${x + cellWidth / 2}" y="60" text-anchor="middle" fill="${isCurrent && signalState !== "pending" ? "#0a1c2d" : "#c9d5e2"}" font-size="18" font-weight="750">${escapeHtml(label)}</text>
-            <text x="${x + cellWidth / 2}" y="95" text-anchor="middle" fill="#7890a9" font-size="10">${escapeHtml(`${year}-${String(month).padStart(2, "0")}`)}</text>
+          <g role="img" aria-label="${escapeHtml(`${month} ${meta.label}`)}">
+            <text x="${x + cellWidth / 2}" y="22" text-anchor="middle" fill="#a9bbce" font-size="12" font-weight="600">${Number(month.slice(5))}月</text>
+            <rect x="${x}" y="32" width="${cellWidth}" height="44" rx="6" fill="url(#timeline-${key})" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+            <text x="${x + cellWidth / 2}" y="60" text-anchor="middle" fill="${key === "pending" ? "#c9d5e2" : "#0a1c2d"}" font-size="18" font-weight="750">${escapeHtml(meta.short)}</text>
+            <text x="${x + cellWidth / 2}" y="95" text-anchor="middle" fill="#7890a9" font-size="10">${escapeHtml(month)}</text>
           </g>
         `;
       }).join("");
-      const statusText = signalState !== "pending" ? `本月有效状态：${active.label}` : "等待月线信号加载";
+      const activeKey = stateForMonth(currentMonth);
+      const statusText = activeKey === "pending" ? "本月信号待确认" : `本月有效状态：${marketTimelineStateMeta(activeKey).label}`;
       return `
         <svg class="market-timeline-svg" xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(`${startMonth} 起的 v4.1 市场状态时间表`)}" data-source-asset="${escapeHtml(MARKET_STATE_TIMELINE_ASSET)}">
           <defs>${gradients}</defs>

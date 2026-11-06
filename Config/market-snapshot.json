@@ -21,6 +21,12 @@
     "highVolatility": false,
     "volatilityThresholdPercent": 35
   },
+  "signalHistory": {
+    "2026-07": "strong",
+    "2026-08": "strong",
+    "2026-09": "strong",
+    "2026-10": "strong"
+  },
   "targets": {
     "nasdaq": 70,
     "gold": 15,

@@ -87,10 +87,11 @@ const runV41MonthEnd = async (cfg, state, options = {}) => {
     return false;
   }
 
+  const previousSignal = state.v41.lastSignal;
   let plan;
   let portfolio;
   let targets;
-  if (!options.force && state.v41.lastSignal?.signalMonth === signal.signalMonth && state.v41.lastPlan) {
+  if (!options.force && previousSignal?.signalMonth === signal.signalMonth && state.v41.lastPlan) {
     plan = state.v41.lastPlan;
     portfolio = state.v41.lastPortfolio;
     targets = state.v41.lastTargets;
@@ -107,7 +108,7 @@ const runV41MonthEnd = async (cfg, state, options = {}) => {
       amounts: portfolio.amounts,
       targets,
       monthlyCashflowCny: cfg.monthlyCashflowCny,
-      previousSignal: state.v41.lastSignal,
+      previousSignal,
       currentSignal: signal,
       thresholdPercent: cfg.strategyV41.rebalanceThresholdPercent,
     });
@@ -128,6 +129,11 @@ const runV41MonthEnd = async (cfg, state, options = {}) => {
   const cachedSnapshot = (options.deps && options.deps.loadSnapshot || loadMarketSnapshot)() || {};
   const snapshot = buildMarketSnapshot({
     signal,
+    signalHistory: {
+      ...(previousSignal ? { [previousSignal.signalMonth]: previousSignal.state } : {}),
+      ...cachedSnapshot.signalHistory,
+      [signal.signalMonth]: signal.state,
+    },
     targets,
     portfolio: cfg.portfolio && cfg.portfolio.assetSummary || cfg.portfolio,
     benchmark: cachedSnapshot.benchmark || null,

@@ -137,6 +137,7 @@ const runV41DailySummary = async (cfg, state, deps = {}) => {
 
   const snapshot = buildMarketSnapshot({
     signal,
+    signalHistory: cached.signalHistory,
     targets,
     portfolio: cfg.portfolio && cfg.portfolio.assetSummary || cfg.portfolio,
     benchmark,

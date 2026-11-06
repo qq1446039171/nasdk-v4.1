@@ -62,6 +62,49 @@ assert.match(html, /function currentYearMonth\(/, 'market state timeline should 
 assert.doesNotMatch(html, /fetch\(`\$\{MARKET_STATE_TIMELINE_ASSET\}/, 'market state timeline should not fetch a local SVG from file://');
 assert.match(html, /assets\/v41-market-state-timeline\.svg/, 'web should retain the bundled market state SVG as the historical source asset');
 assert.match(html, /marketStateTimelineStartMonth/, 'web should expose the timeline start month setting');
+const timelineState = {
+  marketSnapshot: {
+    signalHistory: {
+      '2026-07': 'strong',
+      '2026-08': 'transition',
+      '2026-09': 'defensive',
+      '2026-10': 'strong',
+      '2026-11': 'defensive',
+    },
+  },
+  v41Live: { signal: { signalMonth: '2026-10', state: 'transition' } },
+};
+let today = '2026-11-06';
+const timelineSource = html.slice(
+  html.indexOf('    const MARKET_STATE_TIMELINE_ASSET'),
+  html.indexOf('    function hydrateMarketStateTimeline'),
+);
+const renderTimeline = vm.runInNewContext(`${timelineSource}\nrenderCurrentMarketTimelineSvg`, {
+  state: timelineState,
+  localDateKey: () => today,
+  escapeHtml: String,
+});
+const timeline = renderTimeline('2026-08');
+const monthLabels = [...timeline.matchAll(/<g role="img" aria-label="([^"]+)"/g)].map((match) => match[1]);
+assert.deepStrictEqual(monthLabels, [
+  '2026-08 强势', '2026-09 过渡', '2026-10 防守', '2026-11 强势', '2026-12 待确认',
+], 'confirmed signals should appear in the following calendar month without replacing the first month');
+assert.match(timeline, /本月有效状态：强势/);
+
+timelineState.marketSnapshot = {};
+const legacyTimeline = renderTimeline('2026-08');
+assert.match(legacyTimeline, /aria-label="2026-08 待确认"/);
+assert.match(legacyTimeline, /aria-label="2026-11 过渡"/, 'legacy snapshots should still show the latest signal in its effective month');
+
+today = '2026-12-01';
+assert.match(renderTimeline('2026-08'), /本月信号待确认/, 'an old signal should not be shown as a newly confirmed month');
+
+today = '2027-01-04';
+timelineState.v41Live.signal = { signalMonth: '2026-12', state: 'defensive' };
+const nextYearTimeline = renderTimeline('2026-08');
+assert.match(nextYearTimeline, /aria-label="2027-01 防守"/, 'the timeline should continue across years');
+assert.match(nextYearTimeline, /aria-label="2027-02 待确认"/);
+
 assert.match(html, /renderAssetCategoryPie\(summary\)/, 'web should render a category allocation pie chart');
 assert.match(html, /conic-gradient\(/, 'category allocation should use a pie chart gradient');
 assert.match(html, /\.category-pie::after/, 'category allocation should render a doughnut center');

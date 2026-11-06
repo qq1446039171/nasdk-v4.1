@@ -24,13 +24,14 @@ const saveMarketSnapshot = (snapshot, snapshotPath = resolveMarketSnapshotPath()
   fs.renameSync(tempPath, snapshotPath);
 };
 
-const buildMarketSnapshot = ({ signal, targets, portfolio, benchmark, sources = {}, stale = false, warnings = [] }) => ({
+const buildMarketSnapshot = ({ signal, signalHistory = {}, targets, portfolio, benchmark, sources = {}, stale = false, warnings = [] }) => ({
   version: 1,
   generatedAt: new Date().toISOString(),
   stale: Boolean(stale),
   warnings: Array.isArray(warnings) ? warnings.filter(Boolean) : [],
   sources,
   signal: signal || null,
+  signalHistory,
   targets: targets || null,
   benchmark: benchmark || null,
   holdings: (Array.isArray(portfolio && portfolio.assets) ? portfolio.assets : []).map((asset) => ({

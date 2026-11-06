@@ -89,12 +89,13 @@ assert.doesNotMatch(message.body, /买入|卖出|调仓金额/);
   assert.deepStrictEqual(state.v41Daily.lastTargets, targets);
 
   const staleMessages = [];
+  const signalHistory = { '2026-06': 'defensive', '2026-07': 'transition' };
   let savedSnapshot;
   const staleOk = await runV41DailySummary(cfg, {}, {
     refreshHoldings: async () => ({ ok: 0, failed: 1 }),
     getSignalData: async () => { throw new Error('all monthly providers failed'); },
     getBenchmarkData: async () => { throw new Error('all benchmark providers failed'); },
-    loadSnapshot: () => ({ signal, targets, benchmark: market.benchmark, sources: { signal: 'tiingo-adjusted' } }),
+    loadSnapshot: () => ({ signal, signalHistory, targets, benchmark: market.benchmark, sources: { signal: 'tiingo-adjusted' } }),
     summarizePortfolio: () => portfolio,
     saveSnapshot: (value) => { savedSnapshot = value; },
     logEvent: () => {},
@@ -103,6 +104,7 @@ assert.doesNotMatch(message.body, /买入|卖出|调仓金额/);
   });
   assert.strictEqual(staleOk, true, 'daily push should remain available from the last good snapshot');
   assert.strictEqual(savedSnapshot.stale, true);
+  assert.deepStrictEqual(savedSnapshot.signalHistory, signalHistory, 'a daily refresh should preserve the confirmed monthly states');
   assert.match(staleMessages[0].body, /最后有效快照/);
   console.log('v41-daily.test.js passed');
 })().catch((error) => {
