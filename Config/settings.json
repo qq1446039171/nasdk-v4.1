@@ -1,6 +1,6 @@
 {
   "funds": {
-    "depositAmount": 203773.57,
+    "depositAmount": 200313.1,
     "nasdaqExposureLimitPercent": 70
   },
   "allocation": {
@@ -32,10 +32,10 @@
         "kind": "exchange",
         "code": "513100",
         "secid": "1.513100",
-        "shares": 13600.08,
+        "shares": 16379.14,
         "amountCny": 0,
-        "lastPrice": 2.255,
-        "lastPriceAt": "2026-08-14T04:51:46.048Z",
+        "lastPrice": 2.159,
+        "lastPriceAt": "2026-11-06T05:54:59.805Z",
         "enabled": true
       },
       {
@@ -47,8 +47,8 @@
         "secid": "0.159941",
         "shares": 2500,
         "amountCny": 0,
-        "lastPrice": 1.685,
-        "lastPriceAt": "2026-08-14T04:51:47.057Z",
+        "lastPrice": 1.578,
+        "lastPriceAt": "2026-11-06T05:54:59.838Z",
         "enabled": true
       },
       {
@@ -60,8 +60,8 @@
         "secid": "",
         "shares": 1981,
         "amountCny": 0,
-        "lastPrice": 8.2485,
-        "lastPriceAt": "2026-08-14T04:51:48.089Z",
+        "lastPrice": 7.7714,
+        "lastPriceAt": "2026-11-06T05:55:00.479Z",
         "enabled": true
       },
       {
@@ -73,8 +73,8 @@
         "secid": "",
         "shares": 2936,
         "amountCny": 0,
-        "lastPrice": 2.0539,
-        "lastPriceAt": "2026-08-14T04:51:49.519Z",
+        "lastPrice": 1.9476,
+        "lastPriceAt": "2026-11-06T05:55:00.684Z",
         "enabled": true
       },
       {
@@ -86,8 +86,8 @@
         "secid": "",
         "shares": 1277,
         "amountCny": 0,
-        "lastPrice": 6.3755,
-        "lastPriceAt": "2026-08-14T04:51:49.772Z",
+        "lastPrice": 5.9812,
+        "lastPriceAt": "2026-11-06T05:55:01.200Z",
         "enabled": true
       },
       {
@@ -99,8 +99,8 @@
         "secid": "",
         "shares": 2155,
         "amountCny": 0,
-        "lastPrice": 1.7681,
-        "lastPriceAt": "2026-08-14T04:51:49.996Z",
+        "lastPrice": 1.6786,
+        "lastPriceAt": "2026-11-06T05:55:01.401Z",
         "enabled": true
       },
       {
@@ -112,8 +112,8 @@
         "secid": "",
         "shares": 3433,
         "amountCny": 0,
-        "lastPrice": 2.3102,
-        "lastPriceAt": "2026-08-14T04:51:50.246Z",
+        "lastPrice": 2.1908,
+        "lastPriceAt": "2026-11-06T05:55:01.633Z",
         "enabled": true
       },
       {
@@ -125,8 +125,8 @@
         "secid": "",
         "shares": 686,
         "amountCny": 0,
-        "lastPrice": 2.3491,
-        "lastPriceAt": "2026-08-14T04:51:50.473Z",
+        "lastPrice": 2.0735,
+        "lastPriceAt": "2026-11-06T05:55:01.875Z",
         "enabled": true
       },
       {
@@ -138,8 +138,8 @@
         "secid": "",
         "shares": 794,
         "amountCny": 0,
-        "lastPrice": 1.1292,
-        "lastPriceAt": "2026-08-14T04:51:51.267Z",
+        "lastPrice": 1.1833,
+        "lastPriceAt": "2026-11-06T05:55:02.118Z",
         "enabled": true
       },
       {
@@ -151,8 +151,8 @@
         "secid": "",
         "shares": 2181,
         "amountCny": 0,
-        "lastPrice": 1.9057,
-        "lastPriceAt": "2026-08-14T04:51:51.484Z",
+        "lastPrice": 1.703,
+        "lastPriceAt": "2026-11-06T05:55:02.418Z",
         "enabled": true
       },
       {
@@ -164,8 +164,8 @@
         "secid": "",
         "shares": 17135.22,
         "amountCny": 0,
-        "lastPrice": 3.1965,
-        "lastPriceAt": "2026-08-14T04:51:51.730Z",
+        "lastPrice": 2.9677,
+        "lastPriceAt": "2026-11-06T05:55:02.793Z",
         "enabled": true
       },
       {
@@ -177,8 +177,8 @@
         "secid": "",
         "shares": 4257,
         "amountCny": 0,
-        "lastPrice": 1.9959,
-        "lastPriceAt": "2026-08-14T04:51:51.955Z",
+        "lastPrice": 1.8547,
+        "lastPriceAt": "2026-11-06T05:55:03.017Z",
         "enabled": true
       },
       {
@@ -190,8 +190,8 @@
         "secid": "1.511360",
         "shares": 0,
         "amountCny": 0,
-        "lastPrice": 113.806,
-        "lastPriceAt": "2026-08-14T04:51:52.899Z",
+        "lastPrice": 114.144,
+        "lastPriceAt": "2026-11-06T05:55:03.052Z",
         "enabled": true
       },
       {
@@ -242,8 +242,8 @@
         "secid": "1.513050",
         "shares": 6000,
         "amountCny": 0,
-        "lastPrice": 1.097,
-        "lastPriceAt": "2026-08-14T04:51:53.831Z",
+        "lastPrice": 1.028,
+        "lastPriceAt": "2026-11-06T05:55:03.089Z",
         "enabled": true
       }
     ],
@@ -1245,12 +1245,248 @@
             "marketValueCny": 6582
           }
         ]
+      },
+      {
+        "date": "2026-11-05",
+        "totalAssetsCny": 193794.73,
+        "assets": [
+          {
+            "id": "513100",
+            "name": "同纳指ETF",
+            "category": "nasdaq",
+            "shares": 13600.08,
+            "lastPrice": 2.233,
+            "marketValueCny": 30368.98
+          },
+          {
+            "id": "asset-1780228838359",
+            "name": "同纳指ETF",
+            "category": "nasdaq",
+            "shares": 2500,
+            "lastPrice": 1.639,
+            "marketValueCny": 4097.5
+          },
+          {
+            "id": "asset-1780228876679",
+            "name": "广发纳斯达克",
+            "category": "nasdaq",
+            "shares": 1981,
+            "lastPrice": 7.6982,
+            "marketValueCny": 15250.13
+          },
+          {
+            "id": "asset-1780228945307",
+            "name": "天弘纳斯达克",
+            "category": "nasdaq",
+            "shares": 2936,
+            "lastPrice": 1.9301,
+            "marketValueCny": 5666.77
+          },
+          {
+            "id": "asset-1780229579903",
+            "name": "大成纳斯达克",
+            "category": "nasdaq",
+            "shares": 1277,
+            "lastPrice": 5.9255,
+            "marketValueCny": 7566.86
+          },
+          {
+            "id": "asset-1780229660445",
+            "name": "摩根纳斯达克",
+            "category": "nasdaq",
+            "shares": 2155,
+            "lastPrice": 1.6637,
+            "marketValueCny": 3585.27
+          },
+          {
+            "id": "asset-1780229683998",
+            "name": "南方纳斯达克",
+            "category": "nasdaq",
+            "shares": 3433,
+            "lastPrice": 2.1707,
+            "marketValueCny": 7452.01
+          },
+          {
+            "id": "asset-1780229749526",
+            "name": "华宝纳斯达克",
+            "category": "nasdaq",
+            "shares": 686,
+            "lastPrice": 2.1011,
+            "marketValueCny": 1441.35
+          },
+          {
+            "id": "asset-1780229780945",
+            "name": "中证消费50",
+            "category": "stock",
+            "shares": 794,
+            "lastPrice": 1.1732,
+            "marketValueCny": 931.52
+          },
+          {
+            "id": "asset-1780229832187",
+            "name": "易方达沪深300",
+            "category": "stock",
+            "shares": 2181,
+            "lastPrice": 1.6983,
+            "marketValueCny": 3703.99
+          },
+          {
+            "id": "asset-1780230265572",
+            "name": "华安黄金ETF",
+            "category": "gold",
+            "shares": 17135.22,
+            "lastPrice": 2.8973,
+            "marketValueCny": 49645.87
+          },
+          {
+            "id": "asset-1780230333146",
+            "name": "富国黄金ETF",
+            "category": "gold",
+            "shares": 4257,
+            "lastPrice": 1.815,
+            "marketValueCny": 7726.46
+          },
+          {
+            "id": "511360",
+            "name": "海富通中证短融ETF",
+            "category": "bond",
+            "shares": 0,
+            "lastPrice": 114.121,
+            "marketValueCny": 0
+          },
+          {
+            "id": "asset-1783591158652",
+            "name": "中概互联",
+            "category": "stock",
+            "shares": 6000,
+            "lastPrice": 1.039,
+            "marketValueCny": 6234
+          }
+        ]
+      },
+      {
+        "date": "2026-11-06",
+        "totalAssetsCny": 200313.1,
+        "assets": [
+          {
+            "id": "513100",
+            "name": "同纳指ETF",
+            "category": "nasdaq",
+            "shares": 16379.14,
+            "lastPrice": 2.159,
+            "marketValueCny": 35362.56
+          },
+          {
+            "id": "asset-1780228838359",
+            "name": "同纳指ETF",
+            "category": "nasdaq",
+            "shares": 2500,
+            "lastPrice": 1.578,
+            "marketValueCny": 3945
+          },
+          {
+            "id": "asset-1780228876679",
+            "name": "广发纳斯达克",
+            "category": "nasdaq",
+            "shares": 1981,
+            "lastPrice": 7.7714,
+            "marketValueCny": 15395.14
+          },
+          {
+            "id": "asset-1780228945307",
+            "name": "天弘纳斯达克",
+            "category": "nasdaq",
+            "shares": 2936,
+            "lastPrice": 1.9476,
+            "marketValueCny": 5718.15
+          },
+          {
+            "id": "asset-1780229579903",
+            "name": "大成纳斯达克",
+            "category": "nasdaq",
+            "shares": 1277,
+            "lastPrice": 5.9812,
+            "marketValueCny": 7637.99
+          },
+          {
+            "id": "asset-1780229660445",
+            "name": "摩根纳斯达克",
+            "category": "nasdaq",
+            "shares": 2155,
+            "lastPrice": 1.6786,
+            "marketValueCny": 3617.38
+          },
+          {
+            "id": "asset-1780229683998",
+            "name": "南方纳斯达克",
+            "category": "nasdaq",
+            "shares": 3433,
+            "lastPrice": 2.1908,
+            "marketValueCny": 7521.02
+          },
+          {
+            "id": "asset-1780229749526",
+            "name": "华宝纳斯达克",
+            "category": "nasdaq",
+            "shares": 686,
+            "lastPrice": 2.0735,
+            "marketValueCny": 1422.42
+          },
+          {
+            "id": "asset-1780229780945",
+            "name": "中证消费50",
+            "category": "stock",
+            "shares": 794,
+            "lastPrice": 1.1833,
+            "marketValueCny": 939.54
+          },
+          {
+            "id": "asset-1780229832187",
+            "name": "易方达沪深300",
+            "category": "stock",
+            "shares": 2181,
+            "lastPrice": 1.703,
+            "marketValueCny": 3714.24
+          },
+          {
+            "id": "asset-1780230265572",
+            "name": "华安黄金ETF",
+            "category": "gold",
+            "shares": 17135.22,
+            "lastPrice": 2.9677,
+            "marketValueCny": 50852.19
+          },
+          {
+            "id": "asset-1780230333146",
+            "name": "富国黄金ETF",
+            "category": "gold",
+            "shares": 4257,
+            "lastPrice": 1.8547,
+            "marketValueCny": 7895.46
+          },
+          {
+            "id": "511360",
+            "name": "海富通中证短融ETF",
+            "category": "bond",
+            "shares": 0,
+            "lastPrice": 114.144,
+            "marketValueCny": 0
+          },
+          {
+            "id": "asset-1783591158652",
+            "name": "中概互联",
+            "category": "stock",
+            "shares": 6000,
+            "lastPrice": 1.028,
+            "marketValueCny": 6168
+          }
+        ]
       }
     ],
-    "investedNasdaqCny": 78745.38,
+    "investedNasdaqCny": 80619.67,
     "reserveCashNasdaqCny": 40000,
     "reserveUsedNasdaqCny": 0,
-    "otherCashCny": 85028.19,
+    "otherCashCny": 79693.43,
     "fearOfMissingOut": false
   },
   "drawdown": {
