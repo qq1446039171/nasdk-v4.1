@@ -1,6 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
@@ -50,4 +51,90 @@ assert.ok(
 );
 
 
-console.log('refresh-failure-detail.test.js: all assertions passed');
+async function testAssetRefresh() {
+  const handlers = new Map();
+  const app = { addEventListener: (event, handler) => handlers.set(event, handler) };
+  const fileInput = { addEventListener() {} };
+  const elements = { app, settingsFileInput: fileInput, stateFileInput: fileInput };
+  const asset = { id: 'etf', code: '513100', kind: 'exchange', shares: 10, lastPrice: 2 };
+  const snapshot = {
+    generatedAt: '2026-11-05T06:30:05.832Z',
+    signal: { state: 'strong', signalMonth: '2026-10' },
+    targets: { nasdaq: 70, gold: 15, bond: 15 },
+    holdings: [{ id: asset.id, code: asset.code, lastPrice: 2.229 }],
+  };
+  let latestPrice = 2159;
+  let klines = [];
+  let quoteRequests = 0;
+  let snapshotRequests = 0;
+  class QuoteDate extends Date {
+    constructor(value = '2026-11-06T03:30:00Z') {
+      super(value);
+    }
+  }
+  const sandbox = vm.createContext({
+    Date: QuoteDate,
+    document: { getElementById: (id) => elements[id] || null },
+    localStorage: { getItem: () => null, setItem() {} },
+    async fetch(url) {
+      if (url.includes('Config/settings.json')) {
+        return { ok: true, text: async () => JSON.stringify({ portfolio: { assets: [asset] } }) };
+      }
+      if (url.includes('Config/market-snapshot.json')) {
+        snapshotRequests += 1;
+        return { ok: true, json: async () => snapshot };
+      }
+      if (url.includes('/stock/get?')) {
+        quoteRequests += 1;
+        return { ok: true, json: async () => ({ data: { f43: latestPrice, f59: 3 } }) };
+      }
+      if (url.includes('/stock/kline/get?')) {
+        return { ok: true, json: async () => ({ data: { klines } }) };
+      }
+      throw new Error(`Unexpected request: ${url}`);
+    },
+  });
+  const click = (action) => handlers.get('click')({
+    target: { closest: () => ({ dataset: { action } }) },
+  });
+  const displayedPrice = () => vm.runInContext('portfolioAssets()[0].lastPrice', sandbox);
+
+  await vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1], sandbox);
+  assert.strictEqual(quoteRequests, 1, 'opening the page should query a live quote even with a cached snapshot');
+  assert.strictEqual(displayedPrice(), 2.159);
+  assert.match(app.innerHTML, /行情查询完成（北京时间 2026-11-06 11:30:00）/);
+  assert.strictEqual(
+    vm.runInContext('parseFundMobileQuote({}, { Datas: [{ GSZ: 2.1, NAV: 2.0 }] }).price', sandbox),
+    2,
+    'the mobile fund fallback should use published NAV',
+  );
+
+  latestPrice = 2161;
+  const refreshing = click('refresh-assets');
+  await click('toggle-assets');
+  await refreshing;
+  assert.strictEqual(quoteRequests, 2, 'the price button should request a fresh quote');
+  assert.strictEqual(snapshotRequests, 1, 'the price button should not reload the cloud snapshot');
+  assert.strictEqual(displayedPrice(), 2.161, 'rendering during a refresh should not discard the new quote');
+  vm.runInContext('applyMarketSnapshot(state.marketSnapshot)', sandbox);
+  assert.strictEqual(displayedPrice(), 2.161, 'reloading an older snapshot should preserve the newer quote');
+
+  latestPrice = 0;
+  klines = ['2013-05-15,0.990,0.997', '2026-11-06,2.166,2.158'];
+  await click('refresh-assets');
+  assert.strictEqual(displayedPrice(), 2.158, 'the fallback should use the latest daily bar');
+  assert.match(app.innerHTML, /日 K.*2026-11-06/, 'the page should identify the date of a daily fallback');
+
+  klines = [];
+  await click('refresh-assets');
+  assert.strictEqual(displayedPrice(), 2.158, 'a failed refresh should retain the last available price');
+  assert.match(app.innerHTML, /失败项保留上次价格/);
+  assert.match(app.innerHTML, /class="price-error"/, 'the failed asset should stay marked after rendering');
+}
+
+testAssetRefresh().then(() => {
+  console.log('refresh-failure-detail.test.js passed');
+}).catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

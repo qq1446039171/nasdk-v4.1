@@ -39,7 +39,7 @@ npm run app:run-once -- once
 
 本地运行默认读取被 Git 忽略的 `Config/local-secrets.json`，因此可以像旧版一样直接推送，不必每次设置环境变量。模板见 `Config/local-secrets.example.json`。环境变量 `NSDK_SERVERCHAN_SENDKEY` 的优先级更高，可临时覆盖本地文件。
 
-本地行情 API Key 保存在被 Git 忽略的 `Config/local-secrets.json`；GitHub Actions 可使用同名 Secrets。程序读取优先级为环境变量、`local-secrets.json`、`settings.json`，而网页保存到 GitHub 时会清空敏感字段。v4.1 会优先使用 Tiingo（QQQ 复权月线）、FRED（NDX 日线）和 Tushare（中国基金/ETF），失败时自动回退原有接口；网页优先读取 `Config/market-snapshot.json`，避免打开页面时集中请求行情接口。
+本地行情 API Key 保存在被 Git 忽略的 `Config/local-secrets.json`。GitHub Actions 可使用同名 Secrets。程序读取优先级为环境变量、`local-secrets.json`、`settings.json`，而网页保存到 GitHub 时会清空敏感字段。v4.1 会优先使用 Tiingo（QQQ 复权月线）、FRED（NDX 日线）和 Tushare（中国基金/ETF），失败时自动回退原有接口。网页读取 `Config/market-snapshot.json` 获取策略信号和初始持仓价格。打开网页或点击「刷新价格/净值」时，浏览器会查询最新场内报价和已公布的场外基金净值。
 
 ## GitHub Actions
 

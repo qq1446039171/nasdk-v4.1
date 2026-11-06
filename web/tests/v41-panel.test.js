@@ -13,8 +13,8 @@ assert.match(html, /const signal = live\.signal \|\| runtime\.lastSignal \|\| nu
 assert.match(html, /await refreshV41LiveSignal\(\)/, 'settings load should trigger a live signal refresh');
 assert.match(html, /async function tryLoadMarketSnapshot\(/, 'web should load the GitHub Actions market snapshot');
 assert.match(html, /Config\/market-snapshot\.json/, 'web should use the persisted market snapshot');
-assert.match(html, /if \(!forceDirect && await tryLoadMarketSnapshot\(\)\)/, 'automatic refresh should prefer the snapshot');
-assert.match(html, /hasPortfolioAssets\(\) && !state\.marketSnapshot/, 'automatic loading should avoid direct per-asset requests after the snapshot succeeds');
+const signalRefreshBody = html.match(/async function refreshV41LiveSignal\([^)]*\) \{[\s\S]*?\n    \}/)?.[0] || '';
+assert.match(signalRefreshBody, /if \(!forceDirect && await tryLoadMarketSnapshot\(\)\)/, 'the monthly strategy signal should prefer the snapshot');
 assert.match(html, /row\.month < currentMonth/, 'the current incomplete month must not be used by the signal');
 assert.match(html, /当前有效状态/, 'web should label the state as currently effective rather than a daily trading signal');
 assert.match(html, /data-action="refresh-latest-data"/, 'effective state card should expose a latest-data refresh button');

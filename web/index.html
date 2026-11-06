@@ -1282,7 +1282,7 @@
       addOtherCashDelta: 0,
       versionsOpen: false,
       diffChanges: [],
-      assetPriceLoading: false,
+      assetPricesLoadingFor: null,
       assetPriceMessage: "",
       assetPriceMessageType: "info",
       latestDataRefreshing: false,
@@ -1784,6 +1784,7 @@
         amountCny,
         lastPrice,
         lastPriceAt: asset?.lastPriceAt || "",
+        ...(asset?.lastPriceError ? { lastPriceError: asset.lastPriceError } : {}),
         enabled: true
       };
     }
@@ -1831,44 +1832,46 @@
       if (!secid) throw new Error("缺少 secid");
       const fields = ["f43", "f58", "f170", "f59"].join(",");
       const url = `https://push2delay.eastmoney.com/api/qt/stock/get?ut=fa5fd1943c7b386f172d6893dbfba10b&secid=${encodeURIComponent(secid)}&fields=${fields}`;
-      let json;
       try {
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        json = await res.json();
-      } catch {
-        json = await fetchJsonp(`${url}&cb=__callback__`);
+        const json = await fetchExchangeJson(url);
+        const data = json?.data || {};
+        const raw = Number(data.f43);
+        const decimal = Number(data.f59);
+        const price = Number.isFinite(raw) && Number.isInteger(decimal) && decimal >= 0 && decimal <= 8
+          ? raw / (10 ** decimal)
+          : (Number.isFinite(raw) && Math.abs(raw) > 1000 ? raw / 1000 : raw);
+        if (!Number.isFinite(price) || price <= 0) throw new Error("场内最新价无效");
+        return { price, name: data.f58 || asset.name, pct: data.f170 };
+      } catch (error) {
+        try {
+          return await fetchExchangeKlinePrice(secid, asset.name);
+        } catch (fallbackError) {
+          throw new Error(`${error.message || error}；备用：${fallbackError.message || fallbackError}`);
+        }
       }
-      const data = json?.data || {};
-      const raw = Number(data.f43);
-      const decimal = Number(data.f59);
-      const price = Number.isFinite(raw) && Number.isInteger(decimal) && decimal >= 0 && decimal <= 8
-        ? raw / (10 ** decimal)
-        : (Number.isFinite(raw) && Math.abs(raw) > 1000 ? raw / 1000 : raw);
-      if (!Number.isFinite(price) || price <= 0) return await fetchExchangeKlinePrice(asset, data.f58 || asset.name);
-      return { price, name: data.f58 || asset.name, pct: data.f170 };
     }
 
-    async function fetchExchangeKlinePrice(asset, fallbackName = "") {
-      const secid = asset.secid || inferSecid(asset.code);
-      if (!secid) throw new Error("缺少 secid");
+    async function fetchExchangeKlinePrice(secid, fallbackName) {
       const fields1 = "f1,f2,f3,f4,f5,f6";
       const fields2 = "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61";
-      const url = `https://push2his.eastmoney.com/api/qt/stock/kline/get?ut=fa5fd1943c7b386f172d6893dbfba10b&secid=${encodeURIComponent(secid)}&fields1=${fields1}&fields2=${fields2}&klt=101&fqt=1&beg=0&end=20500101&lmt=1`;
-      let json;
+      const url = `https://push2his.eastmoney.com/api/qt/stock/kline/get?ut=fa5fd1943c7b386f172d6893dbfba10b&secid=${encodeURIComponent(secid)}&fields1=${fields1}&fields2=${fields2}&klt=101&fqt=0&end=20500101&lmt=1`;
+      const json = await fetchExchangeJson(url);
+      const rows = json?.data?.klines;
+      const cols = String(rows?.[rows.length - 1] || "").split(",");
+      const price = Number(cols[2]);
+      if (!Number.isFinite(price) || price <= 0) throw new Error("日 K 价格无效");
+      const pct = Number(cols[8]);
+      return { price, name: json.data.name || fallbackName, pct: Number.isFinite(pct) ? pct : null, day: cols[0] };
+    }
+
+    async function fetchExchangeJson(url) {
       try {
         const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        json = await res.json();
+        return await res.json();
       } catch {
-        json = await fetchJsonp(`${url}&cb=__callback__`);
+        return fetchJsonp(`${url}&cb=__callback__`);
       }
-      const row = json?.data?.klines?.[0];
-      const cols = String(row || "").split(",");
-      const price = Number(cols[2]);
-      if (!Number.isFinite(price) || price <= 0) throw new Error("K线收盘价无效");
-      const pct = Number(cols[8]);
-      return { price, name: json?.data?.name || fallbackName || asset.name, pct: Number.isFinite(pct) ? pct : null };
     }
 
     function fetchJsonp(urlTemplate) {
@@ -1992,8 +1995,10 @@
         for (const asset of portfolioAssets()) {
           const quote = prices.get(String(asset?.id || "")) || prices.get(String(asset?.code || ""));
           if (!quote || !(Number(quote.lastPrice) > 0)) continue;
+          const priceAt = quote.lastPriceAt || snapshot.generatedAt || "";
+          if (Date.parse(asset.lastPriceAt) > (Date.parse(priceAt) || 0)) continue;
           asset.lastPrice = Math.round(Number(quote.lastPrice) * 10000) / 10000;
-          asset.lastPriceAt = quote.lastPriceAt || snapshot.generatedAt || "";
+          asset.lastPriceAt = priceAt;
           asset.lastPriceError = quote.lastPriceError || "";
         }
         syncDerived();
@@ -2017,17 +2022,7 @@
           if (!response.ok) continue;
           const snapshot = await response.json();
           if (!apply && snapshot && typeof snapshot === "object") return snapshot;
-          if (applyMarketSnapshot(snapshot)) {
-            const snapshotWarnings = Array.isArray(snapshot.warnings) ? snapshot.warnings.filter(Boolean) : [];
-            state.assetPriceMessageType = snapshot.stale || snapshotWarnings.length ? "warning" : "success";
-            const snapshotTime = formatChinaDateTime(snapshot.generatedAt) || "时间未知";
-            state.assetPriceMessage = snapshot.stale
-              ? `已加载最后有效行情快照（${snapshotTime}）；本次数据源异常，页面不会清空旧数据。`
-              : (snapshotWarnings.length
-                ? `已加载云端行情快照：${snapshotTime}；主数据源异常，已由备用源接管。`
-                : `已加载云端行情快照：${snapshotTime}`);
-            return true;
-          }
+          if (applyMarketSnapshot(snapshot)) return true;
         } catch {
           // Try the next snapshot location. The strategy panel never clears a last-good snapshot.
         }
@@ -2078,12 +2073,9 @@
       }
     }
 
-    function parseFundQuoteNumber(...values) {
-      for (const value of values) {
-        const price = Number(value);
-        if (Number.isFinite(price) && price > 0) return price;
-      }
-      return null;
+    function parseFundQuoteNumber(value) {
+      const price = Number(value);
+      return Number.isFinite(price) && price > 0 ? price : null;
     }
 
     function normalizeFundCode(code) {
@@ -2095,9 +2087,9 @@
     function parseFundMobileQuote(asset, json) {
       const item = json?.Datas?.[0];
       if (!item) throw new Error("基金代码无数据");
-      const price = parseFundQuoteNumber(item.GSZ, item.NAV);
+      const price = parseFundQuoteNumber(item.NAV);
       if (!price) throw new Error("基金净值无效");
-      const pct = Number(item.GSZ) > 0 ? Number(item.GSZZL) : Number(item.NAVCHGRT);
+      const pct = Number(item.NAVCHGRT);
       return { price, name: item.SHORTNAME || asset.name, pct: Number.isFinite(pct) ? pct : null };
     }
 
@@ -2181,58 +2173,61 @@
       throw new Error(errors.join("；"));
     }
 
-    async function refreshAssetPrices(options = {}) {
-      if (!state.settings || state.assetPriceLoading) return;
-      const forceDirect = options.forceDirect === true;
-      if (!forceDirect && await tryLoadMarketSnapshot()) {
-        recordTodayProfitSnapshot();
-        render();
-        return { ok: true, fromSnapshot: true, updated: 0, failed: 0 };
-      }
-      normalizeAssetsInSettings();
+    async function refreshAssetPrices() {
+      const settings = state.settings;
+      if (!settings || state.assetPricesLoadingFor === settings) return;
       recordSavedAssetSnapshot();
-      state.assetPriceLoading = true;
-      state.assetPriceMessage = "正在刷新资产价格...";
-      state.assetPriceMessageType = "info";
+      state.assetPricesLoadingFor = settings;
       render();
-      const currentAssets = portfolioAssets();
+
+      // 渲染和编辑会重建资产列表，按证券代码将查询结果应用到当前列表。
+      const quoteKey = (asset) => `${asset.kind}:${asset.secid || asset.code}`;
+      const quotes = new Map();
+      for (const asset of portfolioAssets()) {
+        if (state.settings !== settings) break;
+        if (isCashAsset(asset)) continue;
+        const key = quoteKey(asset);
+        if (quotes.has(key)) continue;
+        let quote;
+        let error;
+        try {
+          quote = await (asset.kind === "fund" ? fetchFundPrice(asset) : fetchExchangePrice(asset));
+        } catch (cause) {
+          error = cause?.message || String(cause);
+        }
+        quotes.set(key, { quote, error, fetchedAt: nowIso() });
+      }
+      if (state.assetPricesLoadingFor !== settings) return;
+      state.assetPricesLoadingFor = null;
+      if (state.settings !== settings) return;
+
       let ok = 0;
       const failures = [];
-      for (let index = 0; index < currentAssets.length; index += 1) {
-        const asset = currentAssets[index];
-        if (isCashAsset(asset)) continue;
-        let primaryError = null;
-        try {
-          let quote;
-          try {
-            quote = asset.kind === "fund" ? await fetchFundPrice(asset) : await fetchExchangePrice(asset);
-          } catch (error) {
-            primaryError = error;
-            quote = asset.kind === "fund" ? await fetchExchangePrice(asset) : await fetchFundPrice(asset);
-          }
-          asset.lastPrice = Math.round(Number(quote.price) * 10000) / 10000;
-          asset.lastPriceAt = nowIso();
-          asset.lastPriceError = "";
-          if (quote.name && (!asset.name || asset.name === asset.code)) asset.name = quote.name;
-          if (!asset.secid && asset.kind === "exchange") asset.secid = inferSecid(asset.code);
-          ok += 1;
-        } catch (error) {
-          // 主备两路都失败：两个原因都展示，方便判断是接口挂了还是代码填错
-          const fallbackMsg = error?.message || String(error);
-          const reason = primaryError ? `${primaryError.message || primaryError}；备用：${fallbackMsg}` : fallbackMsg;
-          asset.lastPriceError = reason;
-          failures.push(`${asset.name || asset.code || `资产${index + 1}`}（${asset.code || "无代码"}）：${reason}`);
+      const dailyPrices = [];
+      for (const asset of portfolioAssets()) {
+        const result = quotes.get(quoteKey(asset));
+        if (!result || Date.parse(asset.lastPriceAt) > Date.parse(result.fetchedAt)) continue;
+        const { quote, fetchedAt, error } = result;
+        if (error) {
+          asset.lastPriceError = error;
+          failures.push(`${asset.name}（${asset.code || "无代码"}）：${error}`);
+          continue;
         }
+        asset.lastPrice = Math.round(quote.price * 10000) / 10000;
+        asset.lastPriceAt = fetchedAt;
+        asset.lastPriceError = "";
+        if (quote.name && asset.name === asset.code) asset.name = quote.name;
+        if (quote.day) dailyPrices.push(`${asset.name}（${quote.day}）`);
+        ok += 1;
       }
-      state.assetPriceLoading = false;
-      state.assetPriceMessageType = failures.length ? "warning" : "success";
-      state.assetPriceMessage = failures.length
-        ? `已刷新 ${ok} 个资产，${failures.length} 个失败；失败项保留上次价格。\n${failures.join("\n")}`
-        : `已刷新 ${ok} 个资产价格。`;
+      const messages = [`行情查询完成（北京时间 ${formatChinaDateTime(nowIso())}），已更新 ${ok} 个资产。场外基金使用最新公布净值。`];
+      if (dailyPrices.length) messages.push(`场内报价暂不可用，已取最新日 K：${dailyPrices.join("、")}。`);
+      if (failures.length) messages.push(`${failures.length} 个资产查询失败，失败项保留上次价格。\n${failures.join("\n")}`);
+      state.assetPriceMessageType = dailyPrices.length || failures.length ? "warning" : "success";
+      state.assetPriceMessage = messages.join("\n");
       syncDerived();
-      recordTodayProfitSnapshot();
+      if (ok) recordTodayProfitSnapshot();
       render();
-      return { ok: failures.length === 0, fromSnapshot: false, updated: ok, failed: failures.length };
     }
 
     async function fetchLatestNdxBenchmark() {
@@ -2620,7 +2615,7 @@
           await addLog({ action: "autoLoad", ok: true, reason: candidate.url, bytes: text.length });
           render();
           await refreshV41LiveSignal();
-          if (hasPortfolioAssets() && !state.marketSnapshot) await refreshAssetPrices();
+          if (hasPortfolioAssets()) await refreshAssetPrices();
           return true;
         } catch {
           // keep trying candidates
@@ -2805,6 +2800,7 @@
 
     function renderAssetSection() {
       if (!state.settings) return "";
+      const priceLoading = state.assetPricesLoadingFor === state.settings;
       const summary = assetSummary();
       const assetRecords = portfolioAssets().map((raw, index) => {
         const asset = normalizeAsset(raw, index);
@@ -2915,14 +2911,16 @@
             </div>
             <div class="actions">
               <button class="btn primary" data-action="add-asset">新增资产</button>
-              <button class="btn success" data-action="refresh-assets" ${state.assetPriceLoading ? "disabled" : ""}>${state.assetPriceLoading ? "刷新中..." : "刷新价格/净值"}</button>
+              <button class="btn success" data-action="refresh-assets" ${priceLoading ? "disabled" : ""}>${priceLoading ? "刷新中..." : "刷新价格/净值"}</button>
               <button class="btn" data-action="toggle-assets" aria-label="${state.assetRowsCollapsed ? "展开资产明细" : "收起资产明细"}" title="${state.assetRowsCollapsed ? "展开资产明细" : "收起资产明细"}">
                 
                 ${state.assetRowsCollapsed ? "展开" : "收起"}
               </button>
             </div>
           </div>
-          ${renderNotice(state.assetPriceMessage, state.assetPriceMessageType)}
+          ${priceLoading
+            ? renderNotice("正在查询最新场内行情和基金净值...", "info")
+            : renderNotice(state.assetPriceMessage, state.assetPriceMessageType)}
           <div class="meta" style="justify-content:flex-start;margin-bottom:12px">
             <span class="tag gold">总资产：¥${escapeHtml(fmtMoney(summary.total))}</span>
           </div>
@@ -4297,6 +4295,7 @@
         assets[index].secid = inferSecid(value);
         assets[index].lastPrice = 0;
         assets[index].lastPriceAt = "";
+        assets[index].lastPriceError = "";
       }
       if (field === "shares") {
         assets[index].shares = value;
