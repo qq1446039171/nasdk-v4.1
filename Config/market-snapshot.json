@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-11T05:57:38.526Z",
+  "generatedAt": "2026-11-12T06:59:57.350Z",
   "stale": false,
   "warnings": [],
   "sources": {
@@ -36,104 +36,104 @@
     "provider": "fred",
     "code": "NDX",
     "name": "纳斯达克100（NDX）",
-    "price": 27740.8,
-    "pct": -0.6,
-    "priceDay": "2026-11-10",
+    "price": 28374.25,
+    "pct": 2.28,
+    "priceDay": "2026-11-11",
     "high1y": 31224.69,
     "high1yDay": "2026-10-06",
-    "drawdownPct": 11.16,
+    "drawdownPct": 9.13,
     "warnings": []
   },
   "holdings": [
     {
       "id": "513100",
       "code": "513100",
-      "lastPrice": 2.237,
-      "lastPriceAt": "2026-11-11T05:57:23.176Z",
+      "lastPrice": 2.216,
+      "lastPriceAt": "2026-11-12T06:59:44.691Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780228838359",
       "code": "159941",
-      "lastPrice": 1.656,
-      "lastPriceAt": "2026-11-11T05:57:23.732Z",
+      "lastPrice": 1.639,
+      "lastPriceAt": "2026-11-12T06:59:45.231Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780228876679",
       "code": "270042",
-      "lastPrice": 7.6259,
-      "lastPriceAt": "2026-11-11T05:57:25.664Z",
+      "lastPrice": 7.5774,
+      "lastPriceAt": "2026-11-12T06:59:47.109Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780228945307",
       "code": "018043",
-      "lastPrice": 1.9132,
-      "lastPriceAt": "2026-11-11T05:57:26.154Z",
+      "lastPrice": 1.9018,
+      "lastPriceAt": "2026-11-12T06:59:47.593Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229579903",
       "code": "000834",
-      "lastPrice": 5.8686,
-      "lastPriceAt": "2026-11-11T05:57:26.645Z",
+      "lastPrice": 5.832,
+      "lastPriceAt": "2026-11-12T06:59:48.067Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229660445",
       "code": "019172",
-      "lastPrice": 1.6494,
-      "lastPriceAt": "2026-11-11T05:57:27.130Z",
+      "lastPrice": 1.6397,
+      "lastPriceAt": "2026-11-12T06:59:48.544Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229683998",
       "code": "016452",
-      "lastPrice": 2.1521,
-      "lastPriceAt": "2026-11-11T05:57:27.627Z",
+      "lastPrice": 2.139,
+      "lastPriceAt": "2026-11-12T06:59:49.019Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229749526",
       "code": "017436",
-      "lastPrice": 2.0531,
-      "lastPriceAt": "2026-11-11T05:57:29.651Z",
+      "lastPrice": 2.1215,
+      "lastPriceAt": "2026-11-12T06:59:49.500Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229780945",
       "code": "008976",
-      "lastPrice": 1.1807,
-      "lastPriceAt": "2026-11-11T05:57:30.128Z",
+      "lastPrice": 1.1614,
+      "lastPriceAt": "2026-11-12T06:59:49.971Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780229832187",
       "code": "110020",
-      "lastPrice": 1.6824,
-      "lastPriceAt": "2026-11-11T05:57:30.637Z",
+      "lastPrice": 1.689,
+      "lastPriceAt": "2026-11-12T06:59:50.467Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780230265572",
       "code": "000217",
-      "lastPrice": 2.9658,
-      "lastPriceAt": "2026-11-11T05:57:31.123Z",
+      "lastPrice": 2.9297,
+      "lastPriceAt": "2026-11-12T06:59:50.946Z",
       "lastPriceError": ""
     },
     {
       "id": "asset-1780230333146",
       "code": "009505",
-      "lastPrice": 1.8538,
-      "lastPriceAt": "2026-11-11T05:57:31.621Z",
+      "lastPrice": 1.8286,
+      "lastPriceAt": "2026-11-12T06:59:51.478Z",
       "lastPriceError": ""
     },
     {
       "id": "511360",
       "code": "511360",
       "lastPrice": 114.151,
-      "lastPriceAt": "2026-11-11T05:57:33.154Z",
+      "lastPriceAt": "2026-11-12T06:59:53.851Z",
       "lastPriceError": ""
     },
     {
@@ -160,8 +160,8 @@
     {
       "id": "asset-1783591158652",
       "code": "513050",
-      "lastPrice": 0.999,
-      "lastPriceAt": "2026-11-11T05:57:33.693Z",
+      "lastPrice": 0.962,
+      "lastPriceAt": "2026-11-12T06:59:54.384Z",
       "lastPriceError": ""
     }
   ]
