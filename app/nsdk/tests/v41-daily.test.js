@@ -31,7 +31,7 @@ assert.deepStrictEqual(comparisons.map((row) => [row.key, row.currentPercent, ro
 ]);
 
 const message = buildDailyMessage({
-  cfg: { strategyV41: { bondName: '海富通中证短融ETF', bondCode: '511360' } },
+  cfg: { strategyV41: { bondName: '易方达中债新综指(LOF)A', bondCode: '161119' } },
   signal,
   targets,
   portfolio,
@@ -47,7 +47,7 @@ assert.match(message.body, /当前金额：纳指 ¥80,000｜黄金 ¥60,000/);
 assert.doesNotMatch(message.body, /513100当前价格/);
 assert.match(message.body, /纳指：当前 50\.00%\/目标 70\.00%（低配 20\.00 个百分点）/);
 assert.match(message.body, /黄金：当前 37\.50%\/目标 15\.00%（超配 22\.50 个百分点）/);
-assert.match(message.body, /海富通中证短融ETF（511360）：当前 0\.00%\/目标 15\.00%（低配 15\.00 个百分点）/);
+assert.match(message.body, /易方达中债新综指\(LOF\)A（161119）：当前 0\.00%\/目标 15\.00%（低配 15\.00 个百分点）/);
 assert.match(message.body, /只作观察提示，不给出买卖建议；正式操作以月末通知为准/);
 assert.doesNotMatch(message.body, /买入|卖出|调仓金额/);
 
@@ -61,8 +61,8 @@ assert.doesNotMatch(message.body, /买入|卖出|调仓金额/);
       highVolatilityReductionPercent: 15,
       nasdaqFloorPercent: 15,
       excludedEmergencyCashCny: 36000,
-      bondName: '海富通中证短融ETF',
-      bondCode: '511360',
+      bondName: '易方达中债新综指(LOF)A',
+      bondCode: '161119',
     },
     portfolio: { assetSummary: { assets: [] } },
   };

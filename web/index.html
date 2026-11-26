@@ -1134,8 +1134,8 @@
             { key: "strategyV41.nasdaqFloorPercent", nameZh: "纳指最低仓位(%)", nameEn: "NASDAQ Floor (%)", description: "任何状态下纳指目标不得低于该值。", type: "number", default: 15, validation: { required: true, min: 0, max: 70 } },
             { key: "strategyV41.rebalanceThresholdPercent", nameZh: "再平衡偏离阈值(百分点)", nameEn: "Rebalance Drift Threshold", description: "状态不变时，仅当任一目标资产偏离超过该值才整体再平衡。", type: "number", default: 3, validation: { required: true, min: 0, max: 20 } },
             { key: "strategyV41.excludedEmergencyCashCny", nameZh: "独立应急金(元)", nameEn: "Excluded Emergency Cash", description: "不参与 v4.1 调仓的生活应急金；从策略外现金中优先扣除。", type: "number", default: 36000, validation: { required: true, min: 0, max: 1000000000 } },
-            { key: "strategyV41.bondCode", nameZh: "债券 ETF 代码", nameEn: "Bond ETF Code", description: "当前使用海富通中证短融 ETF 511360。", type: "string", default: "511360", validation: { required: true, maxLength: 16 } },
-            { key: "strategyV41.bondName", nameZh: "债券 ETF 名称", nameEn: "Bond ETF Name", description: "用于调仓建议和手机推送。", type: "string", default: "海富通中证短融ETF", validation: { required: true, maxLength: 64 } },
+            { key: "strategyV41.bondCode", nameZh: "债券基金代码", nameEn: "Bond Fund Code", description: "当前使用易方达中债新综指(LOF)A 161119。", type: "string", default: "161119", validation: { required: true, maxLength: 16 } },
+            { key: "strategyV41.bondName", nameZh: "债券基金名称", nameEn: "Bond Fund Name", description: "用于调仓建议和手机推送。", type: "string", default: "易方达中债新综指(LOF)A", validation: { required: true, maxLength: 64 } },
             { key: "strategyV41.marketStateTimelineStartMonth", nameZh: "市场状态时间表起始月份", nameEn: "Market State Timeline Start Month", description: "网页从程序启动月份开始展示状态时间表；后续月份在月末信号确认后更新。格式：YYYY-MM。", type: "string", default: "2026-08", validation: { required: true, maxLength: 7 } }
           ]
         },
@@ -3146,7 +3146,7 @@
       const actionNames = {
         nasdaq: "纳斯达克（优先 513100）",
         gold: "黄金基金",
-        bond: `${state.settings?.strategyV41?.bondName || "海富通中证短融ETF"}（${state.settings?.strategyV41?.bondCode || "511360"}）`,
+        bond: `${state.settings?.strategyV41?.bondName || "易方达中债新综指(LOF)A"}（${state.settings?.strategyV41?.bondCode || "161119"}）`,
         other: "策略外股票/现金"
       };
       const cashflowAllocation = plan?.monthlyCashflowAllocation || cashflowPlan.allocation;
@@ -3227,12 +3227,12 @@
           <div class="section-head" style="margin-top:20px">
             <div>
               <h3 class="section-title">各状态对应资产仓位</h3>
-              <div class="field-desc">下表为基础仓位；高波动保护触发时，纳指再降低 15 个百分点并等额转入 511360，纳指最低 15%。</div>
+              <div class="field-desc">下表为基础仓位；高波动保护触发时，纳指再降低 15 个百分点并等额转入 161119，纳指最低 15%。</div>
             </div>
           </div>
           <div class="v41-allocation-wrap">
             <table class="data-table v41-allocation-table" aria-label="v4.1 各市场状态对应资产仓位">
-              <thead><tr><th>状态</th><th>判定</th><th>纳指</th><th>黄金</th><th>511360</th></tr></thead>
+              <thead><tr><th>状态</th><th>判定</th><th>纳指</th><th>黄金</th><th>161119</th></tr></thead>
               <tbody>${allocationRows}</tbody>
             </table>
           </div>

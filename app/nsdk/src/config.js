@@ -213,8 +213,8 @@ const buildConfigFromSettings = (settings, localSecrets = {}) => {
       nasdaqFloorPercent: clampNumber(strategy.nasdaqFloorPercent, 15),
       rebalanceThresholdPercent: clampNumber(strategy.rebalanceThresholdPercent, 3),
       excludedEmergencyCashCny: Math.max(0, clampNumber(strategy.excludedEmergencyCashCny, 36000)),
-      bondCode: String(strategy.bondCode || '511360').trim(),
-      bondName: String(strategy.bondName || '海富通中证短融ETF').trim(),
+      bondCode: String(strategy.bondCode || '161119').trim(),
+      bondName: String(strategy.bondName || '易方达中债新综指(LOF)A').trim(),
       marketStateTimelineStartMonth: String(strategy.marketStateTimelineStartMonth || `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}`).trim(),
     },
     portfolio: {

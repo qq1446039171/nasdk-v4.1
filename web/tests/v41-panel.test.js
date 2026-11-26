@@ -116,10 +116,10 @@ assert.match(html, /v41-current-badge/, 'current market state should be highligh
 assert.match(html, /assetCategories\.splice\(3, 0, \{ value: "bond"/, 'web should support bond assets');
 assert.match(html, /deepSet\(repositorySettings, "nsdk\.serverChan\.sendKey", ""\)/, 'GitHub save must redact ServerChan credentials');
 assert.strictEqual(settings.strategyV41.signalSymbol, 'QQQ');
-assert.strictEqual(settings.strategyV41.bondCode, '511360');
+assert.strictEqual(settings.strategyV41.bondCode, '161119');
 assert.strictEqual(settings.strategyV41.marketStateTimelineStartMonth, '2026-08');
 assert.strictEqual(settings.strategyV41.rebalanceThresholdPercent, 3);
-assert.ok(settings.portfolio.assets.some((asset) => asset.code === '511360' && asset.category === 'bond'));
+assert.ok(settings.portfolio.assets.some((asset) => asset.code === '161119' && asset.category === 'bond'));
 assert.ok(settings.portfolio.assets.filter((asset) => ['270042', '018043', '000834', '019172', '016452', '017436', '008976', '110020', '000217', '009505'].includes(asset.code)).every((asset) => asset.kind === 'fund' && asset.secid === ''), 'OTC funds must not be sent to exchange quote APIs');
 assert.strictEqual(settings.nsdk.serverChan.sendKey, '');
 assert.strictEqual(settings.nsdk.finnhub.apiKey, '');

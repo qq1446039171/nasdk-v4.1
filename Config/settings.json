@@ -19,8 +19,8 @@
     "nasdaqFloorPercent": 15,
     "rebalanceThresholdPercent": 3,
     "excludedEmergencyCashCny": 36000,
-    "bondCode": "511360",
-    "bondName": "海富通中证短融ETF",
+    "bondCode": "161119",
+    "bondName": "易方达中债新综指(LOF)A",
     "marketStateTimelineStartMonth": "2026-08"
   },
   "portfolio": {
@@ -182,16 +182,16 @@
         "enabled": true
       },
       {
-        "id": "511360",
-        "name": "海富通中证短融ETF",
+        "id": "161119",
+        "name": "易方达中债新综指(LOF)A",
         "category": "bond",
         "kind": "exchange",
-        "code": "511360",
-        "secid": "1.511360",
+        "code": "161119",
+        "secid": "0.161119",
         "shares": 0,
         "amountCny": 0,
-        "lastPrice": 114.194,
-        "lastPriceAt": "2026-11-23T06:18:45.297Z",
+        "lastPrice": 1.814,
+        "lastPriceAt": "2026-11-26T06:18:14.000Z",
         "enabled": true
       },
       {
