@@ -232,19 +232,6 @@
         "lastPrice": 0.858,
         "lastPriceAt": "2026-11-26T09:08:00.163Z",
         "enabled": true
-      },
-      {
-        "id": "asset-1795684092645",
-        "name": "新资产",
-        "category": "nasdaq",
-        "kind": "exchange",
-        "code": "",
-        "secid": "",
-        "shares": 0,
-        "amountCny": 0,
-        "lastPrice": 0,
-        "lastPriceAt": "",
-        "enabled": true
       }
     ],
     "profitHistory": [
@@ -1825,14 +1812,6 @@
             "shares": 6000,
             "lastPrice": 0.858,
             "marketValueCny": 5148
-          },
-          {
-            "id": "asset-1795684092645",
-            "name": "新资产",
-            "category": "nasdaq",
-            "shares": 0,
-            "lastPrice": 0,
-            "marketValueCny": 0
           }
         ]
       }
