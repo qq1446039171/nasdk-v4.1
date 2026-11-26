@@ -1,6 +1,6 @@
 {
   "funds": {
-    "depositAmount": 207183.47,
+    "depositAmount": 181183.46,
     "nasdaqExposureLimitPercent": 70
   },
   "allocation": {
@@ -149,7 +149,7 @@
         "kind": "fund",
         "code": "000217",
         "secid": "",
-        "shares": 17135.22,
+        "shares": 18708.47,
         "amountCny": 0,
         "lastPrice": 2.5425,
         "lastPriceAt": "2026-11-26T09:07:59.507Z",
@@ -202,7 +202,7 @@
         "code": "",
         "secid": "",
         "shares": 0,
-        "amountCny": 40000,
+        "amountCny": 10000,
         "lastPrice": 0,
         "lastPriceAt": "",
         "enabled": true
@@ -1720,7 +1720,7 @@
       },
       {
         "date": "2026-11-26",
-        "totalAssetsCny": 207183.47,
+        "totalAssetsCny": 181183.46,
         "assets": [
           {
             "id": "513100",
@@ -1798,9 +1798,9 @@
             "id": "asset-1780230265572",
             "name": "华安黄金ETF",
             "category": "gold",
-            "shares": 17135.22,
+            "shares": 18708.47,
             "lastPrice": 2.5425,
-            "marketValueCny": 43566.3
+            "marketValueCny": 47566.28
           },
           {
             "id": "asset-1780230333146",
@@ -1838,9 +1838,9 @@
       }
     ],
     "investedNasdaqCny": 83087,
-    "reserveCashNasdaqCny": 40000,
+    "reserveCashNasdaqCny": 10000,
     "reserveUsedNasdaqCny": 0,
-    "otherCashCny": 84096.47,
+    "otherCashCny": 88096.46,
     "fearOfMissingOut": false
   },
   "drawdown": {
