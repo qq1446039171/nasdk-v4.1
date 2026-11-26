@@ -1,6 +1,6 @@
 {
   "funds": {
-    "depositAmount": 181183.46,
+    "depositAmount": 173183.46,
     "nasdaqExposureLimitPercent": 70
   },
   "allocation": {
@@ -189,7 +189,7 @@
         "code": "",
         "secid": "",
         "shares": 0,
-        "amountCny": 10124,
+        "amountCny": 2124,
         "lastPrice": 0,
         "lastPriceAt": "",
         "enabled": true
@@ -1720,7 +1720,7 @@
       },
       {
         "date": "2026-11-26",
-        "totalAssetsCny": 181183.46,
+        "totalAssetsCny": 173183.46,
         "assets": [
           {
             "id": "513100",
@@ -1840,7 +1840,7 @@
     "investedNasdaqCny": 83087,
     "reserveCashNasdaqCny": 10000,
     "reserveUsedNasdaqCny": 0,
-    "otherCashCny": 88096.46,
+    "otherCashCny": 80096.46,
     "fearOfMissingOut": false
   },
   "drawdown": {
